@@ -1,0 +1,10 @@
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/libbevy_ecs_macros-19355d84d4b5d4fd.so: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/component.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_data.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_filter.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/states.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/world_query.rs
+
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/bevy_ecs_macros-19355d84d4b5d4fd.d: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/component.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_data.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_filter.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/states.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/world_query.rs
+
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/lib.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/component.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_data.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/query_filter.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/states.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs_macros-0.15.0/src/world_query.rs:

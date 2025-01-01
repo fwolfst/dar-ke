@@ -1,0 +1,1 @@
+impl for<'a, 'b, 'c> Fn(bevy_ecs::system::commands::Commands<'a, 'b>, bevy_ecs::change_detection::ResMut<'c, bevy_asset::assets::Assets<bevy_render::texture::image::Image>>)

@@ -1,0 +1,11 @@
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/libbevy_window-120aba6fad036788.rmeta: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/event.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/monitor.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/raw_handle.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system_cursor.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/window.rs
+
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/bevy_window-120aba6fad036788.d: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/event.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/monitor.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/raw_handle.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system_cursor.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/window.rs
+
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/lib.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/event.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/monitor.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/raw_handle.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/system_cursor.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.15.0/src/window.rs:

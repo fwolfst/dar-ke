@@ -1,0 +1,13 @@
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/libcpal-ec23ed41f442c040.rmeta: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/error.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/enumerate.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/null/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/platform/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/samples_formats.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/traits.rs
+
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/cpal-ec23ed41f442c040.d: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/error.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/enumerate.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/null/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/platform/mod.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/samples_formats.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/traits.rs
+
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/lib.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/error.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/mod.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/mod.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/alsa/enumerate.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/host/null/mod.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/platform/mod.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/samples_formats.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cpal-0.15.3/src/traits.rs:

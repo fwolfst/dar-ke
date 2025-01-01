@@ -1,0 +1,10 @@
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/libbevy_image-a61aea2c3e5c11a9.rmeta: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/hdr_texture_loader.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_loader.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/ktx2.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_texture_conversion.rs
+
+/home/felix/projects/dar-ke/rust_analyzer/debug/deps/bevy_image-a61aea2c3e5c11a9.d: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/hdr_texture_loader.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_loader.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/ktx2.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_texture_conversion.rs
+
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/lib.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/hdr_texture_loader.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_loader.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/ktx2.rs:
+/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_image-0.15.0/src/image_texture_conversion.rs:
