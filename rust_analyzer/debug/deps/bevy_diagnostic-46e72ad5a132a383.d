@@ -1,9 +1,0 @@
-/home/felix/projects/dar-ke/rust_analyzer/debug/deps/libbevy_diagnostic-46e72ad5a132a383.rmeta: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/diagnostic.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/entity_count_diagnostics_plugin.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/frame_time_diagnostics_plugin.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/log_diagnostics_plugin.rs
-
-/home/felix/projects/dar-ke/rust_analyzer/debug/deps/bevy_diagnostic-46e72ad5a132a383.d: /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/lib.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/diagnostic.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/entity_count_diagnostics_plugin.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/frame_time_diagnostics_plugin.rs /home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/log_diagnostics_plugin.rs
-
-/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/lib.rs:
-/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/diagnostic.rs:
-/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/entity_count_diagnostics_plugin.rs:
-/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/frame_time_diagnostics_plugin.rs:
-/home/felix/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.14.2/src/log_diagnostics_plugin.rs:
