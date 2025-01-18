@@ -36,6 +36,21 @@ pub struct Giant {
     pub frame: u8,
 }
 
+#[derive(Clone, Debug, Component)]
+pub struct AtHorizon {
+    pub angle: f32, // radians
+}
+
+#[derive(Clone, Debug, Component)]
+pub struct Light {
+    pub color: Color,
+}
+
+//#[derive(Clone, Debug, Component)]
+//pub struct Shape {
+//    pub color: Color,
+//}
+
 /// These are experiment values that should probably
 /// get fixed (and thus baked in) once.
 #[derive(Clone, Debug, Resource)]

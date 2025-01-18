@@ -1,10 +1,14 @@
+use components::{AtHorizon, Light};
+
 use crate::*;
+use rand::{thread_rng, Rng};
 
 pub fn ui(
     mut egui_ctx: EguiContexts,
     diagnostics: Res<DiagnosticsStore>,
     player: Query<&Player>,
     mut params: ResMut<Params>,
+    mut commands: Commands,
 ) {
     let fps = diagnostics
         .get(&FrameTimeDiagnosticsPlugin::FPS)
@@ -64,5 +68,20 @@ pub fn ui(
             ui.label("Horizon");
             ui.add(egui::Slider::new(&mut params.sky_horizon_ratio, 0.0..=1.0));
         });
+        if ui.add(egui::Button::new("Click me")).clicked() {
+            let mut rng = thread_rng();
+            commands.spawn((
+                Light {
+                    color: Color::srgb_u8(
+                        rng.gen_range(120..180),
+                        rng.gen_range(120..180),
+                        rng.gen_range(120..180),
+                    ),
+                },
+                AtHorizon {
+                    angle: rng.gen_range((0.)..(2.0 * std::f32::consts::PI)) - std::f32::consts::PI,
+                },
+            ));
+        }
     });
 }
