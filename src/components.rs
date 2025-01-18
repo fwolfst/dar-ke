@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use bevy::prelude::*;
+use bevy::{prelude::*, time::Stopwatch};
 
 // Unfortunately no examples and I cannot yet read and understand
 // that code :(
@@ -14,6 +14,8 @@ pub struct Player {
     pub height: i32,
     // radians between -PI and +PI
     pub direction: f32,
+    pub walking_time: Stopwatch,
+    pub is_moving: bool,
 }
 
 impl Player {

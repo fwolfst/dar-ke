@@ -6,6 +6,7 @@ use std::time::Duration;
 use bevy::{
     diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin},
     prelude::*,
+    time::Stopwatch,
 };
 use bevy_egui::{
     egui::{self, RichText},
@@ -73,6 +74,8 @@ fn init_player(mut commands: Commands) {
         y: 0.,
         height: 0,
         direction: 0.0,
+        walking_time: Stopwatch::new(),
+        is_moving: false,
     });
     //for (text_anchor, color) in [
     //    (Anchor::TopLeft, Color::srgb(0.5, 0.5, 0.5)),

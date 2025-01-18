@@ -52,7 +52,7 @@ Inspired by Herbert Wolversons book ["Hands-on Rust"](https://hands-on-rust.com/
 
 ### Story
 
-You find yourself in a mysterious dark pretty void place and discover it together with snippets of your poast.
+You find yourself in a mysterious dark pretty void place and discover it together with snippets of your past.
 
 ### Basic Game Loops
 
@@ -81,9 +81,11 @@ Player tries to orient and align herself and the entities in the world around he
 
 - Narrative comes animated (flash in, degrade over time)
 - Narrative is accompanied by sound
+- Breathing moves horizon/height anyway
 
 ## Derived ToDos
 
+- [ ] Head bobble
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] player sees points or objs on horizon
 - [ ] horizon and ground color changes

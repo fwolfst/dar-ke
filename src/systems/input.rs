@@ -22,15 +22,20 @@ pub fn process_input(
         let dy = f32::cos(player.direction);
         player.x += dx * MOVE_SPEED;
         player.y += dy * MOVE_SPEED;
-        player.height = (player.x as i32).rem_euclid(3) - 1;
-    }
-    if keyboard_input.pressed(KeyCode::KeyS) {
+        //player.height = (player.x as i32).rem_euclid(3) - 1;
+        player.is_moving = true;
+    } else if keyboard_input.pressed(KeyCode::KeyS) {
         let mut player = player.single_mut();
         let dx = f32::sin(player.direction);
         let dy = f32::cos(player.direction);
         player.x -= dx * MOVE_SPEED;
         player.y -= dy * MOVE_SPEED;
         player.height = (player.x as i32).rem_euclid(3) - 1;
+        player.is_moving = true;
+    } else {
+        let mut player = player.single_mut();
+        player.is_moving = false;
+        player.height = 0;
     }
     if keyboard_input.pressed(KeyCode::KeyQ) {
         exit.send(AppExit::Success);
