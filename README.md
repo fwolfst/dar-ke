@@ -60,22 +60,22 @@ Player tries to orient and align herself and the entities in the world around he
 
 ### MVP
 
-[ ] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobble)
-[ ] Other entities exist (structures and individuals), some of which can move through the world on their own
-[ ]  (Narrative) Text is shown
-[ ] Text can show location based, too
-[ ] There are at least two endings
-[ ] An ending is an animation and the credits
+- [ ] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobble)
+- [ ] Other entities exist (structures and individuals), some of which can move through the world on their own
+- [ ]  (Narrative) Text is shown
+- [ ] Text can show location based, too
+- [ ] There are at least two endings
+- [ ] An ending is an animation and the credits
 
 ### Stretch goals
 
-[ ] WASM
-[ ] Changing skies
-[ ] Animated sky/ clouds
-[ ] Atmospherics that are not approachable / move away
-[ ] Lights
-[ ] Rogue-aspect
-[ ] Sound
+- [ ] WASM
+- [ ] Changing skies
+- [ ] Animated sky/ clouds
+- [ ] Atmospherics that are not approachable / move away
+- [ ] Lights
+- [ ] Rogue-aspect
+- [ ] Sound
 
 ## Game Ideas/Notes
 
@@ -84,9 +84,9 @@ Player tries to orient and align herself and the entities in the world around he
 
 ## Derived ToDos
 
-[ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
-[ ] player sees points or objs on horizon
-[ ] horizon and ground color changes
+- [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
+- [ ] player sees points or objs on horizon
+- [ ] horizon and ground color changes
 
 ## Licence, Copyright
 
