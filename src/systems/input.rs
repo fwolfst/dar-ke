@@ -1,0 +1,58 @@
+use crate::*;
+
+pub fn process_input(
+    mut player: Query<&mut Player>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut exit: EventWriter<AppExit>,
+    mut commands: Commands,
+) {
+    const MOVE_SPEED: f32 = 1.0;
+    const TURN_SPEED: f32 = 0.02;
+    if keyboard_input.pressed(KeyCode::KeyA) {
+        let mut player = player.single_mut();
+        player.turn(-TURN_SPEED);
+    }
+    if keyboard_input.pressed(KeyCode::KeyD) {
+        let mut player = player.single_mut();
+        player.turn(TURN_SPEED);
+    }
+    if keyboard_input.pressed(KeyCode::KeyW) {
+        let mut player = player.single_mut();
+        let dx = f32::sin(player.direction);
+        let dy = f32::cos(player.direction);
+        player.x += dx * MOVE_SPEED;
+        player.y += dy * MOVE_SPEED;
+        player.height = (player.x as i32).rem_euclid(3) - 1;
+    }
+    if keyboard_input.pressed(KeyCode::KeyS) {
+        let mut player = player.single_mut();
+        let dx = f32::sin(player.direction);
+        let dy = f32::cos(player.direction);
+        player.x -= dx * MOVE_SPEED;
+        player.y -= dy * MOVE_SPEED;
+        player.height = (player.x as i32).rem_euclid(3) - 1;
+    }
+    if keyboard_input.pressed(KeyCode::KeyQ) {
+        exit.send(AppExit::Success);
+    }
+    if keyboard_input.pressed(KeyCode::KeyT) {
+        let color = Color::srgb_u8(150, 120, 130);
+        commands.spawn((
+            components::Narrative { ..default() },
+            Text2dBundle {
+                text: Text {
+                    sections: vec![TextSection::new(
+                        phrases::PHRASES[0],
+                        TextStyle { color, ..default() },
+                    )],
+                    ..Default::default()
+                },
+                transform: Transform::from_translation(Vec3::new(120.0, 410.0, 0.0)),
+                ..default()
+            },
+        ));
+    }
+    if keyboard_input.pressed(KeyCode::KeyF) {
+        println!("(F)ullscreen?");
+    }
+}
