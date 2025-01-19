@@ -27,9 +27,9 @@ pub fn render(
     //    green_mult = 1.0 / green_mult;
     //}
 
-    draw_sky(horizon as u8, &mut frame, params.sky_dir_up);
+    draw_sky(horizon as u8, &mut frame, params.sky_up_bright);
 
-    draw_ground(horizon, &mut frame, params.ground_dir_up);
+    draw_ground(horizon, &mut frame, params.ground_up_bright);
 
     for (light, at_horizon) in &lights {
         let pos_of_obj_screen = project_x(player.direction, at_horizon.angle);
@@ -104,29 +104,14 @@ fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool) {
     for y in 0..horizon {
         //let horizon_dist = horizon - y;
         let add = if bright_up {
-            linp(0, 12, 0, horizon.try_into().unwrap(), y as u8)
+            linp(50, 0, 0, horizon.try_into().unwrap(), y as u8)
         } else {
-            linp(12, 0, 0, horizon.try_into().unwrap(), y as u8)
+            linp(0, 50, 0, horizon.try_into().unwrap(), y as u8)
         };
         //dbg!(add);
-        let color = Pixel {
-            r: 1 + add,
-            g: 2 + add,
-            b: 3 + add,
-            a: 255,
-        };
+        let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
         for x in 0..RENDER_WIDTH {
-            frame
-                .set(
-                    UVec2::new(x, y.try_into().unwrap()),
-                    color, //Pixel {
-                           //    r: (1 + (horizon_dist as f32 * red_mult) as u32).rem_euclid(255) as u8,
-                           //    g: 2,
-                           //    b: (3 + (horizon_dist as f32 * green_mult) as u32).rem_euclid(255) as u8,
-                           //    a: 255,
-                           //},
-                )
-                .ok();
+            frame.set(UVec2::new(x, y.try_into().unwrap()), color).ok();
         }
     }
 }
@@ -135,28 +120,22 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool) {
     for y in horizon..RENDER_HEIGHT {
         let add = if bright_up {
             linp(
-                0,
-                4,
+                45,
+                5,
                 horizon.try_into().unwrap(),
                 RENDER_HEIGHT as i32,
                 y as u8,
             )
         } else {
             linp(
-                10,
-                0,
+                5,
+                45,
                 horizon.try_into().unwrap(),
                 RENDER_HEIGHT as i32,
                 y as u8,
             )
         };
-        // HORIZON_COL +
-        let color = Pixel {
-            r: 1 + add,
-            g: 2 + add,
-            b: 3 + add,
-            a: 255,
-        };
+        let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
         for x in 0..RENDER_WIDTH {
             frame.set(UVec2::new(x, y), color).ok();
         }

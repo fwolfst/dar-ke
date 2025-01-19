@@ -62,8 +62,8 @@ pub fn ui(
             ui.label("Direction: ");
             ui.label(RichText::new(format!("{}", player.direction)).code());
         });
-        ui.checkbox(&mut params.sky_dir_up, "Sky up");
-        ui.checkbox(&mut params.ground_dir_up, "Ground up");
+        ui.checkbox(&mut params.sky_up_bright, "Sky up");
+        ui.checkbox(&mut params.ground_up_bright, "Ground up");
         ui.horizontal(|ui| {
             ui.label("Horizon");
             ui.add(egui::Slider::new(&mut params.sky_horizon_ratio, 0.0..=1.0));

@@ -84,10 +84,11 @@ Player tries to orient and align herself and the entities in the world around he
 
 ## Derived ToDos
 
-- [ ] Head bobble
+- [ ] horizon and ground have some texture/circle gradients
+- [ ] horizon and ground color changes
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] player sees points or objs on horizon
-- [ ] horizon and ground color changes
+- [X] Head bobble
 
 ## (Code) Design desicions
 

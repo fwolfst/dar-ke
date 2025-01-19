@@ -47,16 +47,16 @@ pub struct Light {
 /// get fixed (and thus baked in) once.
 #[derive(Clone, Debug, Resource)]
 pub struct Params {
-    pub sky_dir_up: bool,
-    pub ground_dir_up: bool,
+    pub sky_up_bright: bool,
+    pub ground_up_bright: bool,
     pub sky_horizon_ratio: f32,
 }
 
 impl Default for Params {
     fn default() -> Self {
         Self {
-            sky_dir_up: false,
-            ground_dir_up: false,
+            sky_up_bright: false,
+            ground_up_bright: false,
             sky_horizon_ratio: 0.6,
         }
     }
