@@ -64,11 +64,15 @@ pub fn ui(
         });
         ui.checkbox(&mut params.sky_up_bright, "Sky up");
         ui.checkbox(&mut params.ground_up_bright, "Ground up");
+        ui.checkbox(&mut params.draw_poles, "Draw NSWE poles");
+
+        ui.separator();
+
         ui.horizontal(|ui| {
             ui.label("Horizon");
             ui.add(egui::Slider::new(&mut params.sky_horizon_ratio, 0.0..=1.0));
         });
-        if ui.add(egui::Button::new("Click me")).clicked() {
+        if ui.add(egui::Button::new("Spawn light")).clicked() {
             let mut rng = thread_rng();
             commands.spawn((
                 Light {

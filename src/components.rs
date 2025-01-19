@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use bevy::{prelude::*, time::Stopwatch};
 
-use crate::radians_math::norm_rad;
+use crate::{radians_math::norm_rad, RENDER_HEIGHT, RENDER_WIDTH};
 
 // Unfortunately no examples and I cannot yet read and understand
 // that code :(
@@ -62,8 +62,8 @@ impl Default for Params {
             sky_up_bright: false,
             ground_up_bright: false,
             sky_horizon_ratio: 0.6,
-            light_cone_off_y: 10,
-            light_cone_off_x: 0,
+            light_cone_off_y: 50 - RENDER_HEIGHT as i32,
+            light_cone_off_x: 64 - RENDER_WIDTH as i32 / 2,
             light_cone_max_dist: 12.0,
             draw_poles: false,
         }

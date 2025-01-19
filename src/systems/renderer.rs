@@ -20,16 +20,9 @@ pub fn render(
     let mut frame = pb.frame();
     let horizon = frame.size().y / 2 + player.height as u32;
 
-    //let mut red_mult = 0.5 * (1.0 - player.direction);
-    //let mut green_mult = 0.5 * (-1.0 + player.direction);
-    //if params.sky_dir_up {
-    //    red_mult = 1.0 / red_mult;
-    //    green_mult = 1.0 / green_mult;
-    //}
-
     draw_sky(horizon as u8, &mut frame, params.sky_up_bright);
 
-    draw_ground(horizon, &mut frame, params.ground_up_bright);
+    draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
 
     for (light, at_horizon) in &lights {
         let pos_of_obj_screen = project_x(player.direction, at_horizon.angle);
@@ -41,40 +34,15 @@ pub fn render(
             .ok();
     }
 
-    // Draw poles
-    // N = black, S = red, E = green, W = yellow
-    let north = project_x(player.direction, 0.0);
-    if north > 0.0 && north < RENDER_WIDTH as f32 {
-        frame
-            .set(UVec2::new(north as u32, horizon), Color::BLACK)
-            .ok();
-    }
-    let south = project_x(player.direction, std::f32::consts::PI);
-    if south > 0.0 && south < RENDER_WIDTH as f32 {
-        frame
-            .set(UVec2::new(south as u32, horizon), Color::srgb_u8(255, 0, 0))
-            .ok();
-    }
-    let east = project_x(player.direction, std::f32::consts::FRAC_PI_2);
-    if east > 0.0 && east < RENDER_WIDTH as f32 {
-        frame
-            .set(UVec2::new(east as u32, horizon), Color::srgb_u8(0, 255, 0))
-            .ok();
-    }
-    let west = project_x(player.direction, 3.0 * std::f32::consts::FRAC_PI_2);
-    if west > 0.0 && west < RENDER_WIDTH as f32 {
-        frame
-            .set(
-                UVec2::new(west as u32, horizon),
-                Color::srgb_u8(0, 255, 255),
-            )
-            .ok();
+    if params.draw_poles {
+        draw_poles(horizon, &mut frame, player);
     }
 
     //let g = giants.single();
     //render_giant(&mut frame, 10, g.frame == 1);
 }
 
+// TODO Ranges cannot go from pos to neg, thus create own struct FromTo
 // Translates a value from one Range into the value of another range,
 // e.g. 3 (the middle of) in 2..=4 ->  13 in 11..15 (also the middle)
 fn lintra(
@@ -131,7 +99,39 @@ fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool) {
     }
 }
 
-fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool) {
+fn draw_poles(horizon: u32, frame: &mut Frame, player: &Player) {
+    // Draw poles
+    // N = black, S = red, E = green, W = yellow
+    let north = project_x(player.direction, 0.0);
+    if north > 0.0 && north < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(north as u32, horizon), Color::BLACK)
+            .ok();
+    }
+    let south = project_x(player.direction, std::f32::consts::PI);
+    if south > 0.0 && south < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(south as u32, horizon), Color::srgb_u8(255, 0, 0))
+            .ok();
+    }
+    let east = project_x(player.direction, std::f32::consts::FRAC_PI_2);
+    if east > 0.0 && east < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(east as u32, horizon), Color::srgb_u8(0, 255, 0))
+            .ok();
+    }
+    let west = project_x(player.direction, 3.0 * std::f32::consts::FRAC_PI_2);
+    if west > 0.0 && west < RENDER_WIDTH as f32 {
+        frame
+            .set(
+                UVec2::new(west as u32, horizon),
+                Color::srgb_u8(0, 255, 255),
+            )
+            .ok();
+    }
+}
+
+fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Params>) {
     for y in horizon..RENDER_HEIGHT {
         let add = if bright_up {
             linp(
@@ -151,13 +151,18 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool) {
             )
         };
         let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
+        let light_origin_y = RENDER_HEIGHT as i32 + params.light_cone_off_y;
+        let light_origin_x = RENDER_WIDTH as i32 / 2 + params.light_cone_off_x;
         for x in 0..RENDER_WIDTH {
-            // TODO parameterize
-            // scale brightness according to diff from a point
             let pixpos = UVec2::new(x, y);
-            let light_dist =
-                f32::sqrt(((64 - x as i32) as f32).powf(2.0) + ((50 - y) as f32).powf(2.0));
-            let fac = (200.0 - lintra(light_dist as i32, 0..=80, 0..=300) as f32) / 10000.0;
+            let light_dist = f32::sqrt(
+                ((light_origin_x - x as i32) as f32).powf(2.0)
+                    + ((light_origin_y - y as i32) as f32).powf(2.0),
+            );
+
+            // Does ignore the decay/distance from params, and function is ... odd.
+            let fac = (200.0 - lintra(light_dist as i32, 0..=(80), 0..=300) as f32) / 10000.0;
+
             frame.set(pixpos, color.lighter(fac)).ok();
         }
     }
