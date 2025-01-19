@@ -1,9 +1,6 @@
-use crate::components::AtHorizon;
-use crate::components::Giant;
-use crate::components::Light;
-use crate::components::Params;
+use crate::components::*;
 use crate::radians_math::*;
-use crate::{components::Player, HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
+use crate::{HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
 use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
 
@@ -15,12 +12,18 @@ pub fn render(
     giants: Query<&Giant>,
     lights: Query<(&Light, &AtHorizon)>,
     params: Res<Params>,
+    sky_blender: Res<SkyBlender>,
 ) {
     let player = player.single();
     let mut frame = pb.frame();
     let horizon = frame.size().y / 2 + player.height as u32;
 
-    draw_sky(horizon as u8, &mut frame, params.sky_up_bright);
+    draw_sky(
+        horizon as u8,
+        &mut frame,
+        params.sky_up_bright,
+        &sky_blender,
+    );
 
     draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
 
@@ -84,17 +87,20 @@ fn linp(start: i32, end: i32, scale_start: i32, scale_end: i32, actual_value: u8
     (start as f32 + ((end - start) as f32 * ratio)).round() as u8
 }
 
-fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool) {
+fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool, sky_blender: &Res<SkyBlender>) {
     for y in 0..horizon {
-        //let horizon_dist = horizon - y;
         let add = if bright_up {
             linp(50, 0, 0, horizon.try_into().unwrap(), y as u8)
         } else {
             linp(0, 50, 0, horizon.try_into().unwrap(), y as u8)
         };
         //dbg!(add);
+
         let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
+        // TODO Now redden this with skyblender, or mix with its color
         for x in 0..RENDER_WIDTH {
+            //let lightener = (light_pos - Vec2::new(x as f32, y as f32)).length() / 800.0;
+            //color.red;
             frame.set(UVec2::new(x, y.try_into().unwrap()), color).ok();
         }
     }

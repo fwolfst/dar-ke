@@ -43,6 +43,26 @@ pub struct Light {
     pub color: Color,
 }
 
+#[derive(Clone, Debug, Resource)]
+pub struct SkyBlender {
+    pub height: i32,
+    pub position: f32,
+    pub extend: f32,
+    pub color: Color,
+    //pub strength: f32, // can be alpha of color?
+}
+
+impl Default for SkyBlender {
+    fn default() -> Self {
+        Self {
+            height: 5,
+            position: 0.0,
+            extend: 30.0,
+            color: Color::srgba_u8(160, 80, 80, 80),
+        }
+    }
+}
+
 /// These are experiment values that should probably
 /// get fixed (and thus baked in) once.
 #[derive(Clone, Debug, Resource)]

@@ -8,6 +8,7 @@ pub fn ui(
     diagnostics: Res<DiagnosticsStore>,
     player: Query<&Player>,
     mut params: ResMut<Params>,
+    mut sky_blender: ResMut<SkyBlender>,
     mut commands: Commands,
 ) {
     let fps = diagnostics
@@ -19,37 +20,38 @@ pub fn ui(
     let params = params.as_mut();
     let ctx = egui_ctx.ctx_mut();
     egui::Window::new("Game state").show(ctx, |ui| {
-        ui.collapsing(RichText::new("About").heading(), |ui| {
+        ui.collapsing(RichText::new("Controls").heading(), |ui| {
+            egui::Grid::new("controls")
+                .num_columns(2)
+                .striped(true)
+                .show(ui, |ui| {
+                    ui.label("Move");
+                    ui.label("WASD / Arrows");
+                    ui.end_row();
+
+                    ui.label("(Q)uit");
+                    ui.label("Q");
+                    ui.end_row();
+                });
             ui.label(concat!("yada yada ", "", ""));
         });
-        ui.heading("Controls");
-        egui::Grid::new("controls")
-            .num_columns(2)
-            .striped(true)
-            .show(ui, |ui| {
-                ui.label("Move");
-                ui.label("WASD / Arrows");
-                ui.end_row();
-
-                ui.label("(Q)uit");
-                ui.label("Q");
-                ui.end_row();
-            });
 
         ui.separator();
+
         ui.horizontal(|ui| {
             ui.label("FPS: ");
             ui.label(RichText::new(format!("{fps:.1}")).code());
         });
+
+        ui.separator();
+
+        ui.heading("Player");
+        let player = player.single();
         ui.horizontal(|ui| {
             ui.label("Height");
             //ui.add(egui::Slider::new(&mut player.height, 64..=2048));
         });
 
-        ui.heading("Player");
-        let player = player.single();
-
-        ui.separator();
         ui.horizontal(|ui| {
             ui.label("Pos X: ");
             ui.label(RichText::new(format!("{}", player.x)).code());
@@ -111,6 +113,18 @@ pub fn ui(
                 &mut params.light_cone_max_dist,
                 -100.0..=100.0,
             ));
+        });
+
+        let skyblender = sky_blender.as_mut();
+
+        ui.heading("SkyBlender");
+        ui.horizontal(|ui| {
+            ui.label("SkyBlender height");
+            ui.add(egui::Slider::new(&mut skyblender.height, -100..=100));
+        });
+        ui.horizontal(|ui| {
+            ui.label("SkyBlender aura");
+            ui.add(egui::Slider::new(&mut skyblender.extend, 10.0..=200.0));
         });
     });
 }

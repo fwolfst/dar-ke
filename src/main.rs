@@ -13,13 +13,13 @@ use bevy_egui::{
     EguiContexts, EguiPlugin,
 };
 use bevy_pixel_buffer::prelude::*;
-use components::Giant;
-use components::Narrative; // not needed in src/main, but reincluded through it -> need to learn
-                           // and think of how to structure imports
-                           // Cannot yet read the code good enough to figure out
-                           // how to use these (and they lack examples :( )
-                           //use radians::Rad32;
-                           //use radian::Rad32;
+use components::Narrative;
+use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
+                                     // and think of how to structure imports
+                                     // Cannot yet read the code good enough to figure out
+                                     // how to use these (and they lack examples :( )
+                                     //use radians::Rad32;
+                                     //use radian::Rad32;
 
 mod components;
 mod phrases;
@@ -63,6 +63,7 @@ fn main() {
         .add_systems(FixedUpdate, process_input)
         .add_systems(Update, (ui, update, render.after(update)))
         .insert_resource(Params::default())
+        .insert_resource(SkyBlender::default())
         .run();
 }
 
