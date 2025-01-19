@@ -72,10 +72,11 @@ pub fn ui(
             let mut rng = thread_rng();
             commands.spawn((
                 Light {
-                    color: Color::srgb_u8(
+                    color: Color::srgba_u8(
                         rng.gen_range(120..180),
                         rng.gen_range(120..180),
                         rng.gen_range(120..180),
+                        rng.gen_range(80..250),
                     ),
                 },
                 AtHorizon {

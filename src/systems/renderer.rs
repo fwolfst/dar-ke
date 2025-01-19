@@ -31,23 +31,8 @@ pub fn render(
 
     draw_ground(horizon, &mut frame, params.ground_dir_up);
 
-    let left_world = player.direction - HALF_VIEW_ANGLE;
-    //let right_world = player.direction + HALF_VIEW_ANGLE;
-
-    //let pos_of_obj_world = 0.0;
-    //let raddiff = rad_wrap_diff(left_world, pos_of_obj_world);
-    //let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
-
-    //// Draw Object
-    //let _ = frame.set(
-    //    UVec2::new(pos_of_obj_screen as u32, horizon),
-    //    Color::srgba_u8(190, 190, 100, 190),
-    //);
-
     for (light, at_horizon) in &lights {
-        let raddiff = rad_wrap_diff(at_horizon.angle, left_world); //, at_horizon.angle);
-        let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
-        //eprintln!("{}", at_horizon.angle);
+        let pos_of_obj_screen = project_x(player.direction, at_horizon.angle);
         frame
             .set(
                 UVec2::new(pos_of_obj_screen as u32, horizon - 1),
