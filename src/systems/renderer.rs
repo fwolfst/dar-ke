@@ -96,10 +96,21 @@ fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool, sky_blender: &Res<S
         };
         //dbg!(add);
 
-        let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
+        let light_pos = Vec2::new(
+            9.0,
+            // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
+            (horizon as i32 - sky_blender.height) as f32,
+        );
         // TODO Now redden this with skyblender, or mix with its color
         for x in 0..RENDER_WIDTH {
-            //let lightener = (light_pos - Vec2::new(x as f32, y as f32)).length() / 800.0;
+            let light_dist = (light_pos - Vec2::new(x as f32, y as f32)).length();
+            let reddener = ((100.0 - light_dist) / 1000.0).clamp(0.0, 0.2);
+            let color = Color::srgba_u8(
+                1 + add + (reddener * 255.0).round() as u8,
+                2 + add,
+                3 + add,
+                255,
+            );
             //color.red;
             frame.set(UVec2::new(x, y.try_into().unwrap()), color).ok();
         }
