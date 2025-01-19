@@ -33,8 +33,6 @@ use crate::systems::renderer::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
 
-use crate::phrases::PHRASES;
-
 // It makes sense to play with these constants
 // and unconstantize them into the Params compoment
 // until settled.

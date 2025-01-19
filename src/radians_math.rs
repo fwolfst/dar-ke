@@ -1,5 +1,18 @@
 use crate::PI_F32;
 
+//const 𝝅: f32= std::f32::consts::PI;
+pub(crate) const TWO_PI: f32 = 2.0 * std::f32::consts::PI;
+
+/// Normalize to be between 0 and 2 PI
+pub fn norm_rad(angle_in_radians: f32) -> f32 {
+    let angle_in_radians = angle_in_radians % TWO_PI;
+    if angle_in_radians < 0.0 {
+        TWO_PI + angle_in_radians
+    } else {
+        angle_in_radians
+    }
+}
+
 /// Difference between two values in a wrapping radians.
 pub fn rad_wrap_diff(low: f32, high: f32) -> f32 {
     if low <= high {
@@ -21,6 +34,8 @@ pub fn rad_wrap(val: f32) -> f32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assert_float_eq::*;
+    use pretty_assertions::{assert_eq /*assert_ne*/};
 
     const FLOAT_SAMENESS_MARGIN: f32 = 0.00001;
 
@@ -40,5 +55,14 @@ mod tests {
         assert!(float_same(rad_wrap_diff(2., 2.), 0.));
         assert!(float_same(rad_wrap_diff(-PI_F32, PI_F32), 2.0 * PI_F32));
         assert!(float_same(rad_wrap_diff(PI_F32 - 0.1, -PI_F32), 0.1));
+    }
+
+    #[test]
+    fn test_norm_rad() {
+        assert_eq!(norm_rad(1.0), 1.0);
+        assert_f32_near!(norm_rad(4.0), 4.0);
+        assert_f32_near!(norm_rad(TWO_PI + 4.0), 4.0);
+        assert_eq!(norm_rad(-2.0), TWO_PI - 2.0);
+        //assert!(float_same(rad_wrap(-4.0), 4.0 - PI_F32));
     }
 }

@@ -2,6 +2,8 @@ use std::time::Duration;
 
 use bevy::{prelude::*, time::Stopwatch};
 
+use crate::radians_math::norm_rad;
+
 // Unfortunately no examples and I cannot yet read and understand
 // that code :(
 //use radians::Rad32;
@@ -12,21 +14,16 @@ pub struct Player {
     pub x: f32,
     pub y: f32,
     pub height: i32,
-    // radians between -PI and +PI
+    // radians between 0 and +2PI
     pub direction: f32,
     pub walking_time: Stopwatch,
     pub is_moving: bool,
 }
 
 impl Player {
-    // Turn and wrap around (-PI..+PI)
+    // Turn and wrap around (0..+2PI)
     pub fn turn(&mut self, val: f32) {
-        self.direction += val;
-        if self.direction > std::f32::consts::PI {
-            self.direction -= 2.0 * std::f32::consts::PI;
-        } else if self.direction < -std::f32::consts::PI {
-            self.direction += 2.0 * std::f32::consts::PI;
-        }
+        self.direction = norm_rad(self.direction + val);
     }
 }
 
@@ -45,11 +42,6 @@ pub struct AtHorizon {
 pub struct Light {
     pub color: Color,
 }
-
-//#[derive(Clone, Debug, Component)]
-//pub struct Shape {
-//    pub color: Color,
-//}
 
 /// These are experiment values that should probably
 /// get fixed (and thus baked in) once.
@@ -73,24 +65,14 @@ impl Default for Params {
 #[derive(Clone, Debug, Component)]
 pub struct Narrative {
     pub timer: Timer,
-    pub phrase_index: usize,
+    //pub phrase_index: usize,
 }
 
 impl Default for Narrative {
     fn default() -> Self {
         Narrative {
             timer: Timer::new(Duration::from_secs(8), TimerMode::Once),
-            phrase_index: 0,
+            //phrase_index: 0,
         }
     }
 }
-
-//impl Default for Player {
-//    fn default() -> Self {
-//        Self {
-//            y: 128,
-//            x: 1.0,
-//            height: Vec2::ZERO,
-//        }
-//    }
-//}

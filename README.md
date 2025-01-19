@@ -5,7 +5,6 @@ An experimental game written in (order to learn) [Rust](rust-lang.org) with the 
 > There is no light
 
 > The horizon lies far
-
 > What do you see
 
 > You must wander
@@ -89,6 +88,15 @@ Player tries to orient and align herself and the entities in the world around he
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] player sees points or objs on horizon
 - [ ] horizon and ground color changes
+
+## (Code) Design desicions
+
+In [./src/README.md](./src/README.md).
+
+## Lessons learnt
+
+- Test framework brings the basics, but I miss some convenience from rspec/minitest. Trying some other crates for a fine layer of sugar.
+- Inline doc with examples/tests sounds great but did not work (out of the box) yet.
 
 ## Licence, Copyright
 

@@ -209,14 +209,15 @@ fn render_giant(frame: &mut Frame, _xpix: i32, flip: bool) {
     }
 }
 
-// radians project to screen
-fn project_x(view_direction: f32, point_x: f32) {
-    // radians
-}
+//// radians project to screen
+//fn project_x(_view_direction: f32, _point_x: f32) {
+//    // radians
+//}
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use pretty_assertions::{assert_eq /*assert_ne*/};
 
     #[test]
     fn linp_interpolates() {
