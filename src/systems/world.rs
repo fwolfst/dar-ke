@@ -29,8 +29,9 @@ pub fn update(
     for mut player in &mut player {
         player.walking_time.tick(time.delta());
         if player.is_moving {
-            player.height =
-                (3.0 * (player.walking_time.elapsed_secs() % std::f32::consts::PI).sin()) as i32;
+            player.height = (3.0
+                * (4.0 * player.walking_time.elapsed_secs() % (std::f32::consts::PI + 0.3)).sin())
+                as i32;
         }
     }
 }

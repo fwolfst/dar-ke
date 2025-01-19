@@ -13,6 +13,16 @@ pub fn norm_rad(angle_in_radians: f32) -> f32 {
     }
 }
 
+// same as rad_wrap_diff
+pub fn clockwise_diff(low: f32, high: f32) -> f32 {
+    let diff = high - low;
+    if low > high {
+        TWO_PI + diff
+    } else {
+        diff
+    }
+}
+
 /// Difference between two values in a wrapping radians.
 pub fn rad_wrap_diff(low: f32, high: f32) -> f32 {
     if low <= high {

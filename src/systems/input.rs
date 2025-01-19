@@ -23,15 +23,21 @@ pub fn process_input(
         player.x += dx * MOVE_SPEED;
         player.y += dy * MOVE_SPEED;
         //player.height = (player.x as i32).rem_euclid(3) - 1;
-        player.is_moving = true;
+        if !player.is_moving {
+            player.is_moving = true;
+            player.walking_time.reset();
+        }
     } else if keyboard_input.pressed(KeyCode::KeyS) {
         let mut player = player.single_mut();
         let dx = f32::sin(player.direction);
         let dy = f32::cos(player.direction);
         player.x -= dx * MOVE_SPEED;
         player.y -= dy * MOVE_SPEED;
-        player.height = (player.x as i32).rem_euclid(3) - 1;
-        player.is_moving = true;
+        //player.height = (player.x as i32).rem_euclid(3) - 1;
+        if !player.is_moving {
+            player.is_moving = true;
+            player.walking_time.reset();
+        }
     } else {
         let mut player = player.single_mut();
         player.is_moving = false;

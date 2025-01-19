@@ -38,8 +38,8 @@ use crate::systems::world::*;
 // until settled.
 pub const RENDER_WIDTH: u32 = 128;
 pub const RENDER_HEIGHT: u32 = 48;
-pub const PIXEL_SIZE: u32 = 16;
-pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 4.0;
+pub const PIXEL_SIZE: u32 = 13;
+pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
 pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
 
 pub const PI_F32: f32 = std::f32::consts::PI;

@@ -34,32 +34,15 @@ pub fn render(
     let left_world = player.direction - HALF_VIEW_ANGLE;
     //let right_world = player.direction + HALF_VIEW_ANGLE;
 
-    let pos_of_obj_world = 0.0;
-    let raddiff = rad_wrap_diff(left_world, pos_of_obj_world);
-    let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
+    //let pos_of_obj_world = 0.0;
+    //let raddiff = rad_wrap_diff(left_world, pos_of_obj_world);
+    //let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
 
-    // Draw Object
-    let _ = frame.set(
-        UVec2::new(pos_of_obj_screen as u32, horizon),
-        Color::srgba_u8(190, 190, 100, 190),
-    );
-
-    let pos_of_obj_world = 1.6;
-    let raddiff = rad_wrap_diff(left_world, pos_of_obj_world);
-    let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
-    // Draw Object
-    let _ = frame.set(
-        UVec2::new(pos_of_obj_screen as u32, horizon - 1),
-        Color::srgba_u8(190, 190, 100, 190),
-    );
-    let pos_of_obj_world = -0.6;
-    let raddiff = rad_wrap_diff(left_world, pos_of_obj_world);
-    let pos_of_obj_screen = ((raddiff - left_world) / VIEW_ANGLE) * RENDER_WIDTH as f32;
-    // Draw Object
-    let _ = frame.set(
-        UVec2::new(pos_of_obj_screen as u32, horizon - 1),
-        Color::srgba_u8(190, 190, 100, 190),
-    );
+    //// Draw Object
+    //let _ = frame.set(
+    //    UVec2::new(pos_of_obj_screen as u32, horizon),
+    //    Color::srgba_u8(190, 190, 100, 190),
+    //);
 
     for (light, at_horizon) in &lights {
         let raddiff = rad_wrap_diff(at_horizon.angle, left_world); //, at_horizon.angle);
@@ -73,8 +56,38 @@ pub fn render(
             .ok();
     }
 
-    let g = giants.single();
-    render_giant(&mut frame, 10, g.frame == 1);
+    // Draw poles
+    // N = black, S = red, E = green, W = yellow
+    let north = project_x(player.direction, 0.0);
+    if north > 0.0 && north < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(north as u32, horizon), Color::BLACK)
+            .ok();
+    }
+    let south = project_x(player.direction, std::f32::consts::PI);
+    if south > 0.0 && south < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(south as u32, horizon), Color::srgb_u8(255, 0, 0))
+            .ok();
+    }
+    let east = project_x(player.direction, std::f32::consts::FRAC_PI_2);
+    if east > 0.0 && east < RENDER_WIDTH as f32 {
+        frame
+            .set(UVec2::new(east as u32, horizon), Color::srgb_u8(0, 255, 0))
+            .ok();
+    }
+    let west = project_x(player.direction, 3.0 * std::f32::consts::FRAC_PI_2);
+    if west > 0.0 && west < RENDER_WIDTH as f32 {
+        frame
+            .set(
+                UVec2::new(west as u32, horizon),
+                Color::srgb_u8(0, 255, 255),
+            )
+            .ok();
+    }
+
+    //let g = giants.single();
+    //render_giant(&mut frame, 10, g.frame == 1);
 }
 
 // TODO how to get "Range<u8,u8>" type?
@@ -209,10 +222,14 @@ fn render_giant(frame: &mut Frame, _xpix: i32, flip: bool) {
     }
 }
 
-//// radians project to screen
-//fn project_x(_view_direction: f32, _point_x: f32) {
-//    // radians
-//}
+// radians project to screen
+fn project_x(view_direction: f32, obj_dir: f32) -> f32 {
+    // OPTIMIZE:
+    //   the view_direction - HALF_VIEW_ANGLE is constant per render pass, as is the
+    //   RENDER_WIDTH/VIEW_ANGLE
+    let k = clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
+    k / VIEW_ANGLE * (RENDER_WIDTH as f32)
+}
 
 #[cfg(test)]
 mod tests {
