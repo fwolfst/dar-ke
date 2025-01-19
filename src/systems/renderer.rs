@@ -75,6 +75,21 @@ pub fn render(
     //render_giant(&mut frame, 10, g.frame == 1);
 }
 
+// Translates a value from one Range into the value of another range,
+// e.g. 3 (the middle of) in 2..=4 ->  13 in 11..15 (also the middle)
+fn lintra(
+    value: i32,
+    original_range: std::ops::RangeInclusive<i32>,
+    target_range: std::ops::RangeInclusive<i32>,
+) -> i32 {
+    let ratio_in_orig = (value - original_range.start()) as f32
+        / (original_range.end() - original_range.start()) as f32;
+
+    ((target_range.end() - target_range.start()) as f32 * ratio_in_orig).round() as i32
+}
+
+// Translates a value from one Range into the value of another range,
+// e.g. 3 (the middle of) in 2..=4 ->  13 in 11..15 (also the middle)
 // TODO how to get "Range<u8,u8>" type?
 // takes_range<R: RangeBounds<i32>>(range: R)
 // otherwise Range<i32> and take_range(r: RangeInclusive<i32>)
@@ -137,7 +152,13 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool) {
         };
         let color = Color::srgba_u8(1 + add, 2 + add, 3 + add, 255);
         for x in 0..RENDER_WIDTH {
-            frame.set(UVec2::new(x, y), color).ok();
+            // TODO parameterize
+            // scale brightness according to diff from a point
+            let pixpos = UVec2::new(x, y);
+            let light_dist =
+                f32::sqrt(((64 - x as i32) as f32).powf(2.0) + ((50 - y) as f32).powf(2.0));
+            let fac = (200.0 - lintra(light_dist as i32, 0..=80, 0..=300) as f32) / 10000.0;
+            frame.set(pixpos, color.lighter(fac)).ok();
         }
     }
 }
