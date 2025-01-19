@@ -84,5 +84,29 @@ pub fn ui(
                 },
             ));
         }
+        if ui.add(egui::Button::new("Spawn giant")).clicked() {
+            commands.spawn(Giant {
+                timer: Timer::new(Duration::from_secs(2), TimerMode::Repeating),
+                frame: 1,
+            });
+        }
+
+        ui.separator();
+
+        ui.horizontal(|ui| {
+            ui.label("Light Cone Y");
+            ui.add(egui::Slider::new(&mut params.light_cone_off_y, 0..=100));
+        });
+        ui.horizontal(|ui| {
+            ui.label("Light Cone X");
+            ui.add(egui::Slider::new(&mut params.light_cone_off_x, -100..=100));
+        });
+        ui.horizontal(|ui| {
+            ui.label("Light Cone Dist");
+            ui.add(egui::Slider::new(
+                &mut params.light_cone_max_dist,
+                -100.0..=100.0,
+            ));
+        });
     });
 }

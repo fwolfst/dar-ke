@@ -50,6 +50,10 @@ pub struct Params {
     pub sky_up_bright: bool,
     pub ground_up_bright: bool,
     pub sky_horizon_ratio: f32,
+    pub light_cone_off_y: i32,
+    pub light_cone_off_x: i32,
+    pub light_cone_max_dist: f32,
+    pub draw_poles: bool,
 }
 
 impl Default for Params {
@@ -58,6 +62,10 @@ impl Default for Params {
             sky_up_bright: false,
             ground_up_bright: false,
             sky_horizon_ratio: 0.6,
+            light_cone_off_y: 10,
+            light_cone_off_x: 0,
+            light_cone_max_dist: 12.0,
+            draw_poles: false,
         }
     }
 }
