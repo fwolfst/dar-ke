@@ -38,8 +38,9 @@ pub fn render(
         draw_poles(horizon, &mut frame, player);
     }
 
-    //let g = giants.single();
-    //render_giant(&mut frame, 10, g.frame == 1);
+    for g in &giants {
+        render_giant(&mut frame, 10, g.frame == 1);
+    }
 }
 
 // TODO Ranges cannot go from pos to neg, thus create own struct FromTo

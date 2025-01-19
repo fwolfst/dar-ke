@@ -59,7 +59,7 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
             PixelBufferPlugin,
         ))
-        .add_systems(Startup, (init_pixel_buffer, init_player, init_giants))
+        .add_systems(Startup, (init_pixel_buffer, init_player))
         .add_systems(FixedUpdate, process_input)
         .add_systems(Update, (ui, update, render.after(update)))
         .insert_resource(Params::default())
@@ -74,33 +74,6 @@ fn init_player(mut commands: Commands) {
         direction: 0.0,
         walking_time: Stopwatch::new(),
         is_moving: false,
-    });
-    //for (text_anchor, color) in [
-    //    (Anchor::TopLeft, Color::srgb(0.5, 0.5, 0.5)),
-    //    (Anchor::TopRight, Color::srgb(0.0, 1.0, 0.5)),
-    //    (Anchor::BottomRight, Color::srgb(0.0, 0.0, 1.0)),
-    //    (Anchor::BottomLeft, Color::srgb(1., 1., 1.)),
-    //] {
-    //    commands.spawn(Text2dBundle {
-    //        text: Text {
-    //            sections: vec![TextSection::new(
-    //                format!(" Anchor::{text_anchor:?} "),
-    //                TextStyle { color, ..default() },
-    //            )],
-    //            ..Default::default()
-    //        },
-    //        //transform: Transform::from_translation(350. * Vec3::Y),
-    //        transform: Transform::from_translation(Vec3::new(120.0, 410.0, 0.0)),
-    //        //text_anchor,
-    //        ..default()
-    //    });
-    //}
-}
-
-fn init_giants(mut commands: Commands) {
-    commands.spawn(Giant {
-        timer: Timer::new(Duration::from_secs(2), TimerMode::Repeating),
-        frame: 1,
     });
 }
 
