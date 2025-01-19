@@ -1,10 +1,13 @@
 use crate::*;
+use bevy::window::WindowMode;
+use bevy::window::*;
 
 pub fn process_input(
     mut player: Query<&mut Player>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut exit: EventWriter<AppExit>,
     mut commands: Commands,
+    mut windows: Query<&mut Window>,
 ) {
     const MOVE_SPEED: f32 = 1.0;
     const TURN_SPEED: f32 = 0.02;
@@ -64,6 +67,11 @@ pub fn process_input(
         ));
     }
     if keyboard_input.pressed(KeyCode::KeyF) {
-        println!("(F)ullscreen?");
+        let mut window = windows.single_mut();
+        if window.mode == WindowMode::BorderlessFullscreen {
+            window.mode = WindowMode::Windowed;
+        } else {
+            window.mode = WindowMode::BorderlessFullscreen
+        }
     }
 }

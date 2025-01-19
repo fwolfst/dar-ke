@@ -49,7 +49,7 @@ fn main() {
         .add_plugins((
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
-                    mode: bevy::window::WindowMode::BorderlessFullscreen,
+                    //mode: bevy::window::WindowMode::BorderlessFullscreen,
                     resolution: bevy::window::WindowResolution::default(),
                     ..default()
                 }),

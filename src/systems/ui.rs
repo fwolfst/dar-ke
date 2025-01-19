@@ -31,9 +31,10 @@ pub fn ui(
 
                     ui.label("(Q)uit");
                     ui.label("Q");
+                    ui.label("(F)ullscreen toggle");
+                    ui.label("F");
                     ui.end_row();
                 });
-            ui.label(concat!("yada yada ", "", ""));
         });
 
         ui.separator();
