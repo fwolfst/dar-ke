@@ -23,6 +23,7 @@ pub fn render(
         &mut frame,
         params.sky_up_bright,
         &sky_blender,
+        &player,
     );
 
     draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
@@ -87,17 +88,23 @@ fn linp(start: i32, end: i32, scale_start: i32, scale_end: i32, actual_value: u8
     (start as f32 + ((end - start) as f32 * ratio)).round() as u8
 }
 
-fn draw_sky(horizon: u8, frame: &mut Frame, bright_up: bool, sky_blender: &Res<SkyBlender>) {
+fn draw_sky(
+    horizon: u8,
+    frame: &mut Frame,
+    bright_up: bool,
+    sky_blender: &Res<SkyBlender>,
+    player: &Player,
+) {
     for y in 0..horizon {
         let add = if bright_up {
-            linp(50, 0, 0, horizon.try_into().unwrap(), y as u8)
+            linp(50, 0, 0, horizon.into(), y)
         } else {
-            linp(0, 50, 0, horizon.try_into().unwrap(), y as u8)
+            linp(0, 50, 0, horizon.into(), y)
         };
         //dbg!(add);
 
         let light_pos = Vec2::new(
-            9.0,
+            project_x(player.direction, std::f32::consts::FRAC_PI_2),
             // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
@@ -237,6 +244,12 @@ fn project_x(view_direction: f32, obj_dir: f32) -> f32 {
     //   RENDER_WIDTH/VIEW_ANGLE
     let k = clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
     k / VIEW_ANGLE * (RENDER_WIDTH as f32)
+}
+
+// radians project to screen, both possibilities (left and right)
+fn project_xs(view_direction: f32, obj_dir: f32) -> (f32, f32) {
+    //
+    (0., 0.)
 }
 
 #[cfg(test)]

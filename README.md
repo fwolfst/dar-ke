@@ -59,7 +59,7 @@ Player tries to orient and align herself and the entities in the world around he
 
 ### MVP
 
-- [ ] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobble)
+- [ ] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobbing)
 - [ ] Other entities exist (structures and individuals), some of which can move through the world on their own
 - [ ]  (Narrative) Text is shown
 - [ ] Text can show location based, too
@@ -81,15 +81,17 @@ Player tries to orient and align herself and the entities in the world around he
 - Narrative comes animated (flash in, degrade over time)
 - Narrative is accompanied by sound
 - Breathing moves horizon/height anyway
+- light cone moves when moving (even when turning)
 
 ## Derived ToDos
 
+- [ ] Moving forward has a visible effect (besides head movement)
 - [ ] horizon and ground have some texture/circle gradients
 - [ ] horizon and ground color changes
 - [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] player sees points or objs on horizon
-- [X] Head bobble
+- [X] Head bobbing
 
 ## (Code) Design desicions
 
