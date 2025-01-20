@@ -102,16 +102,27 @@ fn draw_sky(
             linp(0, 50, 0, horizon.into(), y)
         };
         //dbg!(add);
+        //
 
-        let light_pos = Vec2::new(
-            project_x(player.direction, std::f32::consts::FRAC_PI_2),
+        let light_xposses = project_xs(player.direction, std::f32::consts::FRAC_PI_2);
+
+        let light_pos1 = Vec2::new(
+            light_xposses.0,
             // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
-        // TODO Now redden this with skyblender, or mix with its color
+        let light_pos2 = Vec2::new(
+            light_xposses.1,
+            // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
+            (horizon as i32 - sky_blender.height) as f32,
+        );
+
         for x in 0..RENDER_WIDTH {
-            let light_dist = (light_pos - Vec2::new(x as f32, y as f32)).length();
-            let reddener = ((100.0 - light_dist) / 1000.0).clamp(0.0, 0.2);
+            // problem here is that we can get double light
+            let light_dist1 = (light_pos1 - Vec2::new(x as f32, y as f32)).length();
+            let mut reddener = ((100.0 - light_dist1) / 1000.0).clamp(0.0, 0.2);
+            let light_dist2 = (light_pos2 - Vec2::new(x as f32, y as f32)).length();
+            reddener += ((100.0 - light_dist2) / 1000.0).clamp(0.0, 0.2);
             let color = Color::srgba_u8(
                 1 + add + (reddener * 255.0).round() as u8,
                 2 + add,
@@ -248,8 +259,11 @@ fn project_x(view_direction: f32, obj_dir: f32) -> f32 {
 
 // radians project to screen, both possibilities (left and right)
 fn project_xs(view_direction: f32, obj_dir: f32) -> (f32, f32) {
-    //
-    (0., 0.)
+    //(project_x(view_direction, obj_dir), project_x)
+    // once clockwise, once counterclickwise
+    let k = TWO_PI - clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
+    let x = k / VIEW_ANGLE * (RENDER_WIDTH as f32);
+    (project_x(view_direction, obj_dir), - x)
 }
 
 #[cfg(test)]
