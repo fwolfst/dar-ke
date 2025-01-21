@@ -56,6 +56,7 @@ You find yourself in a mysterious dark pretty void place and discover it togethe
 ### Basic Game Loops
 
 Player tries to orient and align herself and the entities in the world around herself, picking up clues and ultimatively finding an end (a beginning) to the story, after which a tiny animation and the credits are shown.
+Player sees the world through ego-perspective. Game can be played with one hand.
 
 ### MVP
 
@@ -76,22 +77,33 @@ Player tries to orient and align herself and the entities in the world around he
 - [ ] Rogue-aspect
 - [ ] Sound
 
+## Derived ToDos
+
+- [ ] player sees objs on horizon
+- [ ] player can approach objs on ground
+- [ ] objs appear bigger when close
+- [ ] giants can move
+- [ ] certain events trigger certain narratives
+- [ ] there is a credit screen
+- [ ] there is a trigger for the credit screen
+- [ ] Moving forward has a visible effect (besides head movement)
+- [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
+- [ ] horizon and ground have some texture
+- [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors
+- [X] player sees points on horizon
+- [X] horizon and ground can have some circle gradients ("light" with color)
+- [X] Head bobbing
+
+### Other ToDos
+
+- [ ] Learn and straighten the imports
+
 ## Game Ideas/Notes
 
 - Narrative comes animated (flash in, degrade over time)
 - Narrative is accompanied by sound
 - Breathing moves horizon/height anyway
 - light cone moves when moving (even when turning)
-
-## Derived ToDos
-
-- [ ] Moving forward has a visible effect (besides head movement)
-- [ ] horizon and ground have some texture/circle gradients
-- [ ] horizon and ground color changes
-- [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors
-- [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
-- [ ] player sees points or objs on horizon
-- [X] Head bobbing
 
 ## (Code) Design desicions
 

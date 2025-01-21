@@ -1,8 +1,10 @@
-use crate::components::*;
-use crate::radians_math::*;
-use crate::{HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
 use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
+
+use crate::components::*;
+use crate::radians_math::*;
+use crate::systems::render::projector::*;
+use crate::{HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 
@@ -17,9 +19,12 @@ pub fn render(
 ) {
     let player = player.single();
     let mut frame = pb.frame();
+    let projector = make_projector(player.direction);
+    // TODO use horizon param
     let horizon = frame.size().y / 2 + player.height as u32;
 
     draw_sky(
+        &projector,
         horizon as u8,
         &mut frame,
         params.sky_up_bright,
@@ -30,32 +35,36 @@ pub fn render(
     draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
 
     for (light, at_horizon) in &lights {
-        let pos_of_obj_screen = project_x(player.direction, at_horizon.angle);
+        let pos_of_obj_screen = project_x(player.direction, at_horizon.angle) as u32;
         frame
-            .set(
-                UVec2::new(pos_of_obj_screen as u32, horizon - 1),
-                light.color,
-            )
+            .set([pos_of_obj_screen, horizon - 1], light.color)
             .ok();
     }
 
     if params.draw_poles {
-        draw_poles(horizon, &mut frame, player);
+        draw_poles(&projector, horizon, &mut frame, player);
     }
 
     for g in &giants {
-        render_giant(&mut frame, 10, g.frame == 1);
+        render_giant(&projector, &mut frame, 10, g.frame == 1);
     }
 
     for b in &blobs {
-        render_glitch_blob(horizon, &mut frame, &player, b);
+        render_glitch_blob(&projector, horizon, &mut frame, &player, b);
     }
 }
 
-fn render_glitch_blob(horizon: u32, frame: &mut Frame, player: &Player, blob: &GlitchBlob) {
+fn render_glitch_blob(
+    projector: &Projector,
+    horizon: u32,
+    frame: &mut Frame,
+    player: &Player,
+    blob: &GlitchBlob,
+) {
     // Nice, 360 degree view gives nice effects, too :D
     let dx = player.x - blob.x;
     let dy = player.y - blob.y;
+
     let ab = if dy == 0. {
         0.0
     } else {
@@ -64,12 +73,9 @@ fn render_glitch_blob(horizon: u32, frame: &mut Frame, player: &Player, blob: &G
 
     let bx = project_x(player.direction, ab);
 
-    frame.set([bx as u32, horizon - blob.height], [180,180,180]);
+    frame.set([bx as u32, horizon - blob.height], [180, 180, 180]);
 }
 
-// TODO Ranges cannot go from pos to neg, thus create own struct FromTo
-// Translates a value from one Range into the value of another range,
-// e.g. 3 (the middle of) in 2..=4 ->  13 in 11..15 (also the middle)
 fn lintra(
     value: i32,
     original_range: std::ops::RangeInclusive<i32>,
@@ -79,6 +85,14 @@ fn lintra(
         / (original_range.end() - original_range.start()) as f32;
 
     ((target_range.end() - target_range.start()) as f32 * ratio_in_orig).round() as i32
+}
+
+fn flintra(
+    value: i32,
+    original_range: std::ops::RangeInclusive<i32>,
+    target_range: std::ops::RangeInclusive<f32>,
+) {
+    // with clamping?
 }
 
 // Translates a value from one Range into the value of another range,
@@ -109,6 +123,7 @@ fn linp(start: i32, end: i32, scale_start: i32, scale_end: i32, actual_value: u8
 }
 
 fn draw_sky(
+    projector: &Projector,
     horizon: u8,
     frame: &mut Frame,
     bright_up: bool,
@@ -155,34 +170,29 @@ fn draw_sky(
     }
 }
 
-fn draw_poles(horizon: u32, frame: &mut Frame, player: &Player) {
+fn draw_poles(projector: &Projector, horizon: u32, frame: &mut Frame, player: &Player) {
     // Draw poles
     // N = black, S = red, E = green, W = yellow
     let north = project_x(player.direction, 0.0);
     if north > 0.0 && north < RENDER_WIDTH as f32 {
-        frame
-            .set(UVec2::new(north as u32, horizon), Color::BLACK)
-            .ok();
+        frame.set([north as u32, horizon], Color::BLACK).ok();
     }
     let south = project_x(player.direction, std::f32::consts::PI);
     if south > 0.0 && south < RENDER_WIDTH as f32 {
         frame
-            .set(UVec2::new(south as u32, horizon), Color::srgb_u8(255, 0, 0))
+            .set([south as u32, horizon], Color::srgb_u8(255, 0, 0))
             .ok();
     }
     let east = project_x(player.direction, std::f32::consts::FRAC_PI_2);
     if east > 0.0 && east < RENDER_WIDTH as f32 {
         frame
-            .set(UVec2::new(east as u32, horizon), Color::srgb_u8(0, 255, 0))
+            .set([east as u32, horizon], Color::srgb_u8(0, 255, 0))
             .ok();
     }
     let west = project_x(player.direction, 3.0 * std::f32::consts::FRAC_PI_2);
     if west > 0.0 && west < RENDER_WIDTH as f32 {
         frame
-            .set(
-                UVec2::new(west as u32, horizon),
-                Color::srgb_u8(0, 255, 255),
-            )
+            .set([west as u32, horizon], Color::srgb_u8(0, 255, 255))
             .ok();
     }
 }
@@ -225,7 +235,7 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Pa
 }
 
 #[allow(non_snake_case)]
-fn render_giant(frame: &mut Frame, _xpix: i32, flip: bool) {
+fn render_giant(projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool) {
     // This needs #![allow(uncommon_codepoints)] to de-warn,
     // lets find another nice "empty looking" identifier.
     // Bitmap of a giant
@@ -283,7 +293,7 @@ fn project_xs(view_direction: f32, obj_dir: f32) -> (f32, f32) {
     // once clockwise, once counterclickwise
     let k = TWO_PI - clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
     let x = k / VIEW_ANGLE * (RENDER_WIDTH as f32);
-    (project_x(view_direction, obj_dir), - x)
+    (project_x(view_direction, obj_dir), -x)
 }
 
 #[cfg(test)]
