@@ -29,20 +29,19 @@ pub fn render(
         &mut frame,
         params.sky_up_bright,
         &sky_blender,
-        &player,
     );
 
     draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
 
     for (light, at_horizon) in &lights {
-        let pos_of_obj_screen = project_x(player.direction, at_horizon.angle) as u32;
+        let pos_of_obj_screen = projector.screen_x_of_rad(at_horizon.angle) as u32;
         frame
             .set([pos_of_obj_screen, horizon - 1], light.color)
             .ok();
     }
 
     if params.draw_poles {
-        draw_poles(&projector, horizon, &mut frame, player);
+        draw_poles(&projector, horizon, &mut frame);
     }
 
     for g in &giants {
@@ -71,7 +70,7 @@ fn render_glitch_blob(
         (dx as f32 / dy as f32).atan()
     };
 
-    let bx = project_x(player.direction, ab);
+    let bx = projector.screen_x_of_rad(ab);
 
     frame.set([bx as u32, horizon - blob.height], [180, 180, 180]);
 }
@@ -128,7 +127,6 @@ fn draw_sky(
     frame: &mut Frame,
     bright_up: bool,
     sky_blender: &Res<SkyBlender>,
-    player: &Player,
 ) {
     for y in 0..horizon {
         let add = if bright_up {
@@ -136,28 +134,27 @@ fn draw_sky(
         } else {
             linp(0, 50, 0, horizon.into(), y)
         };
-        //dbg!(add);
-        //
 
-        let light_xposses = project_xs(player.direction, std::f32::consts::FRAC_PI_2);
+        let light_xposses = projector.screen_x2_of_rad(std::f32::consts::FRAC_PI_2);
 
         let light_pos1 = Vec2::new(
-            light_xposses.0,
+            light_xposses.0 as f32,
             // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
         let light_pos2 = Vec2::new(
-            light_xposses.1,
+            light_xposses.1 as f32,
             // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
 
         for x in 0..RENDER_WIDTH {
-            // problem here is that we can get double light
+            // Problem here is that we can get double light.
             let light_dist1 = (light_pos1 - Vec2::new(x as f32, y as f32)).length();
             let mut reddener = ((100.0 - light_dist1) / 1000.0).clamp(0.0, 0.2);
             let light_dist2 = (light_pos2 - Vec2::new(x as f32, y as f32)).length();
             reddener += ((100.0 - light_dist2) / 1000.0).clamp(0.0, 0.2);
+
             let color = Color::srgba_u8(
                 1 + add + (reddener * 255.0).round() as u8,
                 2 + add,
@@ -170,27 +167,28 @@ fn draw_sky(
     }
 }
 
-fn draw_poles(projector: &Projector, horizon: u32, frame: &mut Frame, player: &Player) {
+fn draw_poles(projector: &Projector, horizon: u32, frame: &mut Frame) {
     // Draw poles
     // N = black, S = red, E = green, W = yellow
-    let north = project_x(player.direction, 0.0);
-    if north > 0.0 && north < RENDER_WIDTH as f32 {
+    let north = projector.screen_x_of_rad(0.0);
+    dbg!(north);
+    if north >= 0 && north < RENDER_WIDTH as i32 {
         frame.set([north as u32, horizon], Color::BLACK).ok();
     }
-    let south = project_x(player.direction, std::f32::consts::PI);
-    if south > 0.0 && south < RENDER_WIDTH as f32 {
+    let south = projector.screen_x_of_rad(std::f32::consts::PI);
+    if south >= 0 && south < RENDER_WIDTH as i32 {
         frame
             .set([south as u32, horizon], Color::srgb_u8(255, 0, 0))
             .ok();
     }
-    let east = project_x(player.direction, std::f32::consts::FRAC_PI_2);
-    if east > 0.0 && east < RENDER_WIDTH as f32 {
+    let east = projector.screen_x_of_rad(std::f32::consts::FRAC_PI_2);
+    if east >= 0 && east < RENDER_WIDTH as i32 {
         frame
             .set([east as u32, horizon], Color::srgb_u8(0, 255, 0))
             .ok();
     }
-    let west = project_x(player.direction, 3.0 * std::f32::consts::FRAC_PI_2);
-    if west > 0.0 && west < RENDER_WIDTH as f32 {
+    let west = projector.screen_x_of_rad(3.0 * std::f32::consts::FRAC_PI_2);
+    if west > 0 && west < RENDER_WIDTH as i32 {
         frame
             .set([west as u32, horizon], Color::srgb_u8(0, 255, 255))
             .ok();
@@ -276,24 +274,6 @@ fn render_giant(projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool
             let _ = frame.set(UVec2::new(x as u32 + 30, y as u32 + offset), HORIZON_COL);
         }
     }
-}
-
-// radians project to screen
-fn project_x(view_direction: f32, obj_dir: f32) -> f32 {
-    // OPTIMIZE:
-    //   the view_direction - HALF_VIEW_ANGLE is constant per render pass, as is the
-    //   RENDER_WIDTH/VIEW_ANGLE
-    let k = clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
-    k / VIEW_ANGLE * (RENDER_WIDTH as f32)
-}
-
-// radians project to screen, both possibilities (left and right)
-fn project_xs(view_direction: f32, obj_dir: f32) -> (f32, f32) {
-    //(project_x(view_direction, obj_dir), project_x)
-    // once clockwise, once counterclickwise
-    let k = TWO_PI - clockwise_diff(view_direction - HALF_VIEW_ANGLE, obj_dir);
-    let x = k / VIEW_ANGLE * (RENDER_WIDTH as f32);
-    (project_x(view_direction, obj_dir), -x)
 }
 
 #[cfg(test)]

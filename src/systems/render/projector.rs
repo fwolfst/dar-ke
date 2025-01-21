@@ -1,4 +1,7 @@
-use crate::{HALF_VIEW_ANGLE, RENDER_WIDTH, VIEW_ANGLE};
+use crate::{
+    radians_math::{clockwise_diff, TWO_PI},
+    HALF_VIEW_ANGLE, RENDER_WIDTH, VIEW_ANGLE,
+};
 
 // A projector, stores some intermediate calculations
 // for faster processing. Might become a renderer.
@@ -17,8 +20,20 @@ pub fn make_projector(view_direction_rad: f32) -> Projector {
 }
 
 impl Projector {
-    pub fn screen_x_of_rad(self, rad: f32) -> i32 {
-        0
+    // Radians project to screen space
+    pub fn screen_x_of_rad(&self, rad: f32) -> i32 {
+        let k = clockwise_diff(self.left_view_rad, rad);
+        (k * self.pixel_per_rad).round() as i32
+    }
+
+    // Return both "left" and "right" distances of rad
+    pub fn screen_x2_of_rad(&self, rad: f32) -> (i32, i32) {
+        let k = clockwise_diff(self.left_view_rad, rad);
+
+        (
+            (k * self.pixel_per_rad).round() as i32,
+            -((TWO_PI - k) * self.pixel_per_rad).round() as i32,
+        )
     }
 }
 

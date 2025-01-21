@@ -1,4 +1,4 @@
-use components::{AtHorizon, Light};
+use components::{AtHorizon, GlitchBlob, Light};
 
 use crate::*;
 use rand::{thread_rng, Rng};
@@ -97,6 +97,9 @@ pub fn ui(
                 frame: 1,
             });
         }
+        if ui.add(egui::Button::new("Spawn glitch blobs")).clicked() {
+            spawn_glitch_blobs(commands, Vec2::new(player.x, player.y));
+        }
 
         ui.separator();
 
@@ -127,5 +130,38 @@ pub fn ui(
             ui.label("SkyBlender aura");
             ui.add(egui::Slider::new(&mut skyblender.extend, 10.0..=200.0));
         });
+    });
+}
+
+fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
+    commands.spawn(GlitchBlob {
+        x: player_pos.x + 0.0,
+        y: player_pos.y + 3.0,
+        height: 10,
+    });
+    commands.spawn(GlitchBlob {
+        x: player_pos.x + 0.0,
+        y: player_pos.y + -3.0,
+        height: 10,
+    });
+    commands.spawn(GlitchBlob {
+        x: player_pos.x + 30.0,
+        y: player_pos.y + -30.0,
+        height: 8,
+    });
+    commands.spawn(GlitchBlob {
+        x: player_pos.x - 30.0,
+        y: player_pos.y + 30.0,
+        height: 8,
+    });
+    commands.spawn(GlitchBlob {
+        x: player_pos.x + 0.0,
+        y: player_pos.y + -30.0,
+        height: 6,
+    });
+    commands.spawn(GlitchBlob {
+        x: player_pos.x + 0.0,
+        y: player_pos.y + 30.0,
+        height: 6,
     });
 }
