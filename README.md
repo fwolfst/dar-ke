@@ -70,6 +70,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 ### Stretch goals
 
 - [ ] WASM
+- [ ] Minimap for debugging
 - [ ] Changing skies
 - [ ] Animated sky/ clouds
 - [ ] Atmospherics that are not approachable / move away
