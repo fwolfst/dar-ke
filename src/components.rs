@@ -104,3 +104,10 @@ impl Default for Narrative {
         }
     }
 }
+
+#[derive(Component)]
+pub struct GlitchBlob {
+    pub x: f32,
+    pub y: f32,
+    pub height: u32,
+}

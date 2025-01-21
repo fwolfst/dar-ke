@@ -13,6 +13,7 @@ use bevy_egui::{
     EguiContexts, EguiPlugin,
 };
 use bevy_pixel_buffer::prelude::*;
+use components::GlitchBlob;
 use components::Narrative;
 use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
                                      // and think of how to structure imports
@@ -75,6 +76,37 @@ fn init_player(mut commands: Commands) {
         direction: 0.0,
         walking_time: Stopwatch::new(),
         is_moving: false,
+    });
+
+    commands.spawn(GlitchBlob {
+        x: 0.0,
+        y: 3.0,
+        height: 10,
+    });
+    commands.spawn(GlitchBlob {
+        x: 0.0,
+        y: -3.0,
+        height: 10,
+    });
+    commands.spawn(GlitchBlob {
+        x: 30.0,
+        y: -30.0,
+        height: 8,
+    });
+    commands.spawn(GlitchBlob {
+        x: -30.0,
+        y: 30.0,
+        height: 8,
+    });
+    commands.spawn(GlitchBlob {
+        x: 0.0,
+        y: -30.0,
+        height: 6,
+    });
+    commands.spawn(GlitchBlob {
+        x: 0.0,
+        y: 30.0,
+        height: 6,
     });
 }
 

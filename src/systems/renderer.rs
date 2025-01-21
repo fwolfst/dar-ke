@@ -11,6 +11,7 @@ pub fn render(
     player: Query<&Player>,
     giants: Query<&Giant>,
     lights: Query<(&Light, &AtHorizon)>,
+    blobs: Query<&GlitchBlob>,
     params: Res<Params>,
     sky_blender: Res<SkyBlender>,
 ) {
@@ -45,6 +46,25 @@ pub fn render(
     for g in &giants {
         render_giant(&mut frame, 10, g.frame == 1);
     }
+
+    for b in &blobs {
+        render_glitch_blob(horizon, &mut frame, &player, b);
+    }
+}
+
+fn render_glitch_blob(horizon: u32, frame: &mut Frame, player: &Player, blob: &GlitchBlob) {
+    // Nice, 360 degree view gives nice effects, too :D
+    let dx = player.x - blob.x;
+    let dy = player.y - blob.y;
+    let ab = if dy == 0. {
+        0.0
+    } else {
+        (dx as f32 / dy as f32).atan()
+    };
+
+    let bx = project_x(player.direction, ab);
+
+    frame.set([bx as u32, horizon - blob.height], [180,180,180]);
 }
 
 // TODO Ranges cannot go from pos to neg, thus create own struct FromTo
