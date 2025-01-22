@@ -52,6 +52,15 @@ pub struct SkyBlender {
     //pub strength: f32, // can be alpha of color?
 }
 
+#[derive(Clone, Debug, Component)]
+pub struct Blob {
+    //pub color: Color,
+    //pub position: Vec2,
+    pub x: f32,
+    pub y: f32,
+    pub height: i32,
+}
+
 impl Default for SkyBlender {
     fn default() -> Self {
         Self {

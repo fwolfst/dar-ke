@@ -9,8 +9,9 @@ pub fn process_input(
     mut commands: Commands,
     mut windows: Query<&mut Window>,
 ) {
-    const MOVE_SPEED: f32 = 1.0;
+    const MOVE_SPEED: f32 = 0.1; //1.0;
     const TURN_SPEED: f32 = 0.02;
+    // TODO patternmatch here
     if keyboard_input.pressed(KeyCode::KeyA) {
         let mut player = player.single_mut();
         player.turn(-TURN_SPEED);

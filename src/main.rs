@@ -34,7 +34,7 @@ use crate::systems::renderer::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
 
-// It makes sense to play with these constants
+// TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
 // until settled.
 pub const RENDER_WIDTH: u32 = 128;
@@ -60,7 +60,7 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
             PixelBufferPlugin,
         ))
-        .add_systems(Startup, (init_pixel_buffer, init_player))
+        .add_systems(Startup, (init_pixel_buffer, init_player, init_blobs))
         .add_systems(FixedUpdate, process_input)
         .add_systems(Update, (ui, update, render.after(update)))
         .insert_resource(Params::default())
@@ -88,4 +88,12 @@ fn init_pixel_buffer(mut commands: Commands, mut images: ResMut<Assets<Image>>) 
         .with_fill(Fill::none().with_stretch(false))
         .spawn(&mut commands, &mut images)
         .entity();
+}
+
+fn init_blobs(mut commands: Commands) {
+    commands.spawn(Blob {
+        x: 0.0,
+        y: 20.0,
+        height: 0,
+    });
 }
