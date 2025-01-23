@@ -81,12 +81,14 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ## Derived ToDos
 
+- [ ] disable mousepointer in fullscreen
 - [ ] player sees objs on horizon
 - [ ] player can approach objs on ground
 - [ ] objs appear bigger when close
 - [ ] giants can move
 - [ ] certain events trigger certain narratives
 - [ ] there is a credit screen
+- [ ] fix fullscreen toggle in macos
 - [ ] there is a trigger for the credit screen
 - [ ] Moving forward has a visible effect (besides head movement)
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
@@ -109,6 +111,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - different "abilities" are added gradually (e.g. in the beginning no light)
 - Stars blink on sky
 - Things fall down (rain, asteroid, ash, fire, ...)
+- When walking back something happens, e.g. a display of something - but this might be a dimension too much. I might not want anything onscreen
 
 ## (Code) Design desicions
 

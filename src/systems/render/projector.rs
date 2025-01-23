@@ -6,19 +6,20 @@ use crate::{
 // A projector, stores some intermediate calculations
 // for faster processing. Might become a renderer.
 pub struct Projector {
-    view_direction_rad: f32,
+    //view_direction_rad: f32,
     left_view_rad: f32,
     pixel_per_rad: f32,
 }
 
 pub fn make_projector(view_direction_rad: f32) -> Projector {
     Projector {
-        view_direction_rad,
+        //view_direction_rad,
         left_view_rad: view_direction_rad - HALF_VIEW_ANGLE,
         pixel_per_rad: (RENDER_WIDTH as f32) / VIEW_ANGLE,
     }
 }
 
+// TODO these could Result<> (offscreen)
 impl Projector {
     // Radians project to screen space
     pub fn screen_x_of_rad(&self, rad: f32) -> i32 {

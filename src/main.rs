@@ -37,6 +37,7 @@ use crate::systems::input::*;
 use crate::systems::renderer::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
+use crate::systems::physics::*;
 
 // TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
@@ -44,10 +45,6 @@ use crate::systems::world::*;
 pub const RENDER_WIDTH: u32 = 128;
 pub const RENDER_HEIGHT: u32 = 48;
 pub const PIXEL_SIZE: u32 = 13;
-pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
-pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
-
-pub const PI_F32: f32 = std::f32::consts::PI;
 
 fn main() {
     App::new()
@@ -66,7 +63,7 @@ fn main() {
         ))
         .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field))
         .add_systems(FixedUpdate, process_input)
-        .add_systems(Update, (ui, update, render.after(update)))
+        .add_systems(Update, (ui, physics, update.after(physics), render.after(update)))
         .insert_resource(Params::default())
         .insert_resource(SkyBlender::default())
         .run();
@@ -102,4 +99,11 @@ fn init_pebble_field(mut commands: Commands) {
             y: rng.gen_range(-100.0..100.0) as f32,
         });
     }
+
+fn init_blobs(mut commands: Commands) {
+    commands.spawn(Blob {
+        x: 0.0,
+        y: 20.0,
+        //height: 0,
+    });
 }

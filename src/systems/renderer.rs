@@ -2,9 +2,11 @@ use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
 
 use crate::components::*;
-use crate::radians_math::*;
 use crate::systems::render::projector::*;
-use crate::{HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
+use crate::{RENDER_HEIGHT, RENDER_WIDTH};
+
+pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
+pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 
@@ -15,7 +17,7 @@ pub fn render(
     lights: Query<(&Light, &AtHorizon)>,
     blobs: Query<&Blob>,
     pebbles: Query<&Pebble>,
-    glitch_blobs: Query<&GlitchBlob>,
+    glitch_blobs: Query<(&GlitchBlob, &Height)>,
     params: Res<Params>,
     sky_blender: Res<SkyBlender>,
 ) {
@@ -46,8 +48,8 @@ pub fn render(
         draw_poles(&projector, horizon, &mut frame);
     }
 
-    for b in &glitch_blobs {
-        render_glitch_blob(&projector, horizon, &mut frame, &player, b);
+    for (b, h) in &glitch_blobs {
+        render_glitch_blob(&projector, horizon, &mut frame, &player, b, h);
     }
 
     for b in &blobs {
@@ -69,6 +71,7 @@ fn render_glitch_blob(
     frame: &mut Frame,
     player: &Player,
     blob: &GlitchBlob,
+    height: &Height,
 ) {
     // Nice, 360 degree view gives nice effects, too :D
     let dx = player.x - blob.x;
@@ -82,7 +85,9 @@ fn render_glitch_blob(
 
     let bx = projector.screen_x_of_rad(ab);
 
-    frame.set([bx as u32, horizon - blob.height], [180, 180, 180]);
+    frame
+        .set([bx as u32, horizon - height.height as u32], [180, 180, 180])
+        .ok();
 }
 
 fn render_pebble(

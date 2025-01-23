@@ -1,4 +1,4 @@
-use components::{AtHorizon, GlitchBlob, Light, Positioned};
+use components::{AtHorizon, GlitchBlob, Height, IsFalling, Light, Positioned};
 
 use crate::*;
 use rand::{thread_rng, Rng};
@@ -137,34 +137,48 @@ pub fn ui(
 }
 
 fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
-    commands.spawn(GlitchBlob {
-        x: player_pos.x + 0.0,
-        y: player_pos.y + 3.0,
-        height: 10,
-    });
-    commands.spawn(GlitchBlob {
-        x: player_pos.x + 0.0,
-        y: player_pos.y + -3.0,
-        height: 10,
-    });
-    commands.spawn(GlitchBlob {
-        x: player_pos.x + 30.0,
-        y: player_pos.y + -30.0,
-        height: 8,
-    });
-    commands.spawn(GlitchBlob {
-        x: player_pos.x - 30.0,
-        y: player_pos.y + 30.0,
-        height: 8,
-    });
-    commands.spawn(GlitchBlob {
-        x: player_pos.x + 0.0,
-        y: player_pos.y + -30.0,
-        height: 6,
-    });
-    commands.spawn(GlitchBlob {
-        x: player_pos.x + 0.0,
-        y: player_pos.y + 30.0,
-        height: 6,
-    });
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x + 0.0,
+            y: player_pos.y + 3.0,
+        },
+        Height { height: 10.0 },
+    ));
+    //IsFalling));
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x + 0.0,
+            y: player_pos.y + -3.0,
+        },
+        Height { height: 10.0 },
+        //    IsFalling));
+    ));
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x + 30.0,
+            y: player_pos.y + -30.0,
+        },
+        Height { height: 8.0 },
+    ));
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x - 30.0,
+            y: player_pos.y + 30.0,
+        },
+        Height { height: 8.0 },
+    ));
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x + 0.0,
+            y: player_pos.y + -30.0,
+        },
+        Height { height: 6.0 },
+    ));
+    commands.spawn((
+        GlitchBlob {
+            x: player_pos.x + 0.0,
+            y: player_pos.y + 30.0,
+        },
+        Height { height: 6.0 },
+    ));
 }
