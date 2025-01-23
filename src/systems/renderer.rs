@@ -11,7 +11,7 @@ const HORIZON_COL: [u8; 3] = [1, 2, 3];
 pub fn render(
     mut pb: QueryPixelBuffer,
     player: Query<&Player>,
-    giants: Query<&Giant>,
+    giants: Query<(&Giant, &Positioned)>,
     lights: Query<(&Light, &AtHorizon)>,
     blobs: Query<&Blob>,
     pebbles: Query<&Pebble>,
@@ -46,10 +46,6 @@ pub fn render(
         draw_poles(&projector, horizon, &mut frame);
     }
 
-    for g in &giants {
-        render_giant(&projector, &mut frame, 10, g.frame == 1);
-    }
-
     for b in &glitch_blobs {
         render_glitch_blob(&projector, horizon, &mut frame, &player, b);
     }
@@ -60,6 +56,10 @@ pub fn render(
 
     for p in &pebbles {
         render_pebble(&projector, horizon, &mut frame, &player, p);
+    }
+
+    for (g, p) in &giants {
+        render_giant(&projector, &mut frame, 10, &g, &p, &player);
     }
 }
 
@@ -321,7 +321,14 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Pa
 }
 
 #[allow(non_snake_case)]
-fn render_giant(projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool) {
+fn render_giant(
+    projector: &Projector,
+    frame: &mut Frame,
+    _xpix: i32,
+    giant: &Giant,
+    position: &Positioned,
+    player: &Player,
+) {
     // This needs #![allow(uncommon_codepoints)] to de-warn,
     // lets find another nice "empty looking" identifier.
     // Bitmap of a giant
@@ -354,14 +361,29 @@ fn render_giant(projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool
         [Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
     ];
 
-    let offset = if flip { 4 } else { 6 };
+    let offset = if giant.frame == 1 { 4 } else { 6 };
+
+    let dx = player.x - position.x;
+    let dy = player.y - position.y;
+
+    let ab = if dy == 0. {
+        0.0
+    } else {
+        (dx as f32 / dy as f32).atan()
+    };
+
+    let sx = projector.screen_x_of_rad(ab);
 
     // TODO clipping?
     for (y, row) in GIANT_BITMAP.iter().enumerate() {
         for (x, _col) in row.iter().enumerate().filter(|(_, v)| **v) {
-            let _ = frame.set(UVec2::new(x as u32 + 30, y as u32 + offset), HORIZON_COL);
+            let _ = frame.set(
+                UVec2::new(x as u32 + sx as u32, y as u32 + offset),
+                HORIZON_COL,
+            );
         }
     }
+    // TODO only draw till horizon
 }
 
 #[cfg(test)]

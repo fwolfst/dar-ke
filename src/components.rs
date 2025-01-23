@@ -33,6 +33,12 @@ pub struct Giant {
     pub frame: u8,
 }
 
+#[derive(Component)]
+pub struct Positioned {
+    pub x: f32,
+    pub y: f32,
+}
+
 #[derive(Clone, Debug, Component)]
 pub struct AtHorizon {
     pub angle: f32, // radians

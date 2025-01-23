@@ -1,4 +1,4 @@
-use components::{AtHorizon, GlitchBlob, Light};
+use components::{AtHorizon, GlitchBlob, Light, Positioned};
 
 use crate::*;
 use rand::{thread_rng, Rng};
@@ -92,10 +92,13 @@ pub fn ui(
             ));
         }
         if ui.add(egui::Button::new("Spawn giant")).clicked() {
-            commands.spawn(Giant {
-                timer: Timer::new(Duration::from_secs(2), TimerMode::Repeating),
-                frame: 1,
-            });
+            commands.spawn((
+                Giant {
+                    timer: Timer::new(Duration::from_secs(2), TimerMode::Repeating),
+                    frame: 1,
+                },
+                Positioned { x: 10.0, y: 10.0 },
+            ));
         }
         if ui.add(egui::Button::new("Spawn glitch blobs")).clicked() {
             spawn_glitch_blobs(commands, Vec2::new(player.x, player.y));
