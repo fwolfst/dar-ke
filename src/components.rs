@@ -33,6 +33,14 @@ pub struct Giant {
     pub frame: u8,
 }
 
+#[derive(Component)]
+pub struct IsFalling;
+
+#[derive(Component)]
+pub struct Height {
+    pub height: f32,
+}
+
 #[derive(Clone, Debug, Component)]
 pub struct AtHorizon {
     pub angle: f32, // radians
@@ -118,5 +126,4 @@ impl Default for Narrative {
 pub struct GlitchBlob {
     pub x: f32,
     pub y: f32,
-    pub height: u32,
 }

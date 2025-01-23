@@ -14,7 +14,7 @@ pub fn render(
     giants: Query<&Giant>,
     lights: Query<(&Light, &AtHorizon)>,
     blobs: Query<&Blob>,
-    glitch_blobs: Query<&GlitchBlob>,
+    glitch_blobs: Query<(&GlitchBlob, &Height)>,
     params: Res<Params>,
     sky_blender: Res<SkyBlender>,
 ) {
@@ -49,8 +49,8 @@ pub fn render(
         render_giant(&projector, &mut frame, 10, g.frame == 1);
     }
 
-    for b in &glitch_blobs {
-        render_glitch_blob(&projector, horizon, &mut frame, &player, b);
+    for (b, h) in &glitch_blobs {
+        render_glitch_blob(&projector, horizon, &mut frame, &player, b, h);
     }
 
     for b in &blobs {
@@ -64,6 +64,7 @@ fn render_glitch_blob(
     frame: &mut Frame,
     player: &Player,
     blob: &GlitchBlob,
+    height: &Height,
 ) {
     // Nice, 360 degree view gives nice effects, too :D
     let dx = player.x - blob.x;
@@ -77,7 +78,7 @@ fn render_glitch_blob(
 
     let bx = projector.screen_x_of_rad(ab);
 
-    frame.set([bx as u32, horizon - blob.height], [180, 180, 180]);
+    frame.set([bx as u32, horizon - height.height as u32], [180, 180, 180]).ok();
 }
 
 fn render_blob(
@@ -281,7 +282,7 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Pa
 }
 
 #[allow(non_snake_case)]
-fn render_giant(projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool) {
+fn render_giant(_projector: &Projector, frame: &mut Frame, _xpix: i32, flip: bool) {
     // This needs #![allow(uncommon_codepoints)] to de-warn,
     // lets find another nice "empty looking" identifier.
     // Bitmap of a giant

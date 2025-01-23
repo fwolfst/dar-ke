@@ -33,6 +33,7 @@ use crate::systems::input::*;
 use crate::systems::renderer::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
+use crate::systems::physics::*;
 
 // TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
@@ -62,7 +63,7 @@ fn main() {
         ))
         .add_systems(Startup, (init_pixel_buffer, init_player, init_blobs))
         .add_systems(FixedUpdate, process_input)
-        .add_systems(Update, (ui, update, render.after(update)))
+        .add_systems(Update, (ui, physics, update.after(physics), render.after(update)))
         .insert_resource(Params::default())
         .insert_resource(SkyBlender::default())
         .run();
@@ -94,6 +95,6 @@ fn init_blobs(mut commands: Commands) {
     commands.spawn(Blob {
         x: 0.0,
         y: 20.0,
-        height: 0,
+        //height: 0,
     });
 }
