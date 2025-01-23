@@ -14,6 +14,7 @@ pub fn render(
     giants: Query<&Giant>,
     lights: Query<(&Light, &AtHorizon)>,
     blobs: Query<&Blob>,
+    pebbles: Query<&Pebble>,
     glitch_blobs: Query<&GlitchBlob>,
     params: Res<Params>,
     sky_blender: Res<SkyBlender>,
@@ -56,6 +57,10 @@ pub fn render(
     for b in &blobs {
         render_blob(&projector, horizon, &mut frame, &player, b);
     }
+
+    for p in &pebbles {
+        render_pebble(&projector, horizon, &mut frame, &player, p);
+    }
 }
 
 fn render_glitch_blob(
@@ -80,6 +85,41 @@ fn render_glitch_blob(
     frame.set([bx as u32, horizon - blob.height], [180, 180, 180]);
 }
 
+fn render_pebble(
+    projector: &Projector,
+    horizon: u32,
+    frame: &mut Frame,
+    player: &Player,
+    pebble: &Pebble,
+) {
+    // TODO fix bug with pebbles left of vd
+    let dx = player.x - pebble.x;
+    let dy = player.y - pebble.y;
+
+    let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
+    if !(0.0..10.0).contains(&db) {
+        return;
+    }
+
+    // angle
+    //let ab = if dx == 0. { 0.0 } else { dy.atan2(dx) };
+    // "North" clockwise
+    let ab = if dx == 0. {
+        0.0
+    } else {
+        std::f32::consts::PI + dx.atan2(dy)
+    };
+
+    let max_down = (RENDER_HEIGHT - horizon) as f32;
+
+    let k = 1.0; // decy
+    let dist = max_down * f32::exp(-k * db);
+
+    let bx = projector.screen_x_of_rad(ab);
+
+    frame.set([bx as u32, horizon + dist.round() as u32], [20, 20, 20]);
+}
+
 fn render_blob(
     projector: &Projector,
     horizon: u32,
@@ -87,7 +127,7 @@ fn render_blob(
     player: &Player,
     blob: &Blob,
 ) {
-    // Nice, 360 degree view gives nice effects, too :D
+    // TODO fix bug with pebbles left of vd
     let dx = player.x - blob.x;
     let dy = player.y - blob.y;
 
@@ -106,13 +146,13 @@ fn render_blob(
     let k = 1.0; // decy
     let dist = max_down * f32::exp(-k * db);
 
-    println!(
-        "obj angle {} / deg {} / dx {} dy {}",
-        ab,
-        ab * 180.0 / std::f32::consts::PI,
-        dx,
-        dy
-    );
+    //println!(
+    //    "obj angle {} / deg {} / dx {} dy {}",
+    //    ab,
+    //    ab * 180.0 / std::f32::consts::PI,
+    //    dx,
+    //    dy
+    //);
     let bx = projector.screen_x_of_rad(ab);
 
     if db < 10.0 {

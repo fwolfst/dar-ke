@@ -12,7 +12,10 @@ use bevy_egui::{
     egui::{self, RichText},
     EguiContexts, EguiPlugin,
 };
+
 use bevy_pixel_buffer::prelude::*;
+use rand::{thread_rng, Rng};
+
 use components::Narrative;
 use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
                                      // and think of how to structure imports
@@ -28,6 +31,7 @@ mod systems;
 
 use crate::components::Blob;
 use crate::components::Params;
+use crate::components::Pebble;
 use crate::components::Player;
 use crate::systems::input::*;
 use crate::systems::renderer::*;
@@ -60,7 +64,7 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
             PixelBufferPlugin,
         ))
-        .add_systems(Startup, (init_pixel_buffer, init_player, init_blobs))
+        .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field))
         .add_systems(FixedUpdate, process_input)
         .add_systems(Update, (ui, update, render.after(update)))
         .insert_resource(Params::default())
@@ -90,10 +94,12 @@ fn init_pixel_buffer(mut commands: Commands, mut images: ResMut<Assets<Image>>) 
         .entity();
 }
 
-fn init_blobs(mut commands: Commands) {
-    commands.spawn(Blob {
-        x: 0.0,
-        y: 20.0,
-        height: 0,
-    });
+fn init_pebble_field(mut commands: Commands) {
+    let mut rng = thread_rng();
+    for _ in 0..10000 {
+        commands.spawn(Pebble {
+            x: rng.gen_range(-100.0..100.0) as f32,
+            y: rng.gen_range(-100.0..100.0) as f32,
+        });
+    }
 }

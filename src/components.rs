@@ -43,6 +43,13 @@ pub struct Light {
     pub color: Color,
 }
 
+#[derive(Clone, Debug, Component)]
+pub struct Pebble {
+    pub x: f32,
+    pub y: f32,
+    //pub color: Color,
+}
+
 #[derive(Clone, Debug, Resource)]
 pub struct SkyBlender {
     pub height: i32,
