@@ -2,9 +2,11 @@ use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
 
 use crate::components::*;
-use crate::radians_math::*;
 use crate::systems::render::projector::*;
-use crate::{HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE};
+use crate::{RENDER_HEIGHT, RENDER_WIDTH};
+
+pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
+pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 

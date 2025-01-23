@@ -1,4 +1,4 @@
-use crate::PI_F32;
+use std::f32::consts::PI;
 
 //const 𝝅: f32= std::f32::consts::PI;
 pub(crate) const TWO_PI: f32 = 2.0 * std::f32::consts::PI;
@@ -28,7 +28,7 @@ pub fn rad_wrap_diff(low: f32, high: f32) -> f32 {
     if low <= high {
         high - low
     } else {
-        2.0 * PI_F32 + high - low
+        2.0 * PI + high - low
     }
 }
 
