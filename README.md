@@ -5,6 +5,7 @@ An experimental game written in (order to learn) [Rust](rust-lang.org) with the 
 > There is no light
 
 > The horizon lies far
+
 > What do you see
 
 > You must wander
@@ -105,6 +106,9 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - Narrative is accompanied by sound
 - Breathing moves horizon/height anyway
 - light cone moves when moving (even when turning)
+- different "abilities" are added gradually (e.g. in the beginning no light)
+- Stars blink on sky
+- Things fall down (rain, asteroid, ash, fire, ...)
 
 ## (Code) Design desicions
 
