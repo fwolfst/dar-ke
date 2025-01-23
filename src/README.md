@@ -12,5 +12,4 @@ Document decisions I took, often not very informed.
 - The `radians` and `radian` crates look cool, but lack examples and I cannot read and understand that code yet.
 - Lets see how far f32 brings us.
 - Nonetheless, the direction of the player points to the middle of its viewfield. This makes calculations more cumbersome (need to substract view angles etc) and probably computationally more expensive, but is another minus-headache tradeoff.
-
-
+- render and project from left to right, like this we dont underrun when setting pixels in frame
