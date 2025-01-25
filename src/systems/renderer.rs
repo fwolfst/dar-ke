@@ -174,7 +174,7 @@ fn render_blob(
 
     // glow dependent on distance
     // TODO instead of abs paint, fetch pixel color and redden and brighten it
-    // (mix blob color in)
+    // (mix blob color in), we have interpolate() or blend()
     let c = blob.color.with_alpha(0.005); //Color::srgba_u8(*n);
                                           //let _ = frame.set([(bx + 1) as u32, horizon + dist.round() as u32], c);
     let _ = frame.set(

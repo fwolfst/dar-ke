@@ -115,7 +115,7 @@ fn init_stage1(mut commands: Commands) {
     commands.spawn(Blob {
         x: 10.0,
         y: 10.0,
-        height: 2,
+        //height: 2,
         color: Color::srgb_u8(180, 60, 50),
     });
 }
@@ -125,6 +125,6 @@ fn init_blobs(mut commands: Commands) {
         x: 0.0,
         y: 20.0,
         color: Color::srgb_u8(130, 160, 150),
-        height: 0,
+        //height: 0,
     });
 }

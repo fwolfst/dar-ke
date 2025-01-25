@@ -67,9 +67,9 @@ pub struct Pebble {
 #[derive(Clone, Debug, Resource)]
 pub struct SkyBlender {
     pub height: i32,
-    pub position: f32,
+    //pub position: f32,
     pub extend: f32,
-    pub color: Color,
+    //pub color: Color,
     //pub strength: f32, // can be alpha of color?
 }
 
@@ -79,16 +79,16 @@ pub struct Blob {
     //pub position: Vec2,
     pub x: f32,
     pub y: f32,
-    pub height: i32,
+    //pub height: i32,
 }
 
 impl Default for SkyBlender {
     fn default() -> Self {
         Self {
             height: 5,
-            position: 0.0,
+            //position: 0.0,
             extend: 30.0,
-            color: Color::srgba_u8(160, 80, 80, 80),
+            //color: Color::srgba_u8(160, 80, 80, 80),
         }
     }
 }
