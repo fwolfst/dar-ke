@@ -112,6 +112,8 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - Stars blink on sky
 - Things fall down (rain, asteroid, ash, fire, ...)
 - When walking back something happens, e.g. a display of something - but this might be a dimension too much. I might not want anything onscreen
+- Fall to ground (looking down)
+- Screenshakes
 
 ## (Code) Design desicions
 
