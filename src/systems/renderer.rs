@@ -102,6 +102,7 @@ fn render_pebble(
     player: &Player,
     pebble: &Pebble,
 ) {
+    // IDEA size component (visible until, e.g. pebbles: size 10, visible if distance < 10)
     const MAX_PEBBLE_VIEWING_DISTANCE: f32 = 10.0;
     // TODO fix bug with pebbles left of vd
     let dx = player.x - pebble.x;
