@@ -81,11 +81,11 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ## Derived ToDos
 
-- [ ] disable mousepointer in fullscreen
-- [ ] player sees objs on horizon
-- [ ] player can approach objs on ground
 - [ ] objs appear bigger when close
 - [ ] giants can move
+- [ ] player sees objs on horizon
+- [ ] interesting horizon
+- [ ] certain areas can trigger certain events or enable systems
 - [ ] certain events trigger certain narratives
 - [ ] there is a credit screen
 - [ ] fix fullscreen toggle in macos
@@ -93,7 +93,9 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - [ ] Moving forward has a visible effect (besides head movement)
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] horizon and ground have some texture
-- [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors
+- [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors (or interpolate() or blend())
+- [ ] optionally disable mousepointer in fullscreen (then no egui)
+- [X] player can approach objs on ground
 - [X] player sees points on horizon
 - [X] horizon and ground can have some circle gradients ("light" with color)
 - [X] Head bobbing
@@ -101,6 +103,10 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 ### Other ToDos
 
 - [ ] Learn and straighten the imports
+- [ ] use radian or radians crate
+    - [ ] switch polar coord to -pi..pi
+- [ ] settle on separation between renderer and projector
+- [ ] projector tests
 
 ## Game Ideas/Notes
 
@@ -114,6 +120,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - When walking back something happens, e.g. a display of something - but this might be a dimension too much. I might not want anything onscreen
 - Fall to ground (looking down)
 - Screenshakes
+- Things can glow and project light
 
 ## (Code) Design desicions
 
