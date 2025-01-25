@@ -102,17 +102,16 @@ fn render_pebble(
     player: &Player,
     pebble: &Pebble,
 ) {
+    const MAX_PEBBLE_VIEWING_DISTANCE: f32 = 10.0;
     // TODO fix bug with pebbles left of vd
     let dx = player.x - pebble.x;
     let dy = player.y - pebble.y;
 
     let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
-    if !(0.0..10.0).contains(&db) {
+    if !(0.0..MAX_PEBBLE_VIEWING_DISTANCE).contains(&db) {
         return;
     }
 
-    // angle
-    //let ab = if dx == 0. { 0.0 } else { dy.atan2(dx) };
     // "North" clockwise
     let ab = if dx == 0. {
         0.0
@@ -170,7 +169,7 @@ fn render_blob(
         // else
         // point
     }
-    frame.set([bx as u32, horizon + dist.round() as u32], [150, 150, 210]);
+    frame.set([bx as u32, horizon + dist.round() as u32], [20, 20, 20]);
 }
 
 fn lintra(
