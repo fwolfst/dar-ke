@@ -6,7 +6,7 @@ use rand::{thread_rng, Rng};
 pub fn ui(
     mut egui_ctx: EguiContexts,
     diagnostics: Res<DiagnosticsStore>,
-    player: Query<&Player>,
+    mut player: Query<&mut Player>,
     mut params: ResMut<Params>,
     mut sky_blender: ResMut<SkyBlender>,
     mut commands: Commands,
@@ -47,10 +47,10 @@ pub fn ui(
         ui.separator();
 
         ui.heading("Player");
-        let player = player.single();
+        let mut player = player.single_mut();
         ui.horizontal(|ui| {
             ui.label("Height");
-            //ui.add(egui::Slider::new(&mut player.height, 64..=2048));
+            ui.add(egui::Slider::new(&mut player.height, -128..=128));
         });
 
         ui.horizontal(|ui| {
