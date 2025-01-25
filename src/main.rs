@@ -34,10 +34,10 @@ use crate::components::Params;
 use crate::components::Pebble;
 use crate::components::Player;
 use crate::systems::input::*;
+use crate::systems::physics::*;
 use crate::systems::renderer::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
-use crate::systems::physics::*;
 
 // TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
@@ -82,7 +82,8 @@ fn init_player(mut commands: Commands) {
     commands.spawn(Player {
         x: 0.,
         y: 0.,
-        height: 0,
+        head: 0,
+        height: 3,
         direction: 0.0,
         walking_time: Stopwatch::new(),
         is_moving: false,
@@ -108,11 +109,12 @@ fn init_pebble_field(mut commands: Commands) {
             y: rng.gen_range(-100.0..100.0) as f32,
         });
     }
+}
 
 fn init_blobs(mut commands: Commands) {
     commands.spawn(Blob {
         x: 0.0,
         y: 20.0,
-        //height: 0,
+        height: 0,
     });
 }

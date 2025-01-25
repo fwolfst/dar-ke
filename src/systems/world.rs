@@ -28,14 +28,14 @@ pub fn update(
         }
     }
 
-    // Head wobble
+    // Head bobble
     // sinus curve over 1 second, 1 second transition to baseline if not moving
     for mut player in &mut player {
         player.walking_time.tick(time.delta());
+        // TODO parameterize
         if player.is_moving {
-            player.height = (3.0
-                * (4.0 * player.walking_time.elapsed_secs() % (std::f32::consts::PI + 0.3)).sin())
-                as i32;
+            player.head =
+                (3.0 * (4.0 * player.walking_time.elapsed_secs() % (PI + 0.3)).sin()) as i32;
         }
     }
 }

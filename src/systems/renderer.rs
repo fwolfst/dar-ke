@@ -24,8 +24,13 @@ pub fn render(
     let player = player.single();
     let mut frame = pb.frame();
     let projector = make_projector(player.direction);
-    // TODO use horizon param
-    let horizon = frame.size().y / 2 + player.height as u32;
+
+    // TODO sky_horizon_ratio now looks like view_angle (up or down)
+    // TODO head and height should be proportional to resolution
+    let horizon = ((RENDER_HEIGHT as f32 * params.sky_horizon_ratio) as i32
+        + player.height as i32
+        + player.head as i32)
+        .clamp(0, RENDER_HEIGHT as i32) as u32;
 
     draw_sky(
         &projector,

@@ -45,7 +45,7 @@ pub fn process_input(
     } else {
         let mut player = player.single_mut();
         player.is_moving = false;
-        player.height = 0;
+        player.head = 0;
     }
     if keyboard_input.pressed(KeyCode::KeyQ) {
         exit.send(AppExit::Success);

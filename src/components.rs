@@ -11,11 +11,11 @@ use crate::{radians_math::norm_rad, RENDER_HEIGHT, RENDER_WIDTH};
 
 #[derive(Component)]
 pub struct Player {
-    pub x: f32,
-    pub y: f32,
-    pub height: i32,
-    // radians between 0 and +2PI
-    pub direction: f32,
+    pub x: f32,         // pos x
+    pub y: f32,         // pos y
+    pub height: i32,    // Base height
+    pub head: i32,      // Head bobbing
+    pub direction: f32, // rad 0..+2PI
     pub walking_time: Stopwatch,
     pub is_moving: bool,
 }
