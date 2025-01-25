@@ -152,25 +152,38 @@ fn render_blob(
 
     let max_down = (RENDER_HEIGHT - horizon) as f32;
 
+    // TODO move into projector
     let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
     let k = 1.0; // decy
     let dist = max_down * f32::exp(-k * db);
 
-    //println!(
-    //    "obj angle {} / deg {} / dx {} dy {}",
-    //    ab,
-    //    ab * 180.0 / std::f32::consts::PI,
-    //    dx,
-    //    dy
-    //);
     let bx = projector.screen_x_of_rad(ab);
+
+    // IDEA scale color (alpha) by distance?
+    frame
+        .set([bx as u32, horizon + dist.round() as u32], blob.color)
+        .ok();
 
     if db < 10.0 {
         // shape
         // else
         // point
     }
-    frame.set([bx as u32, horizon + dist.round() as u32], [20, 20, 20]);
+
+    // glow dependent on distance
+    // TODO instead of abs paint, fetch pixel color and redden and brighten it
+    // (mix blob color in)
+    let c = blob.color.with_alpha(0.005); //Color::srgba_u8(*n);
+                                          //let _ = frame.set([(bx + 1) as u32, horizon + dist.round() as u32], c);
+    let _ = frame.set(
+        [(bx - 1) as u32, horizon + dist.round() as u32 + 1 as u32],
+        c,
+    );
+    let _ = frame.set([bx as u32, horizon + dist.round() as u32 + 1 as u32], c);
+    let _ = frame.set(
+        [(bx + 1) as u32, horizon + dist.round() as u32 + 1 as u32],
+        c,
+    );
 }
 
 fn lintra(

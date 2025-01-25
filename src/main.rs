@@ -115,6 +115,7 @@ fn init_blobs(mut commands: Commands) {
     commands.spawn(Blob {
         x: 0.0,
         y: 20.0,
+        color: Color::srgb_u8(130, 160, 150),
         height: 0,
     });
 }

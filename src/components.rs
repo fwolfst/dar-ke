@@ -73,9 +73,9 @@ pub struct SkyBlender {
     //pub strength: f32, // can be alpha of color?
 }
 
-#[derive(Clone, Debug, Component)]
+#[derive(Component)]
 pub struct Blob {
-    //pub color: Color,
+    pub color: Color,
     //pub position: Vec2,
     pub x: f32,
     pub y: f32,
