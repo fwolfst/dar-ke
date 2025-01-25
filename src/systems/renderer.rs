@@ -127,7 +127,9 @@ fn render_pebble(
 
     let bx = projector.screen_x_of_rad(ab);
 
-    frame.set([bx as u32, horizon + dist.round() as u32], [20, 20, 20]);
+    frame
+        .set([bx as u32, horizon + dist.round() as u32], [20, 20, 20])
+        .ok();
 }
 
 fn render_blob(
