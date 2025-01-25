@@ -1,5 +1,17 @@
 use crate::*;
 
+use std::f32::consts::PI;
+
+pub fn animate(mut giants: Query<&mut Giant>, time: Res<Time>) {
+    // animate giant walk
+    for mut giant in &mut giants {
+        giant.timer.tick(time.delta());
+        if giant.timer.finished() {
+            giant.frame = (giant.frame + 1).rem_euclid(2);
+        }
+    }
+}
+
 ///  tick tickers, animate or despawn.
 pub fn update(
     mut giants: Query<&mut Giant>,
@@ -8,14 +20,6 @@ pub fn update(
     time: Res<Time>,
     mut commands: Commands,
 ) {
-    // animate giant wobble
-    for mut giant in &mut giants {
-        giant.timer.tick(time.delta());
-        if giant.timer.finished() {
-            giant.frame = (giant.frame + 1).rem_euclid(2);
-        }
-    }
-
     // Fade out narrative
     for (entity, mut narrative) in &mut narrative {
         narrative.timer.tick(time.delta());

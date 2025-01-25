@@ -62,8 +62,17 @@ fn main() {
             PixelBufferPlugin,
         ))
         .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field))
-        .add_systems(FixedUpdate, process_input)
-        .add_systems(Update, (ui, physics, update.after(physics), render.after(update)))
+        .add_systems(FixedUpdate, (process_input))
+        .add_systems(
+            Update,
+            (
+                ui,
+                physics,
+                animate,
+                update.after(physics),
+                render.after(update),
+            ),
+        )
         .insert_resource(Params::default())
         .insert_resource(SkyBlender::default())
         .run();
