@@ -39,3 +39,11 @@ pub fn update(
         }
     }
 }
+
+pub fn area_effects(mut commands: Commands, time: Res<Time>, mut player: Query<&mut Player>) {
+    // if outside bounds, bow
+    let mut player = player.single_mut();
+    if player.height > 0 {
+        //player.height = 10 - time.elapsed_seconds() as i32;
+    }
+}

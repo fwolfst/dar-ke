@@ -61,8 +61,8 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
             PixelBufferPlugin,
         ))
-        .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field))
-        .add_systems(FixedUpdate, (process_input))
+        .add_systems(Startup, (init_pixel_buffer, init_player, init_stage1))
+        .add_systems(FixedUpdate, (process_input, area_effects))
         .add_systems(
             Update,
             (
@@ -109,6 +109,15 @@ fn init_pebble_field(mut commands: Commands) {
             y: rng.gen_range(-100.0..100.0) as f32,
         });
     }
+}
+
+fn init_stage1(mut commands: Commands) {
+    commands.spawn(Blob {
+        x: 10.0,
+        y: 10.0,
+        height: 2,
+        color: Color::srgb_u8(180, 60, 50),
+    });
 }
 
 fn init_blobs(mut commands: Commands) {
