@@ -102,6 +102,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ### Other ToDos
 
+- [ ] deterministic RNG with seed in params
 - [ ] Learn and straighten the imports
 - [ ] use radian or radians crate
     - [ ] switch polar coord to -pi..pi
