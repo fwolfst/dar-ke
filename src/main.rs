@@ -19,10 +19,10 @@ use rand::{thread_rng, Rng};
 use components::Narrative;
 use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
                                      // and think of how to structure imports
-                                     // Cannot yet read the code good enough to figure out
-                                     // how to use these (and they lack examples :( )
-                                     //use radians::Rad32;
-                                     //use radian::Rad32;
+// Cannot yet read the code good enough to figure out
+// how to use these (and they lack examples :( )
+//use radians::Rad32;
+//use radian::Rad32;
 
 mod components;
 mod phrases;
@@ -30,6 +30,8 @@ pub mod radians_math;
 mod systems;
 
 use crate::components::Blob;
+use crate::components::GlitchBlob;
+use crate::components::Height;
 use crate::components::HorizonBitmap;
 use crate::components::Params;
 use crate::components::Pebble;
@@ -63,7 +65,7 @@ fn main() {
             FrameTimeDiagnosticsPlugin,
             PixelBufferPlugin,
         ))
-        .add_systems(Startup, (init_pixel_buffer, init_player, init_stage1))
+        .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field, init_stage1, spawn_darke))
         .add_systems(FixedUpdate, (process_input, area_effects))
         .add_systems(
             Update,
@@ -157,5 +159,32 @@ fn generate_horizon() -> HorizonBitmap {
         }
     }
     HorizonBitmap { data }
+}
+
+fn spawn_darke(mut commands: Commands) {
+  const ˑ: bool = true;
+  const Ø: bool = false;
+  let darke = [
+      [ Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ],
+      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ, ],
+      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ],
+      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ, ],
+      [ Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ],
+  ];
+    for (y,row) in darke.iter().enumerate() {
+        for (x,i) in row.iter().enumerate() {
+            if !*i {
+            commands.spawn((GlitchBlob {
+                x: (0 + x * 1) as f32 - 5.0,
+                y: 100.0,
+                //color: Color::srgb_u8(160,170,160),
+            },
+            Height {
+                height: 6.0 - y as f32,
+            }));
+            }
+        }
+    }
+
 }
 
