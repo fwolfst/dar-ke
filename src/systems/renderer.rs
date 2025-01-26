@@ -7,6 +7,7 @@ use crate::{RENDER_HEIGHT, RENDER_WIDTH};
 
 pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
 pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
+pub const HORIZON_WIDTH_IN_PIXEL :f32 = RENDER_WIDTH as f32 * 2.0 * std::f32::consts::PI / VIEW_ANGLE;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 
@@ -21,6 +22,7 @@ pub fn render(
     pebbles: Query<&Pebble>,
     glitch_blobs: Query<(&GlitchBlob, &Height)>,
     params: Res<Params>,
+    horizon_silhouette: Res<HorizonBitmap>,
     sky_blender: Res<SkyBlender>,
 ) {
     let player = player.single();
@@ -41,6 +43,12 @@ pub fn render(
         params.sky_up_bright,
         &sky_blender,
     );
+
+    // -> const
+    let horizon_total_pixel = RENDER_WIDTH * (std::f32::consts::PI * 2.0 / VIEW_ANGLE) as u32;
+    let left_px = (horizon_total_pixel as f32 * player.direction / (std::f32::consts::PI * 2.0)) as u32;
+
+    draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px);
 
     draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
 
@@ -279,6 +287,17 @@ fn draw_sky(
             );
             //color.red;
             frame.set(UVec2::new(x, y.try_into().unwrap()), color).ok();
+        }
+    }
+}
+
+fn draw_horizon(horizon: u32, frame: &mut Frame, silhouette: &HorizonBitmap, horizontal_pixel_offset: u32) {
+
+    for x in 0..RENDER_WIDTH {
+        let ix = (horizontal_pixel_offset + x) as usize %(silhouette.data.len());
+        let h = silhouette.data[ix as usize];
+        for y in 1..h {
+            frame.set([x, horizon - y as u32], HORIZON_COL);
         }
     }
 }

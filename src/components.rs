@@ -3,6 +3,7 @@ use std::time::Duration;
 use bevy::{prelude::*, time::Stopwatch};
 
 use crate::{radians_math::norm_rad, RENDER_HEIGHT, RENDER_WIDTH};
+use crate::systems::renderer::HORIZON_WIDTH_IN_PIXEL;
 
 // Unfortunately no examples and I cannot yet read and understand
 // that code :(
@@ -140,3 +141,9 @@ pub struct GlitchBlob {
     pub x: f32,
     pub y: f32,
 }
+
+#[derive(Resource)]
+pub struct HorizonBitmap {
+    pub data: [u8; (HORIZON_WIDTH_IN_PIXEL) as usize]
+}
+
