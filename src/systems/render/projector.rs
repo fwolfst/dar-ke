@@ -3,17 +3,16 @@ use crate::{
     HALF_VIEW_ANGLE, RENDER_WIDTH, VIEW_ANGLE,
 };
 
-// A projector, stores some intermediate calculations
-// for faster processing. Might become a renderer.
+/// A projector, stores some intermediate calculations
+/// for faster processing. Might become a renderer.
 pub struct Projector {
-    //view_direction_rad: f32,
     left_view_rad: f32,
     pixel_per_rad: f32,
 }
 
+/// Generate a projector
 pub fn make_projector(view_direction_rad: f32) -> Projector {
     Projector {
-        //view_direction_rad,
         left_view_rad: view_direction_rad - HALF_VIEW_ANGLE,
         pixel_per_rad: (RENDER_WIDTH as f32) / VIEW_ANGLE,
     }
@@ -21,13 +20,21 @@ pub fn make_projector(view_direction_rad: f32) -> Projector {
 
 // TODO these could Result<> (offscreen)
 impl Projector {
-    // Radians project to screen space
+    /// Radians projected to screen space
     pub fn screen_x_of_rad(&self, rad: f32) -> i32 {
         let k = clockwise_diff(self.left_view_rad, rad);
         (k * self.pixel_per_rad).round() as i32
     }
 
-    // Return both "left" and "right" distances of rad
+    /// Gives coordinates for an angle both "left" and "right" of the
+    /// view direction.
+    /// For an object not on screen, one can ask how far the projected
+    /// point is towards the left and also towards right.
+    ///
+    /// ```
+    /// let p = Projector.new(0.0);
+    /// assert_eq(p.screen_x2_of_rad(3.1), (12,20));
+    /// ```
     pub fn screen_x2_of_rad(&self, rad: f32) -> (i32, i32) {
         let k = clockwise_diff(self.left_view_rad, rad);
 

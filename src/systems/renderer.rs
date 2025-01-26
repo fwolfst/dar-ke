@@ -10,6 +10,8 @@ pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 
+/// Put pixels in frame that represent the scenerie.
+/// Sky and ground are drawn before everything else
 pub fn render(
     mut pb: QueryPixelBuffer,
     player: Query<&Player>,
@@ -108,6 +110,7 @@ fn render_pebble(
     let dx = player.x - pebble.x;
     let dy = player.y - pebble.y;
 
+    // invisible beyond certain distance
     let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
     if !(0.0..MAX_PEBBLE_VIEWING_DISTANCE).contains(&db) {
         return;
