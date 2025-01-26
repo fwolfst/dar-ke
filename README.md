@@ -103,6 +103,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ### Other ToDos
 
+- [ ] a minimal init screen/objs (in game)
 - [ ] deterministic RNG with seed in params
 - [ ] Learn and straighten the imports
 - [ ] use radian or radians crate
@@ -114,7 +115,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 - Narrative comes animated (flash in, degrade over time)
 - Narrative is accompanied by sound
-- Breathing moves horizon/height anyway
+- Breathing moves horizon/height anyway (even when not moving)
 - light cone moves when moving (even when turning)
 - different "abilities" are added gradually (e.g. in the beginning no light)
 - Stars blink on sky
@@ -123,6 +124,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - Fall to ground (looking down)
 - Screenshakes
 - Things can glow and project light
+- Falling thins have afterglow/smoke
 
 ## (Code) Design desicions
 
