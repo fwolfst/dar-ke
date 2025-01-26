@@ -81,20 +81,21 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ## Derived ToDos
 
-- [ ] objs appear bigger when close
+- [ ] Moving forward has a visible effect (besides head movement)
+  - [ ] horizon and ground have some texture
+  - [ ] objs appear bigger when close
 - [ ] giants can move
-- [ ] player sees objs on horizon
-- [ ] interesting horizon
 - [ ] certain areas can trigger certain events or enable systems
 - [ ] certain events trigger certain narratives
 - [ ] there is a credit screen
 - [ ] fix fullscreen toggle in macos
+- [ ] hide mousepointer and egui when started with certain arg (later make this default)
+  - [ ] (dupe) optionally disable mousepointer in fullscreen (then no egui)
 - [ ] there is a trigger for the credit screen
-- [ ] Moving forward has a visible effect (besides head movement)
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
-- [ ] horizon and ground have some texture
 - [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors (or interpolate() or blend())
-- [ ] optionally disable mousepointer in fullscreen (then no egui)
+- [X] player sees objs on horizon
+- [X] interesting horizon
 - [X] player can approach objs on ground
 - [X] player sees points on horizon
 - [X] horizon and ground can have some circle gradients ("light" with color)
