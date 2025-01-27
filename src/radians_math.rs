@@ -56,15 +56,15 @@ mod tests {
     #[test]
     fn test_rad_wrap() {
         assert!(float_same(rad_wrap(1.0), 1.0));
-        assert!(float_same(rad_wrap(4.0), 4.0 - PI_F32));
-        //assert!(float_same(rad_wrap(-4.0), 4.0 - PI_F32));
+        assert!(float_same(rad_wrap(4.0), 4.0 - PI));
+        //assert!(float_same(rad_wrap(-4.0), 4.0 - PI));
     }
 
     #[test]
     fn solve_rad_wrap_diff() {
         assert!(float_same(rad_wrap_diff(2., 2.), 0.));
-        assert!(float_same(rad_wrap_diff(-PI_F32, PI_F32), 2.0 * PI_F32));
-        assert!(float_same(rad_wrap_diff(PI_F32 - 0.1, -PI_F32), 0.1));
+        assert!(float_same(rad_wrap_diff(-PI, PI), 2.0 * PI));
+        assert!(float_same(rad_wrap_diff(PI - 0.1, -PI), 0.1));
     }
 
     #[test]
@@ -73,6 +73,6 @@ mod tests {
         assert_f32_near!(norm_rad(4.0), 4.0);
         assert_f32_near!(norm_rad(TWO_PI + 4.0), 4.0);
         assert_eq!(norm_rad(-2.0), TWO_PI - 2.0);
-        //assert!(float_same(rad_wrap(-4.0), 4.0 - PI_F32));
+        //assert!(float_same(rad_wrap(-4.0), 4.0 - PI));
     }
 }
