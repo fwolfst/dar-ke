@@ -81,6 +81,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ## Derived ToDos
 
+- [ ] Has Intro
 - [ ] Moving forward has a visible effect (besides head movement)
   - [ ] horizon and ground have some texture
   - [ ] objs appear bigger when close

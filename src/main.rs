@@ -39,6 +39,7 @@ use crate::components::Player;
 use crate::systems::input::*;
 use crate::systems::physics::*;
 use crate::systems::renderer::*;
+use crate::systems::run_intro::*;
 use crate::systems::ui::*;
 use crate::systems::world::*;
 
@@ -50,43 +51,69 @@ pub const RENDER_HEIGHT: u32 = 48;
 pub const PIXEL_SIZE: u32 = 13;
 use crate::systems::renderer::HORIZON_WIDTH_IN_PIXEL;
 
+#[derive(States, Default, Debug, Clone, Eq, PartialEq, Hash)]
+enum GameState {
+    #[default]
+    Intro,
+    Playing,
+    Credits,
+}
+
 fn main() {
-    App::new()
-        .add_plugins((
-            DefaultPlugins.set(WindowPlugin {
-                primary_window: Some(Window {
-                    //mode: bevy::window::WindowMode::BorderlessFullscreen,
-                    resolution: bevy::window::WindowResolution::default(),
-                    ..default()
-                }),
+    let mut app = App::new();
+    app.add_plugins((
+        DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                //mode: bevy::window::WindowMode::BorderlessFullscreen,
+                resolution: bevy::window::WindowResolution::default(),
+                //cursor: Cursor {
+                //    visible: false,
+                //    ..default()
+                //},
                 ..default()
             }),
-            EguiPlugin,
-            FrameTimeDiagnosticsPlugin,
-            PixelBufferPlugin,
-        ))
-        .add_systems(Startup, (init_pixel_buffer, init_player, init_pebble_field, init_stage1, spawn_darke))
-        .add_systems(FixedUpdate, (process_input, area_effects))
-        .add_systems(
-            Update,
-            (
-                ui,
-                physics,
-                animate,
-                update.after(physics),
-                render.after(update),
-            ),
-        )
-        .insert_resource(Params::default())
-        .insert_resource(SkyBlender::default())
-        .insert_resource(generate_horizon())
-        .run();
+            ..default()
+        }),
+        EguiPlugin,
+        FrameTimeDiagnosticsPlugin,
+        PixelBufferPlugin,
+    ));
+    app.add_systems(
+        Startup,
+        (
+            init_pixel_buffer,
+            init_player,
+            init_pebble_field,
+            init_stage1,
+            spawn_darke,
+        ),
+    )
+    .add_systems(
+        FixedUpdate,
+        (process_input, area_effects).run_if(in_state(GameState::Playing)),
+    )
+    .add_systems(
+        Update,
+        (
+            run_intro.run_if(in_state(GameState::Intro)),
+            ui,
+            physics,
+            animate,
+            update.after(physics),
+            render.after(update),
+        ),
+    )
+    .insert_state(GameState::Intro)
+    .insert_resource(Params::default())
+    .insert_resource(SkyBlender::default())
+    .insert_resource(generate_horizon())
+    .run();
 }
 
 fn init_player(mut commands: Commands) {
     commands.spawn(Player {
-        x: 0.,
-        y: 0.,
+        x: 0.,     // will move during intro
+        y: -2000., // will move during intro
         head: 0,
         height: 3,
         direction: 0.0,
@@ -161,30 +188,42 @@ fn generate_horizon() -> HorizonBitmap {
     HorizonBitmap { data }
 }
 
+#[allow(non_snake_case)]
 fn spawn_darke(mut commands: Commands) {
-  const ˑ: bool = true;
-  const Ø: bool = false;
-  let darke = [
-      [ Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ],
-      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ, ],
-      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ],
-      [ Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ, ],
-      [ Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ],
-  ];
-    for (y,row) in darke.iter().enumerate() {
-        for (x,i) in row.iter().enumerate() {
+    const ˑ: bool = true;
+    const Ø: bool = false;
+    const DARKE: [[bool; 23]; 5] = [
+        [
+            Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
+        ],
+        [
+            Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+    ];
+    for (y, row) in DARKE.iter().enumerate() {
+        for (x, i) in row.iter().enumerate() {
             if !*i {
-            commands.spawn((GlitchBlob {
-                x: (0 + x * 1) as f32 - 5.0,
-                y: 100.0,
-                //color: Color::srgb_u8(160,170,160),
-            },
-            Height {
-                height: 6.0 - y as f32,
-            }));
+                commands.spawn((
+                    GlitchBlob {
+                        x: x as f32 - 10.0,
+                        y: 80.0,
+                        //color: Color::srgb_u8(160,170,160),
+                    },
+                    Height {
+                        height: 30.0 - y as f32,
+                    },
+                ));
             }
         }
     }
-
 }
 
