@@ -19,10 +19,10 @@ use rand::{thread_rng, Rng};
 use components::Narrative;
 use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
                                      // and think of how to structure imports
-// Cannot yet read the code good enough to figure out
-// how to use these (and they lack examples :( )
-//use radians::Rad32;
-//use radian::Rad32;
+                                     // Cannot yet read the code good enough to figure out
+                                     // how to use these (and they lack examples :( )
+                                     //use radians::Rad32;
+                                     //use radian::Rad32;
 
 mod components;
 mod phrases;
@@ -181,7 +181,7 @@ fn generate_horizon() -> HorizonBitmap {
             let height = ((x as f32 / width as f32) * peak as f32).round() as u8; // triangle
             let idx = ((pos + x) % HORIZON_WIDTH_IN_PIXEL as u32) as usize;
             data[idx] = height.max(data[idx]);
-            let idx = ((pos + 2*width - x - 1) % HORIZON_WIDTH_IN_PIXEL as u32) as usize;
+            let idx = ((pos + 2 * width - x - 1) % HORIZON_WIDTH_IN_PIXEL as u32) as usize;
             data[idx] = height.max(data[idx]);
         }
     }

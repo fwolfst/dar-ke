@@ -65,15 +65,6 @@ pub struct Pebble {
     //pub color: Color,
 }
 
-#[derive(Clone, Debug, Resource)]
-pub struct SkyBlender {
-    pub height: i32,
-    //pub position: f32,
-    pub extend: f32,
-    //pub color: Color,
-    //pub strength: f32, // can be alpha of color?
-}
-
 #[derive(Component)]
 pub struct Blob {
     pub color: Color,
@@ -83,6 +74,14 @@ pub struct Blob {
     //pub height: i32,
 }
 
+#[derive(Clone, Debug, Resource)]
+pub struct SkyBlender {
+    pub height: i32,
+    //pub position: f32,
+    pub extend: f32,
+    //pub color: Color,
+    //pub strength: f32, // can be alpha of color?
+}
 impl Default for SkyBlender {
     fn default() -> Self {
         Self {
