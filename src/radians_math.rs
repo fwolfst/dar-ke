@@ -43,6 +43,8 @@ pub fn rad_wrap(val: f32) -> f32 {
 
 #[cfg(test)]
 mod tests {
+    use std::f32::consts::FRAC_PI_4;
+
     use super::*;
     use assert_float_eq::*;
     use pretty_assertions::{assert_eq /*assert_ne*/};
@@ -74,5 +76,12 @@ mod tests {
         assert_f32_near!(norm_rad(TWO_PI + 4.0), 4.0);
         assert_eq!(norm_rad(-2.0), TWO_PI - 2.0);
         //assert!(float_same(rad_wrap(-4.0), 4.0 - PI));
+    }
+
+    #[test]
+    fn test_clockwise_diff() {
+        assert_f32_near!(clockwise_diff(-FRAC_PI_4, 0.0), FRAC_PI_4);
+        assert_f32_near!(clockwise_diff(-FRAC_PI_4, 7.0 * FRAC_PI_4), 0.0); // TODO here result is
+                                                                            // 2 PI... -> normalize
     }
 }

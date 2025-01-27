@@ -5,9 +5,11 @@ use crate::components::*;
 use crate::systems::render::projector::*;
 use crate::{RENDER_HEIGHT, RENDER_WIDTH};
 
+/// in radians: witdth of the view field.
 pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
 pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
-pub const HORIZON_WIDTH_IN_PIXEL :f32 = RENDER_WIDTH as f32 * 2.0 * std::f32::consts::PI / VIEW_ANGLE;
+pub const HORIZON_WIDTH_IN_PIXEL: f32 =
+    RENDER_WIDTH as f32 * 2.0 * std::f32::consts::PI / VIEW_ANGLE;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
 
@@ -27,14 +29,13 @@ pub fn render(
 ) {
     let player = player.single();
     let mut frame = pb.frame();
-    let projector = make_projector(player.direction);
-
     // TODO sky_horizon_ratio now looks like view_angle (up or down)
     // TODO head and height should be proportional to resolution
     let horizon = ((RENDER_HEIGHT as f32 * params.sky_horizon_ratio) as i32
         + player.height as i32
         + player.head as i32)
         .clamp(0, RENDER_HEIGHT as i32) as u32;
+    let projector = make_projector(player.direction);
 
     draw_sky(
         &projector,
@@ -46,7 +47,8 @@ pub fn render(
 
     // -> const
     let horizon_total_pixel = RENDER_WIDTH * (std::f32::consts::PI * 2.0 / VIEW_ANGLE) as u32;
-    let left_px = (horizon_total_pixel as f32 * player.direction / (std::f32::consts::PI * 2.0)) as u32;
+    let left_px =
+        (horizon_total_pixel as f32 * player.direction / (std::f32::consts::PI * 2.0)) as u32;
 
     draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px);
 
@@ -125,7 +127,7 @@ fn render_pebble(
     }
 
     // "North" clockwise
-    let ab = if dx == 0. {
+    let ab = if dx == 0.0 {
         0.0
     } else {
         std::f32::consts::PI + dx.atan2(dy)
@@ -291,13 +293,17 @@ fn draw_sky(
     }
 }
 
-fn draw_horizon(horizon: u32, frame: &mut Frame, silhouette: &HorizonBitmap, horizontal_pixel_offset: u32) {
-
+fn draw_horizon(
+    horizon: u32,
+    frame: &mut Frame,
+    silhouette: &HorizonBitmap,
+    horizontal_pixel_offset: u32,
+) {
     for x in 0..RENDER_WIDTH {
-        let ix = (horizontal_pixel_offset + x) as usize %(silhouette.data.len());
+        let ix = (horizontal_pixel_offset + x) as usize % (silhouette.data.len());
         let h = silhouette.data[ix as usize];
         for y in 1..h {
-            frame.set([x, horizon - y as u32], HORIZON_COL);
+            frame.set([x, horizon - y as u32], HORIZON_COL).ok();
         }
     }
 }
