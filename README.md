@@ -81,7 +81,9 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ## Derived ToDos
 
-- [ ] Has Intro
+- [X] Has Intro
+  - [ ] which blends over into gameplay
+  - [ ] which triggers first narrative
 - [ ] Moving forward has a visible effect (besides head movement)
   - [ ] horizon and ground have some texture
   - [ ] objs appear bigger when close
@@ -93,6 +95,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - [ ] hide mousepointer and egui when started with certain arg (later make this default)
   - [ ] (dupe) optionally disable mousepointer in fullscreen (then no egui)
 - [ ] there is a trigger for the credit screen
+- [ ] there is a global darkness
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors (or interpolate() or blend())
 - [X] player sees objs on horizon
