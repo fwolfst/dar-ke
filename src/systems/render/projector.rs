@@ -50,9 +50,20 @@ mod tests {
     use super::*;
     use pretty_assertions::{assert_eq /*assert_ne*/};
 
+    // TODO This is bound to assumptions regarding view angle and focal
+    // depth. We want these to be baked in for ultra speed, at the same time
+    // I want to be able to play with it.
     #[test]
     fn projection_from_radians() {
         let p = make_projector(0.0);
-        assert_eq!(p.screen_x_of_rad(0.0), 46);
+
+        assert_eq!(p.screen_x_of_rad(0.0), (RENDER_WIDTH / 2) as i32);
+
+        assert_eq!(
+            p.screen_x_of_rad(std::f32::consts::FRAC_PI_4),
+            (RENDER_WIDTH) as i32
+        );
+
+        assert_eq!(p.screen_x_of_rad(-std::f32::consts::FRAC_PI_4), 0);
     }
 }
