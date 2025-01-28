@@ -81,6 +81,7 @@ fn main() {
     app.add_systems(
         Startup,
         (
+            max_window,
             init_pixel_buffer,
             init_player,
             init_pebble_field,
@@ -225,5 +226,10 @@ fn spawn_darke(mut commands: Commands) {
             }
         }
     }
+}
+
+fn max_window(mut windows: Query<&mut Window>) {
+    let mut window = windows.single_mut();
+    window.set_maximized(true);
 }
 
