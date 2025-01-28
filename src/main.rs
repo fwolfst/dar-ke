@@ -17,12 +17,14 @@ use bevy_pixel_buffer::prelude::*;
 use rand::{thread_rng, Rng};
 
 use components::Narrative;
-use components::{Giant, SkyBlender}; // not needed in src/main, but reincluded through it -> need to learn
-                                     // and think of how to structure imports
-                                     // Cannot yet read the code good enough to figure out
-                                     // how to use these (and they lack examples :( )
-                                     //use radians::Rad32;
-                                     //use radian::Rad32;
+use components::{Giant, SkyBlender};
+use systems::camera_shake::*;
+// not needed in src/main, but reincluded through it -> need to learn
+// and think of how to structure imports
+// Cannot yet read the code good enough to figure out
+// how to use these (and they lack examples :( )
+//use radians::Rad32;
+//use radian::Rad32;
 
 mod components;
 mod phrases;
@@ -102,6 +104,7 @@ fn main() {
             physics,
             narrative_fading,
             animate,
+            camera_shake,
             update.after(physics),
             render.after(update),
         ),

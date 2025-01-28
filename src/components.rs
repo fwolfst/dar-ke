@@ -146,3 +146,8 @@ pub struct HorizonBitmap {
     pub data: [u8; (HORIZON_WIDTH_IN_PIXEL) as usize],
 }
 
+#[derive(Component)]
+pub struct CameraShake {
+    pub strength: f32, // between 0 and 1.0
+    pub duration: Timer,
+}

@@ -1,3 +1,4 @@
+pub mod camera_shake;
 pub mod input;
 pub mod narrative_fading;
 pub mod physics;

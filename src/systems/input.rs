@@ -1,3 +1,4 @@
+use crate::components::CameraShake;
 use crate::*;
 use bevy::window::WindowMode;
 use bevy::window::*;
@@ -11,15 +12,15 @@ pub fn process_input(
 ) {
     const MOVE_SPEED: f32 = 0.1; //1.0;
     const TURN_SPEED: f32 = 0.02;
-    // TODO patternmatch here
+
     if keyboard_input.pressed(KeyCode::KeyA) {
         let mut player = player.single_mut();
         player.turn(-TURN_SPEED);
-    }
-    if keyboard_input.pressed(KeyCode::KeyD) {
+    } else if keyboard_input.pressed(KeyCode::KeyD) {
         let mut player = player.single_mut();
         player.turn(TURN_SPEED);
     }
+
     if keyboard_input.pressed(KeyCode::KeyW) {
         let mut player = player.single_mut();
         let dx = f32::sin(player.direction);
@@ -47,6 +48,14 @@ pub fn process_input(
         player.is_moving = false;
         player.head = 0;
     }
+
+    if keyboard_input.pressed(KeyCode::KeyN) {
+        commands.spawn(CameraShake {
+            duration: Timer::new(Duration::from_secs(2), TimerMode::Once),
+            strength: 0.2,
+        });
+    }
+
     if keyboard_input.pressed(KeyCode::KeyQ) {
         exit.send(AppExit::Success);
     }
