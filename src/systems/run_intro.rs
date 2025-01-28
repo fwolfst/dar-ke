@@ -29,7 +29,7 @@ pub fn run_intro(
         next_state.set(GameState::Playing);
         let color = Color::srgb_u8(150, 130, 110);
         commands.spawn((
-            components::Narrative { ..default() },
+            components::Narrative,
             Text2dBundle {
                 text: Text {
                     sections: vec![TextSection::new(

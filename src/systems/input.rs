@@ -62,7 +62,7 @@ pub fn process_input(
     if keyboard_input.pressed(KeyCode::KeyT) {
         let color = Color::srgb_u8(150, 120, 130);
         commands.spawn((
-            components::Narrative { ..default() },
+            components::Narrative,
             Text2dBundle {
                 text: Text {
                     sections: vec![TextSection::new(

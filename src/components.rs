@@ -62,33 +62,26 @@ pub struct Light {
 pub struct Pebble {
     pub x: f32,
     pub y: f32,
-    //pub color: Color,
 }
 
 #[derive(Component)]
 pub struct Blob {
     pub color: Color,
-    //pub position: Vec2,
     pub x: f32,
     pub y: f32,
-    //pub height: i32,
 }
 
 #[derive(Clone, Debug, Resource)]
 pub struct SkyBlender {
     pub height: i32,
-    //pub position: f32,
     pub extend: f32,
-    //pub color: Color,
-    //pub strength: f32, // can be alpha of color?
 }
+
 impl Default for SkyBlender {
     fn default() -> Self {
         Self {
             height: 5,
-            //position: 0.0,
             extend: 30.0,
-            //color: Color::srgba_u8(160, 80, 80, 80),
         }
     }
 }
@@ -121,19 +114,7 @@ impl Default for Params {
 }
 
 #[derive(Clone, Debug, Component)]
-pub struct Narrative {
-    //pub timer: Timer,
-    //pub phrase_index: usize,
-}
-
-impl Default for Narrative {
-    fn default() -> Self {
-        Narrative {
-            //timer: Timer::new(Duration::from_secs(8), TimerMode::Once),
-            //phrase_index: 0,
-        }
-    }
-}
+pub struct Narrative;
 
 #[derive(Component)]
 pub struct GlitchBlob {

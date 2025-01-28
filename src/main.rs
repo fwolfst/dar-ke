@@ -67,8 +67,9 @@ fn main() {
     app.add_plugins((
         DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
-                //mode: bevy::window::WindowMode::BorderlessFullscreen,
                 resolution: bevy::window::WindowResolution::default(),
+                // For release
+                //mode: bevy::window::WindowMode::BorderlessFullscreen,
                 //cursor: Cursor {
                 //    visible: false,
                 //    ..default()
@@ -163,7 +164,6 @@ fn init_blobs(mut commands: Commands) {
         x: 0.0,
         y: 20.0,
         color: Color::srgb_u8(130, 160, 150),
-        //height: 0,
     });
 }
 
@@ -222,7 +222,6 @@ fn spawn_darke(mut commands: Commands) {
                     GlitchBlob {
                         x: x as f32 - 10.0,
                         y: 80.0,
-                        //color: Color::srgb_u8(160,170,160),
                     },
                     Height {
                         height: 30.0 - y as f32,
@@ -235,6 +234,6 @@ fn spawn_darke(mut commands: Commands) {
 
 fn max_window(mut windows: Query<&mut Window>) {
     let mut window = windows.single_mut();
-    window.set_maximized(true);
+    //window.set_maximized(true);
 }
 
