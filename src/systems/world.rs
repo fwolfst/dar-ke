@@ -21,12 +21,6 @@ pub fn update(
     mut commands: Commands,
 ) {
     // Fade out narrative
-    for (entity, mut narrative) in &mut narrative {
-        narrative.timer.tick(time.delta());
-        if narrative.timer.finished() {
-            commands.entity(entity).despawn();
-        }
-    }
 
     // Head bobble
     // sinus curve over 1 second, 1 second transition to baseline if not moving

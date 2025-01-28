@@ -1,4 +1,5 @@
 pub mod input;
+pub mod narrative_fading;
 pub mod physics;
 pub mod render;
 pub mod renderer;

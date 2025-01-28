@@ -37,6 +37,7 @@ use crate::components::Params;
 use crate::components::Pebble;
 use crate::components::Player;
 use crate::systems::input::*;
+use crate::systems::narrative_fading::*;
 use crate::systems::physics::*;
 use crate::systems::renderer::*;
 use crate::systems::run_intro::*;
@@ -99,6 +100,7 @@ fn main() {
             run_intro.run_if(in_state(GameState::Intro)),
             ui,
             physics,
+            narrative_fading,
             animate,
             update.after(physics),
             render.after(update),

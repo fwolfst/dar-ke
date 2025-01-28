@@ -122,14 +122,14 @@ impl Default for Params {
 
 #[derive(Clone, Debug, Component)]
 pub struct Narrative {
-    pub timer: Timer,
+    //pub timer: Timer,
     //pub phrase_index: usize,
 }
 
 impl Default for Narrative {
     fn default() -> Self {
         Narrative {
-            timer: Timer::new(Duration::from_secs(8), TimerMode::Once),
+            //timer: Timer::new(Duration::from_secs(8), TimerMode::Once),
             //phrase_index: 0,
         }
     }
