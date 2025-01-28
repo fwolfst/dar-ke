@@ -23,6 +23,12 @@ impl Projector {
     /// Radians projected to screen space
     pub fn screen_x_of_rad(&self, rad: f32) -> i32 {
         let k = clockwise_diff(self.left_view_rad, rad);
+        // normalize
+        let k = if k > (2.0 * std::f32::consts::PI) {
+            k - 2.0 * std::f32::consts::PI
+        } else {
+            k
+        };
         (k * self.pixel_per_rad).round() as i32
     }
 
