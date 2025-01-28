@@ -67,12 +67,14 @@ pub fn process_input(
             },
         ));
     }
-    if keyboard_input.pressed(KeyCode::KeyF) {
+    if keyboard_input.just_pressed(KeyCode::KeyF) {
         let mut window = windows.single_mut();
-        if window.mode == WindowMode::BorderlessFullscreen {
-            window.mode = WindowMode::Windowed;
-        } else {
+        if window.mode != WindowMode::BorderlessFullscreen {
+            window.cursor.visible = false;
             window.mode = WindowMode::BorderlessFullscreen
+        } else {
+            window.cursor.visible = true;
+            window.mode = WindowMode::Windowed;
         }
     }
 }
