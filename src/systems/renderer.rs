@@ -25,6 +25,7 @@ pub fn render(
     blobs: Query<&Blob>,
     pebbles: Query<&Pebble>,
     glitch_blobs: Query<(&GlitchBlob, &Height)>,
+    flies: Query<(&Fly, &Height, &Colored, &Positioned)>,
     params: Res<Params>,
     horizon_silhouette: Res<HorizonBitmap>,
     sky_blender: Res<SkyBlender>,
@@ -75,9 +76,18 @@ pub fn render(
         render_blob(&projector, horizon, &mut frame, &player, b);
     }
 
-    for p in &pebbles {
-        render_pebble(&projector, horizon, &mut frame, &player, p);
+    for (_f, h, c, p) in &flies {
+        render_fly(&projector, horizon, &mut frame, &player, p, c, h);
     }
+
+    pebbles
+        .iter()
+        .for_each(|pebble| render_pebble(&projector, horizon, &mut frame, player, pebble));
+
+    // NOTE not sure yet which I like better, list comprehension or for-loop
+    //for p in &pebbles {
+    //    render_pebble(&projector, horizon, &mut frame, &player, p);
+    //}
 
     for (g, p) in &giants {
         render_giant(&projector, &mut frame, 10, &g, &p, &player);
@@ -104,9 +114,12 @@ fn render_glitch_blob(
 
     let bx = projector.screen_x_of_rad(ab);
 
-    frame
-        .set([bx as u32, horizon - height.height as u32], [180, 180, 180])
-        .ok();
+    if height.height <= horizon as f32 {
+        frame
+            //.set([bx as u32, horizon - height.height as u32], [180, 180, 180])
+            .set([bx as u32, horizon - height.height as u32], blob.color)
+            .ok();
+    }
 }
 
 fn render_pebble(
@@ -141,10 +154,70 @@ fn render_pebble(
     let dist = max_down * f32::exp(-k * db);
 
     let bx = projector.screen_x_of_rad(ab);
+    //println!(
+    //    "Pebble angle {} -> screen {}, player {}",
+    //    ab, bx, player.direction
+    //);
 
-    frame
-        .set([bx as u32, horizon + dist.round() as u32], [20, 20, 20])
-        .ok();
+    let pebbles_relative_color = true;
+    if pebbles_relative_color {
+        let pxidx: usize = (bx as u32 + (horizon + dist.round() as u32) * frame.size().x) as usize;
+        if pxidx < frame.raw().len() {
+            let c = frame.raw()[pxidx];
+            // -> TODO contribute: Frame#get([bx as u32, horizon + dist.round() as u32]);
+            frame
+                .set(
+                    [bx as u32, horizon + dist.round() as u32],
+                    c.as_color().lighter(0.01),
+                )
+                .ok();
+        }
+    } else {
+        frame
+            .set(
+                [bx as u32, horizon + dist.round() as u32], //c.as_color().lighter(0.02)).ok();
+                [10, 10, 12],
+            )
+            .ok();
+    }
+}
+
+fn render_fly(
+    projector: &Projector,
+    horizon: u32,
+    frame: &mut Frame,
+    player: &Player,
+    pos: &Positioned,
+    color: &Colored,
+    height: &Height,
+) {
+    let dx = player.x - pos.x;
+    let dy = player.y - pos.y;
+
+    // angle
+    //let ab = if dx == 0. { 0.0 } else { dy.atan2(dx) };
+    // "North" clockwise
+    let ab = if dx == 0. {
+        0.0
+    } else {
+        std::f32::consts::PI + dx.atan2(dy)
+    };
+
+    let max_down = (RENDER_HEIGHT - horizon) as f32;
+
+    // TODO move into projector
+    let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
+    let k = 0.4; // decay
+    let dist = (max_down * f32::exp(-k * db)).round() as u32;
+
+    let bx = projector.screen_x_of_rad(ab);
+
+    if height.height <= horizon as f32 {
+        // IDEA scale color (alpha) by distance?
+        frame
+            .set([bx as u32, horizon - height.height as u32], color.0)
+            .ok();
+    }
 }
 
 fn render_blob(
@@ -154,7 +227,6 @@ fn render_blob(
     player: &Player,
     blob: &Blob,
 ) {
-    // TODO fix bug with pebbles left of vd
     let dx = player.x - blob.x;
     let dy = player.y - blob.y;
 
@@ -305,7 +377,9 @@ fn draw_horizon(
         let ix = (horizontal_pixel_offset + x) as usize % (silhouette.data.len());
         let h = silhouette.data[ix as usize];
         for y in 1..h {
-            frame.set([x, horizon - y as u32], HORIZON_COL).ok();
+            if y <= horizon as u8 {
+                frame.set([x, horizon - y as u32], HORIZON_COL).ok();
+            }
         }
     }
 }

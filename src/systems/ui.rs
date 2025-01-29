@@ -141,6 +141,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x + 0.0,
             y: player_pos.y + 3.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 10.0 },
     ));
@@ -149,6 +150,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x + 0.0,
             y: player_pos.y + -3.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 10.0 },
         //    IsFalling));
@@ -157,6 +159,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x + 30.0,
             y: player_pos.y + -30.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 8.0 },
     ));
@@ -164,6 +167,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x - 30.0,
             y: player_pos.y + 30.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 8.0 },
     ));
@@ -171,6 +175,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x + 0.0,
             y: player_pos.y + -30.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 6.0 },
     ));
@@ -178,6 +183,7 @@ fn spawn_glitch_blobs(mut commands: Commands, player_pos: Vec2) {
         GlitchBlob {
             x: player_pos.x + 0.0,
             y: player_pos.y + 30.0,
+            color: Color::srgb_u8(240, 160, 160),
         },
         Height { height: 6.0 },
     ));

@@ -92,7 +92,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
   - [ ] going down (to ground)
   - [ ] slight cam shake
 - [ ] certain events trigger certain narratives
-- [X] there is a trigger for the credit screen
+- [ ] there is a trigger for the credit screen
 - [ ] there is a credit screen
 - [ ] fix fullscreen toggle in macos
 - [ ] hide mousepointer and egui when started with certain arg (later make this default)

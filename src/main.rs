@@ -16,7 +16,7 @@ use bevy_egui::{
 use bevy_pixel_buffer::prelude::*;
 use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
-use components::Narrative;
+use components::{Colored, Fading, Fly, Narrative, Positioned};
 use components::{Giant, SkyBlender};
 use systems::{camera_shake::*, run_credits::run_credits};
 // not needed in src/main, but reincluded through it -> need to learn
@@ -90,7 +90,6 @@ fn main() {
             init_pixel_buffer,
             init_player,
             init_pebble_field,
-            init_stage1, // TODO only after intro
             spawn_darke,
         ),
     )
@@ -114,6 +113,8 @@ fn main() {
             render.after(update),
         ),
     )
+    .add_systems(OnEnter(GameState::Credits), spawn_darke_sky)
+    .add_systems(OnEnter(GameState::Playing), init_stage1)
     .insert_state(GameState::Intro)
     .insert_resource(Params::default())
     .insert_resource(SkyBlender::default())
@@ -154,12 +155,18 @@ fn init_pebble_field(mut commands: Commands) {
     }
 }
 
-fn init_stage1(mut commands: Commands) {
+fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) {
     commands.spawn(Blob {
         x: 10.0,
         y: 10.0,
         color: Color::srgb_u8(180, 60, 50),
     });
+
+    for e in darkes.iter() {
+        commands.entity(e).insert(Fading {
+            timer: Timer::new(Duration::from_secs(4), TimerMode::Once),
+        });
+    }
 }
 
 #[allow(non_snake_case)]
@@ -190,7 +197,52 @@ fn spawn_darke(mut commands: Commands) {
                     GlitchBlob {
                         x: x as f32 - 10.0,
                         y: 80.0,
+                        color: Color::srgb_u8(240, 240, 240),
                     },
+                    Height {
+                        height: 30.0 - y as f32,
+                    },
+                ));
+            }
+        }
+    }
+}
+
+fn spawn_darke_sky(mut commands: Commands, player: Query<&Player>) {
+    const ˑ: bool = true;
+    const Ø: bool = false;
+    const DARKE: [[bool; 23]; 5] = [
+        [
+            Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+        [
+            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
+        ],
+        [
+            Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
+        ],
+    ];
+
+    let player = player.single();
+    let dist = 20.0;
+    for (y, row) in DARKE.iter().enumerate() {
+        for (x, i) in row.iter().enumerate() {
+            if !*i {
+                let a = player.direction - 0.5 + x as f32 * 0.01;
+                commands.spawn((
+                    Fly,
+                    Positioned {
+                        x: player.x + a.sin() * dist,
+                        y: player.y + a.cos() * dist,
+                        //color:
+                    },
+                    Colored(Color::srgb_u8(240, 160, 160)),
                     Height {
                         height: 30.0 - y as f32,
                     },

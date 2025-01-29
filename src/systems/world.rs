@@ -1,6 +1,7 @@
 use components::CameraShake;
 use components::CreditRoll;
 use components::Fading;
+use components::GlitchBlob;
 
 use crate::*;
 
@@ -30,8 +31,21 @@ pub fn head_bobb(mut player: Query<&mut Player>, time: Res<Time>) {
 }
 
 /// Other world updates
-pub fn update(mut _player: Query<&mut Player>, _time: Res<Time>) {
+pub fn update(
+    mut _player: Query<&mut Player>,
+    mut fading_blobs: Query<(Entity, &mut GlitchBlob, &mut Fading)>,
+    time: Res<Time>,
+    mut commands: Commands,
+) {
     // tbd
+    fading_blobs.iter_mut().for_each(|(e, mut gb, mut f)| {
+        f.timer.tick(time.delta());
+        gb.color = gb.color.darker(0.006);
+
+        if f.timer.just_finished() {
+            commands.entity(e).despawn();
+        }
+    });
 }
 
 /// Bow if leaving the area
@@ -60,7 +74,7 @@ pub fn end_it(
 
         // Remove other Narratives?
         commands.spawn(CameraShake {
-            duration: Timer::new(Duration::from_secs(1), TimerMode::Once),
+            duration: Timer::new(Duration::from_secs_f32(0.2), TimerMode::Once),
             strength: 0.2,
         });
 

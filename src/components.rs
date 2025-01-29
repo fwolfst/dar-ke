@@ -121,6 +121,7 @@ pub struct Narrative;
 pub struct GlitchBlob {
     pub x: f32,
     pub y: f32,
+    pub color: Color,
 }
 
 #[derive(Component)]
@@ -170,5 +171,11 @@ pub struct CameraShake {
 
 #[derive(Component)]
 pub struct CreditRoll {
-    pub time: Timer,
+    pub time: Timer, // between 0 and 1.0
 }
+
+#[derive(Component, Reflect)]
+pub struct Colored(pub Color);
+
+#[derive(Component)]
+pub struct Fly;
