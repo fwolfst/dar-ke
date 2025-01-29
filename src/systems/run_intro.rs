@@ -1,6 +1,6 @@
 use crate::*;
+
 use components::Fading;
-use components::Narrative;
 use components::Player;
 
 pub fn run_intro(

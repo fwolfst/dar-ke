@@ -18,7 +18,7 @@ use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
 use components::Narrative;
 use components::{Giant, SkyBlender};
-use systems::camera_shake::*;
+use systems::{camera_shake::*, run_credits::run_credits};
 // not needed in src/main, but reincluded through it -> need to learn
 // and think of how to structure imports
 // Cannot yet read the code good enough to figure out
@@ -102,11 +102,14 @@ fn main() {
         Update,
         (
             run_intro.run_if(in_state(GameState::Intro)),
+            run_credits.run_if(in_state(GameState::Credits)),
+            end_it.run_if(in_state(GameState::Playing)),
             ui,
             physics,
             narrative_fading,
             animate,
             camera_shake,
+            head_bobb.run_if(in_state(GameState::Playing)),
             update.after(physics),
             render.after(update),
         ),

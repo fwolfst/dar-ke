@@ -167,3 +167,8 @@ pub struct CameraShake {
     pub strength: f32, // between 0 and 1.0
     pub duration: Timer,
 }
+
+#[derive(Component)]
+pub struct CreditRoll {
+    pub time: Timer,
+}

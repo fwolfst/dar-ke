@@ -82,19 +82,21 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 ## Derived ToDos
 
 - [X] Has Intro
-  - [ ] which blends over into gameplay
+  - [X] which blends over into gameplay
   - [ ] which triggers first narrative
 - [ ] Moving forward has a visible effect (besides head movement)
   - [ ] horizon and ground have some texture
   - [ ] objs appear bigger when close
 - [ ] giants can move
-- [ ] certain areas can trigger certain events or enable systems
+- [ ] certain areas can trigger certain events or enable systems, e.g.
+  - [ ] going down (to ground)
+  - [ ] slight cam shake
 - [ ] certain events trigger certain narratives
+- [X] there is a trigger for the credit screen
 - [ ] there is a credit screen
 - [ ] fix fullscreen toggle in macos
 - [ ] hide mousepointer and egui when started with certain arg (later make this default)
   - [ ] (dupe) optionally disable mousepointer in fullscreen (then no egui)
-- [ ] there is a trigger for the credit screen
 - [ ] there is a global darkness
 - [ ] Screen and Window sizing is messed up. Use a proper camera and fixed ratios.
 - [ ] Use bevy Color::Mix or colorgrad-rs to interpolate between colors (or interpolate() or blend())
