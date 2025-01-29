@@ -14,7 +14,7 @@ use bevy_egui::{
 };
 
 use bevy_pixel_buffer::prelude::*;
-use rand::{thread_rng, Rng};
+use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
 use components::Narrative;
 use components::{Giant, SkyBlender};
@@ -114,7 +114,7 @@ fn main() {
     .insert_state(GameState::Intro)
     .insert_resource(Params::default())
     .insert_resource(SkyBlender::default())
-    .insert_resource(generate_horizon())
+    .insert_resource(HorizonBitmap::generate(40, 4..=38, 1..=11))
     .run();
 }
 
@@ -157,32 +157,6 @@ fn init_stage1(mut commands: Commands) {
         y: 10.0,
         color: Color::srgb_u8(180, 60, 50),
     });
-}
-
-/// generate triangles on the horizon
-fn generate_horizon() -> HorizonBitmap {
-    let max_height = 11;
-    let min_width = 4; // actually double as wide
-    let max_width = 38; // actually double as wide
-    let num_objs = 40;
-
-    let mut rng = thread_rng();
-    let mut data = [0; HORIZON_WIDTH_IN_PIXEL as usize];
-
-    for _ in 0..num_objs {
-        let pos = rng.gen_range(0..(HORIZON_WIDTH_IN_PIXEL as u32));
-        let width = rng.gen_range(min_width..max_width);
-        let peak = rng.gen_range(1..max_height);
-
-        for x in 0..width {
-            let height = ((x as f32 / width as f32) * peak as f32).round() as u8; // triangle
-            let idx = ((pos + x) % HORIZON_WIDTH_IN_PIXEL as u32) as usize;
-            data[idx] = height.max(data[idx]);
-            let idx = ((pos + 2 * width - x - 1) % HORIZON_WIDTH_IN_PIXEL as u32) as usize;
-            data[idx] = height.max(data[idx]);
-        }
-    }
-    HorizonBitmap { data }
 }
 
 #[allow(non_snake_case)]
