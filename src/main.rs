@@ -49,10 +49,11 @@ use crate::systems::world::*;
 // TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
 // until settled.
-pub const RENDER_WIDTH: u32 = 128;
-pub const RENDER_HEIGHT: u32 = 48;
-pub const PIXEL_SIZE: u32 = 13;
 use crate::systems::renderer::HORIZON_WIDTH_IN_PIXEL;
+use crate::systems::renderer::RENDER_HEIGHT;
+use crate::systems::renderer::RENDER_WIDTH;
+
+pub const PIXEL_SIZE: u32 = 13;
 
 #[derive(States, Default, Debug, Clone, Eq, PartialEq, Hash)]
 enum GameState {
@@ -89,7 +90,7 @@ fn main() {
             init_pixel_buffer,
             init_player,
             init_pebble_field,
-            init_stage1,
+            init_stage1, // TODO only after intro
             spawn_darke,
         ),
     )
@@ -154,21 +155,11 @@ fn init_stage1(mut commands: Commands) {
     commands.spawn(Blob {
         x: 10.0,
         y: 10.0,
-        //height: 2,
         color: Color::srgb_u8(180, 60, 50),
     });
 }
 
-fn init_blobs(mut commands: Commands) {
-    commands.spawn(Blob {
-        x: 0.0,
-        y: 20.0,
-        color: Color::srgb_u8(130, 160, 150),
-    });
-}
-
 /// generate triangles on the horizon
-// TODO more randomness, not always mirrored triangles
 fn generate_horizon() -> HorizonBitmap {
     let max_height = 11;
     let min_width = 4; // actually double as wide
@@ -232,8 +223,8 @@ fn spawn_darke(mut commands: Commands) {
     }
 }
 
-fn max_window(mut windows: Query<&mut Window>) {
-    let mut window = windows.single_mut();
+fn max_window(mut _windows: Query<&mut Window>) {
+    // For release
+    //let mut window = windows.single_mut();
     //window.set_maximized(true);
 }
-

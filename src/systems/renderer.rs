@@ -3,7 +3,10 @@ use bevy_pixel_buffer::prelude::*;
 
 use crate::components::*;
 use crate::systems::render::projector::*;
-use crate::{RENDER_HEIGHT, RENDER_WIDTH};
+
+/// Dimensions on screen, in pixel; before scaling.
+pub const RENDER_WIDTH: u32 = 128;
+pub const RENDER_HEIGHT: u32 = 48;
 
 /// in radians: witdth of the view field.
 pub const VIEW_ANGLE: f32 = std::f32::consts::PI / 2.0;
@@ -12,7 +15,6 @@ pub const HORIZON_WIDTH_IN_PIXEL: f32 =
     RENDER_WIDTH as f32 * 2.0 * std::f32::consts::PI / VIEW_ANGLE;
 
 const HORIZON_COL: [u8; 3] = [1, 2, 3];
-
 /// Put pixels in frame that represent the scenerie.
 /// Sky and ground are drawn before everything else
 pub fn render(
