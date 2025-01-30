@@ -7,12 +7,18 @@ use crate::*;
 
 use std::f32::consts::PI;
 
-/// Animate the giant(s) walking
-pub fn animate(mut giants: Query<&mut Giant>, time: Res<Time>) {
+/// Animate the giant(s) walking, including the screen shake
+pub fn animate(mut giants: Query<&mut Giant>, time: Res<Time>, mut commands: Commands) {
     for mut giant in &mut giants {
         giant.timer.tick(time.delta());
         if giant.timer.finished() {
             giant.frame = (giant.frame + 1).rem_euclid(2);
+            if giant.frame == 0 {
+                commands.spawn(CameraShake {
+                    strength: 1.0,
+                    duration: Timer::new(Duration::from_secs_f32(0.1), TimerMode::Once),
+                });
+            }
         }
     }
 }

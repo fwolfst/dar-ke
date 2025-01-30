@@ -20,8 +20,9 @@ pub fn camera_shake(
             cam.translation.y = 0.0;
         } else {
             let mut cam = camera.single_mut();
-            cam.translation.x += rng.gen_range(-10.0..10.0) as f32;
-            cam.translation.y += rng.gen_range(-10.0..10.0) as f32;
+            let shake_base = 10.0 * shake.strength;
+            cam.translation.x += rng.gen_range((-1.0 * shake_base)..shake_base) as f32;
+            cam.translation.y += rng.gen_range((-1.0 * shake_base)..shake_base) as f32;
         }
     }
 }
