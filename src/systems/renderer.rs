@@ -20,7 +20,7 @@ const HORIZON_COL: [u8; 3] = [1, 2, 3];
 pub fn render(
     mut pb: QueryPixelBuffer,
     player: Query<&Player>,
-    giants: Query<(&Giant, &Positioned)>,
+    giants: Query<(&Giant, &AtHorizon)>,
     lights: Query<(&Light, &AtHorizon)>,
     blobs: Query<&Blob>,
     pebbles: Query<&Pebble>,
@@ -38,7 +38,7 @@ pub fn render(
         + player.height as i32
         + player.head as i32)
         .clamp(0, RENDER_HEIGHT as i32) as u32;
-    let projector = make_projector(player.direction);
+    let projector = make_projector(player.direction, horizon);
 
     draw_sky(
         &projector,
@@ -52,6 +52,10 @@ pub fn render(
     let horizon_total_pixel = RENDER_WIDTH * (std::f32::consts::PI * 2.0 / VIEW_ANGLE) as u32;
     let left_px =
         (horizon_total_pixel as f32 * player.direction / (std::f32::consts::PI * 2.0)) as u32;
+
+    for (g, p) in &giants {
+        render_giant(&projector, &mut frame, 10, &g, &p);
+    }
 
     draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px);
 
@@ -88,10 +92,6 @@ pub fn render(
     //for p in &pebbles {
     //    render_pebble(&projector, horizon, &mut frame, &player, p);
     //}
-
-    for (g, p) in &giants {
-        render_giant(&projector, &mut frame, 10, &g, &p, &player);
-    }
 }
 
 fn render_glitch_blob(
@@ -230,8 +230,6 @@ fn render_blob(
     let dx = player.x - blob.x;
     let dy = player.y - blob.y;
 
-    // angle
-    //let ab = if dx == 0. { 0.0 } else { dy.atan2(dx) };
     // "North" clockwise
     let ab = if dx == 0. {
         0.0
@@ -249,9 +247,7 @@ fn render_blob(
     let bx = projector.screen_x_of_rad(ab);
 
     // IDEA scale color (alpha) by distance?
-    frame
-        .set([bx as u32, horizon + dist.round() as u32], blob.color)
-        .ok();
+    frame.set([bx as u32, horizon + dist], blob.color).ok();
 
     if db < 10.0 {
         // shape
@@ -455,8 +451,7 @@ fn render_giant(
     frame: &mut Frame,
     _xpix: i32,
     giant: &Giant,
-    position: &Positioned,
-    player: &Player,
+    position: &AtHorizon,
 ) {
     // This needs #![allow(uncommon_codepoints)] to de-warn,
     // lets find another nice "empty looking" identifier.
@@ -490,29 +485,24 @@ fn render_giant(
         [Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
     ];
 
-    let offset = if giant.frame == 1 { 4 } else { 6 };
+    let offset = if giant.frame == 1 { 0 } else { 2 };
 
-    let dx = player.x - position.x;
-    let dy = player.y - position.y;
-
-    let ab = if dy == 0. {
-        0.0
-    } else {
-        (dx as f32 / dy as f32).atan()
-    };
-
-    let sx = projector.screen_x_of_rad(ab);
+    let sx = projector.screen_x_of_rad(position.angle);
 
     // TODO clipping?
     for (y, row) in GIANT_BITMAP.iter().enumerate() {
-        for (x, _col) in row.iter().enumerate().filter(|(_, v)| **v) {
-            let _ = frame.set(
-                UVec2::new(x as u32 + sx as u32, y as u32 + offset),
-                HORIZON_COL,
-            );
+        let y_screen = projector.horizon as i32 + y as i32 + offset as i32 - 24;
+        if y_screen > 0 {
+            for (x, _col) in row.iter().enumerate().filter(|(_, v)| **v) {
+                frame
+                    .set(
+                        UVec2::new(x as u32 + sx as u32, y_screen as u32),
+                        HORIZON_COL,
+                    )
+                    .ok();
+            }
         }
     }
-    // TODO only draw till horizon
 }
 
 #[cfg(test)]

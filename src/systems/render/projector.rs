@@ -8,13 +8,15 @@ use crate::{
 pub struct Projector {
     left_view_rad: f32,
     pixel_per_rad: f32,
+    pub horizon: u32,
 }
 
 /// Generate a projector
-pub fn make_projector(view_direction_rad: f32) -> Projector {
+pub fn make_projector(view_direction_rad: f32, horizon: u32) -> Projector {
     Projector {
         left_view_rad: view_direction_rad - HALF_VIEW_ANGLE,
         pixel_per_rad: (RENDER_WIDTH as f32) / VIEW_ANGLE,
+        horizon,
     }
 }
 
