@@ -1,3 +1,4 @@
+use components::AtHorizon;
 use components::CameraShake;
 use components::CreditRoll;
 use components::Fading;
@@ -8,8 +9,12 @@ use crate::*;
 use std::f32::consts::PI;
 
 /// Animate the giant(s) walking, including the screen shake
-pub fn animate(mut giants: Query<&mut Giant>, time: Res<Time>, mut commands: Commands) {
-    for mut giant in &mut giants {
+pub fn animate(
+    mut giants: Query<(&mut Giant, &mut AtHorizon)>,
+    time: Res<Time>,
+    mut commands: Commands,
+) {
+    for (mut giant, mut pos) in &mut giants {
         giant.timer.tick(time.delta());
         if giant.timer.finished() {
             giant.frame = (giant.frame + 1).rem_euclid(2);
@@ -20,6 +25,7 @@ pub fn animate(mut giants: Query<&mut Giant>, time: Res<Time>, mut commands: Com
                 });
             }
         }
+        pos.angle -= 0.015 * time.delta_seconds();
     }
 }
 

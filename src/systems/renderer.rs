@@ -485,21 +485,23 @@ fn render_giant(
         [Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
     ];
 
-    let offset = if giant.frame == 1 { 0 } else { 2 };
+    let offset = if giant.frame == 1 { 2 } else { 4 };
 
     let sx = projector.screen_x_of_rad(position.angle);
 
     // TODO clipping?
     for (y, row) in GIANT_BITMAP.iter().enumerate() {
-        let y_screen = projector.horizon as i32 + y as i32 + offset as i32 - 24;
+        let y_screen = projector.horizon as i32 + y as i32 + offset - 24;
         if y_screen > 0 {
             for (x, _col) in row.iter().enumerate().filter(|(_, v)| **v) {
-                frame
-                    .set(
-                        UVec2::new(x as u32 + sx as u32, y_screen as u32),
-                        HORIZON_COL,
-                    )
-                    .ok();
+                if sx >= x as i32 {
+                    frame
+                        .set(
+                            UVec2::new(x as u32 + sx as u32, y_screen as u32),
+                            Color::srgb_u8(15, 15, 15),
+                        )
+                        .ok();
+                }
             }
         }
     }
