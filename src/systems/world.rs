@@ -3,6 +3,7 @@ use components::CameraShake;
 use components::CreditRoll;
 use components::Fading;
 use components::GlitchBlob;
+use components::Stage1Blob;
 
 use crate::*;
 
@@ -61,13 +62,32 @@ pub fn update(
 }
 
 /// Bow if leaving the area
-pub fn area_effects(_commands: Commands, time: Res<Time>, mut player: Query<&mut Player>) {
+pub fn area_effects(
+    mut commands: Commands,
+    time: Res<Time>,
+    mut player: Query<&mut Player>,
+    stage1_blobs: Query<(Entity, &Blob), With<Stage1Blob>>,
+    mut params: ResMut<Params>,
+) {
     // if outside bounds, bow
     // When leaving/entering the area, give a one-time effect (screen shake)
     let mut player = player.single_mut();
+
     //if !(-100.0..100.0).contains(&player.x) || !(-100.0..100.0).contains(&player.y) {
     if !(-10.0..10.0).contains(&player.x) || !(-10.0..10.0).contains(&player.y) {
         player.height = 10 - (time.elapsed_seconds() * 3.0) as i32;
+    }
+
+    for (e, stage1_blob) in &stage1_blobs {
+        if player
+            .pos_as_vec2()
+            .distance(Vec2::new(stage1_blob.x, stage1_blob.y))
+            < 0.5
+        {
+            commands.entity(e).despawn();
+            // brighten players light
+            params.light_cone_off_y -= 20;
+        }
     }
 }
 

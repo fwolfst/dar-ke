@@ -54,6 +54,11 @@ impl Projector {
             -((TWO_PI - k) * self.pixel_per_rad).round() as i32,
         )
     }
+
+    pub fn dist_to_screen_y(&self, dist: f32) -> i32 {
+        ((RENDER_HEIGHT - self.horizon) as f32 * f32::exp(-1.0 * EXP_DISTANCE_Y_DECAY * dist))
+            as i32
+    }
 }
 
 #[cfg(test)]
@@ -66,7 +71,7 @@ mod tests {
     // I want to be able to play with it.
     #[test]
     fn projection_from_radians() {
-        let p = make_projector(0.0);
+        let p = make_projector(0.0, 10);
 
         assert_eq!(p.screen_x_of_rad(0.0), (RENDER_WIDTH / 2) as i32);
 
@@ -83,7 +88,7 @@ mod tests {
         );
 
         // left wrap
-        let p = make_projector(0.0);
+        let p = make_projector(0.0, 10);
         assert_eq!(
             p.screen_x_of_rad(5.9), //7.0 / 4.0 * std::f32::consts::FRAC_PI_8),
             (RENDER_WIDTH / 4) as i32

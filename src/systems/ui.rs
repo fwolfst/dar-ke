@@ -1,4 +1,6 @@
-use components::{AtHorizon, GlitchBlob, Height, IsFalling, Light, Positioned};
+use components::{
+    AtHorizon, AtHorizonShape, Bird, Colored, Fly, GlitchBlob, Height, Light, Positioned, Tree,
+};
 
 use crate::*;
 use rand::{thread_rng, Rng};

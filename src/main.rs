@@ -16,7 +16,7 @@ use bevy_egui::{
 use bevy_pixel_buffer::prelude::*;
 use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
-use components::{Colored, Fading, Fly, Narrative, Positioned};
+use components::{Colored, Fading, Fly, Narrative, Positioned, Stage1Blob};
 use components::{Giant, SkyBlender};
 use systems::{camera_shake::*, run_credits::run_credits};
 // not needed in src/main, but reincluded through it -> need to learn
@@ -26,6 +26,7 @@ use systems::{camera_shake::*, run_credits::run_credits};
 //use radians::Rad32;
 //use radian::Rad32;
 
+mod bitmaps;
 mod components;
 mod phrases;
 pub mod radians_math;
@@ -156,11 +157,14 @@ fn init_pebble_field(mut commands: Commands) {
 }
 
 fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) {
-    commands.spawn(Blob {
-        x: 10.0,
-        y: 10.0,
-        color: Color::srgb_u8(180, 60, 50),
-    });
+    commands.spawn((
+        Blob {
+            x: 10.0,
+            y: 10.0,
+            color: Color::srgb_u8(180, 60, 50),
+        },
+        Stage1Blob,
+    ));
 
     for e in darkes.iter() {
         commands.entity(e).insert(Fading {
@@ -171,26 +175,7 @@ fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) 
 
 #[allow(non_snake_case)]
 fn spawn_darke(mut commands: Commands) {
-    const ˑ: bool = true;
-    const Ø: bool = false;
-    const DARKE: [[bool; 23]; 5] = [
-        [
-            Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
-        ],
-        [
-            Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-    ];
-    for (y, row) in DARKE.iter().enumerate() {
+    for (y, row) in bitmaps::darke::DARKE.iter().enumerate() {
         for (x, i) in row.iter().enumerate() {
             if !*i {
                 commands.spawn((
@@ -211,27 +196,9 @@ fn spawn_darke(mut commands: Commands) {
 fn spawn_darke_sky(mut commands: Commands, player: Query<&Player>) {
     const ˑ: bool = true;
     const Ø: bool = false;
-    const DARKE: [[bool; 23]; 5] = [
-        [
-            Ø, Ø, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-        [
-            Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, ˑ,
-        ],
-        [
-            Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø,
-        ],
-    ];
-
     let player = player.single();
     let dist = 20.0;
-    for (y, row) in DARKE.iter().enumerate() {
+    for (y, row) in bitmaps::darke::DARKE.iter().enumerate() {
         for (x, i) in row.iter().enumerate() {
             if !*i {
                 let a = player.direction - 0.5 + x as f32 * 0.01;

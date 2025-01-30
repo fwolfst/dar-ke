@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
+use giant::GIANT_BITMAP;
+use tree::TREE_BITMAP;
 
+use crate::bitmaps::*;
 use crate::components::*;
 use crate::systems::render::projector::*;
 
@@ -26,6 +29,8 @@ pub fn render(
     pebbles: Query<&Pebble>,
     glitch_blobs: Query<(&GlitchBlob, &Height)>,
     flies: Query<(&Fly, &Height, &Colored, &Positioned)>,
+    trees: Query<(&Tree, &AtHorizon)>,
+    birds: Query<(&Bird, &AtHorizon)>,
     params: Res<Params>,
     horizon_silhouette: Res<HorizonBitmap>,
     sky_blender: Res<SkyBlender>,
@@ -54,12 +59,12 @@ pub fn render(
         (horizon_total_pixel as f32 * player.direction / (std::f32::consts::PI * 2.0)) as u32;
 
     for (g, p) in &giants {
-        render_giant(&projector, &mut frame, 10, &g, &p);
+        render_giant(&projector, &mut frame, &g, &p);
     }
 
     draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px);
 
-    draw_ground(horizon, &mut frame, params.ground_up_bright, &params);
+    draw_ground(horizon, &mut frame, &params);
 
     for (light, at_horizon) in &lights {
         let pos_of_obj_screen = projector.screen_x_of_rad(at_horizon.angle) as u32;
@@ -82,6 +87,14 @@ pub fn render(
 
     for (_f, h, c, p) in &flies {
         render_fly(&projector, horizon, &mut frame, &player, p, c, h);
+    }
+
+    for (t, pos) in &trees {
+        render_tree(&projector, &mut frame, &t, &pos);
+    }
+
+    for (b, pos) in &birds {
+        render_bird(&projector, &mut frame, &b, &pos);
     }
 
     pebbles
@@ -440,45 +453,7 @@ fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Pa
 }
 
 #[allow(non_snake_case)]
-fn render_giant(
-    projector: &Projector,
-    frame: &mut Frame,
-    _xpix: i32,
-    giant: &Giant,
-    position: &AtHorizon,
-) {
-    // This needs #![allow(uncommon_codepoints)] to de-warn,
-    // lets find another nice "empty looking" identifier.
-    // Bitmap of a giant
-    const ˑ: bool = true;
-    const Ø: bool = false;
-    const GIANT_BITMAP: [[bool; 19]; 24] = [
-        [Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, ˑ, ˑ, Ø, Ø],
-        [Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, ˑ, ˑ, ˑ, Ø, Ø],
-        [Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, ˑ, ˑ, Ø],
-        [Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, ˑ, ˑ, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, ˑ, Ø, ˑ, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, Ø, ˑ, ˑ, Ø, Ø, Ø, ˑ, Ø, Ø, Ø, Ø, Ø, Ø],
-        [Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø, Ø],
-    ];
-
+fn render_giant(projector: &Projector, frame: &mut Frame, giant: &Giant, position: &AtHorizon) {
     let offset = if giant.frame == 1 { 2 } else { 4 };
 
     let sx = projector.screen_x_of_rad(position.angle);
@@ -499,6 +474,34 @@ fn render_giant(
             }
         }
     }
+}
+
+fn render_tree(projector: &Projector, frame: &mut Frame, tree: &Tree, position: &AtHorizon) {
+    // render bmp to frame
+    TREE_BITMAP.len();
+    let sx = projector.screen_x_of_rad(position.angle);
+    for (y, row) in TREE_BITMAP.iter().enumerate() {
+        let y_screen = projector.horizon as i32 + y as i32 - 24;
+        if y_screen > 0 {
+            for (x, _col) in row.iter().enumerate().filter(|(_, v)| !**v) {
+                if sx >= x as i32 {
+                    frame
+                        .set(
+                            UVec2::new(x as u32 + sx as u32, y_screen as u32),
+                            Color::srgb_u8(15, 15, 15),
+                        )
+                        .ok();
+                }
+            }
+        }
+    }
+}
+
+fn render_bird(projector: &Projector, frame: &mut Frame, bird: &Bird, position: &AtHorizon) {
+    // render that thing. Animate it, too.
+    // It strives to go somewhere
+    // bird/animation map
+    // distance x step
 }
 
 #[cfg(test)]

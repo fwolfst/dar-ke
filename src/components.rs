@@ -50,9 +50,14 @@ pub struct Player {
 }
 
 impl Player {
-    // Turn and wrap around (0..+2PI)
+    /// Turn and wrap around (0..+2PI)
     pub fn turn(&mut self, val: f32) {
         self.direction = norm_rad(self.direction + val);
+    }
+
+    /// Create a new Position vector
+    pub fn pos_as_vec2(&self) -> Vec2 {
+        Vec2::new(self.x, self.y)
     }
 }
 
@@ -179,3 +184,11 @@ pub struct Colored(pub Color);
 
 #[derive(Component)]
 pub struct Fly;
+
+pub struct Bird;
+
+#[derive(Component)]
+pub struct Tree;
+
+#[derive(Component)]
+pub struct Stage1Blob;
