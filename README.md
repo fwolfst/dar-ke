@@ -84,13 +84,13 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - [X] Has Intro
   - [X] which blends over into gameplay
   - [ ] which triggers first narrative
-- [ ] Moving forward has a visible effect (besides head movement)
+- [X] Moving forward has a visible effect (besides head movement)
   - [ ] horizon and ground have some texture
   - [ ] objs appear bigger when close
 - [ ] giants can move
 - [ ] certain areas can trigger certain events or enable systems, e.g.
   - [ ] going down (to ground)
-  - [ ] slight cam shake
+  - [X] slight cam shake
 - [ ] certain events trigger certain narratives
 - [ ] there is a trigger for the credit screen
 - [ ] there is a credit screen
@@ -109,13 +109,15 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ### Other ToDos
 
+- [ ] need to test/jump to stages, skip intro etcpp
 - [ ] a minimal init screen/objs (in game)
 - [ ] deterministic RNG with seed in params
 - [ ] Learn and straighten the imports
 - [ ] use radian or radians crate
-    - [ ] switch polar coord to -pi..pi
+  - [ ] switch polar coord to -pi..pi
 - [ ] settle on separation between renderer and projector
 - [ ] projector tests
+- [ ] Use Vec2 more often
 
 ## Game Ideas/Notes
 

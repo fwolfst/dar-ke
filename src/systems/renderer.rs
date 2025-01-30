@@ -45,13 +45,7 @@ pub fn render(
         .clamp(0, RENDER_HEIGHT as i32) as u32;
     let projector = make_projector(player.direction, horizon);
 
-    draw_sky(
-        &projector,
-        horizon as u8,
-        &mut frame,
-        params.sky_up_bright,
-        &sky_blender,
-    );
+    draw_sky(&projector, horizon as u8, &mut frame, &params, &sky_blender);
 
     // -> const
     let horizon_total_pixel = RENDER_WIDTH * (std::f32::consts::PI * 2.0 / VIEW_ANGLE) as u32;
@@ -62,7 +56,7 @@ pub fn render(
         render_giant(&projector, &mut frame, &g, &p);
     }
 
-    draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px);
+    draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px, &params);
 
     draw_ground(horizon, &mut frame, &params);
 
@@ -328,26 +322,24 @@ fn draw_sky(
     projector: &Projector,
     horizon: u8,
     frame: &mut Frame,
-    bright_up: bool,
+    params: &Params,
     sky_blender: &Res<SkyBlender>,
 ) {
     for y in 0..horizon {
-        let add = if bright_up {
-            linp(50, 0, 0, horizon.into(), y)
+        let add = if params.sky_up_bright {
+            linp(params.sky_max_brightness, 0, 0, horizon.into(), y)
         } else {
-            linp(0, 50, 0, horizon.into(), y)
+            linp(0, params.sky_max_brightness, 0, horizon.into(), y)
         };
 
         let light_xposses = projector.screen_x2_of_rad(std::f32::consts::FRAC_PI_2);
 
         let light_pos1 = Vec2::new(
             light_xposses.0 as f32,
-            // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
         let light_pos2 = Vec2::new(
             light_xposses.1 as f32,
-            // 0 is also nice  RENDER_WIDTH as f32 / 2.0,
             (horizon as i32 - sky_blender.height) as f32,
         );
 
@@ -375,13 +367,21 @@ fn draw_horizon(
     frame: &mut Frame,
     silhouette: &HorizonBitmap,
     horizontal_pixel_offset: u32,
+    params: &Params,
 ) {
+    let mid = (params.sky_max_brightness / 6) as u8;
+    let color = Color::srgb_u8(
+        (params.sky_max_brightness / 32) as u8 + mid,
+        (params.sky_max_brightness / 27) as u8 + mid,
+        (params.sky_max_brightness / 27) as u8 + mid,
+    );
+
     for x in 0..RENDER_WIDTH {
         let ix = (horizontal_pixel_offset + x) as usize % (silhouette.data.len());
         let h = silhouette.data[ix as usize];
         for y in 1..h {
             if y <= horizon as u8 {
-                frame.set([x, horizon - y as u32], HORIZON_COL).ok();
+                frame.set([x, horizon - y as u32], color).ok();
             }
         }
     }

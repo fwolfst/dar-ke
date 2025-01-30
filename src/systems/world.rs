@@ -87,6 +87,7 @@ pub fn area_effects(
             commands.entity(e).despawn();
             // brighten players light
             params.light_cone_off_y -= 20;
+            params.sky_max_brightness = 50;
         }
     }
 }

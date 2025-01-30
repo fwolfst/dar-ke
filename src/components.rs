@@ -18,6 +18,7 @@ pub struct Params {
     pub sky_up_bright: bool,
     pub ground_up_bright: bool,
     pub sky_horizon_ratio: f32,
+    pub sky_max_brightness: i32,
     pub light_cone_off_y: i32,
     pub light_cone_off_x: i32,
     pub light_cone_max_dist: f32,
@@ -30,6 +31,7 @@ impl Default for Params {
             sky_up_bright: false,
             ground_up_bright: false,
             sky_horizon_ratio: 0.6,
+            sky_max_brightness: 30, // Sort of global darkness?
             light_cone_off_y: 50 - RENDER_HEIGHT as i32,
             light_cone_off_x: 64 - RENDER_WIDTH as i32 / 2,
             light_cone_max_dist: 12.0,

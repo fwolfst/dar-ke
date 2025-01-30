@@ -77,6 +77,12 @@ pub fn ui(
             ui.label("Horizon");
             ui.add(egui::Slider::new(&mut params.sky_horizon_ratio, 0.0..=1.0));
         });
+
+        ui.horizontal(|ui| {
+            ui.label("Sky max bright");
+            ui.add(egui::Slider::new(&mut params.sky_max_brightness, 0..=100));
+        });
+
         if ui.add(egui::Button::new("Spawn light")).clicked() {
             let mut rng = thread_rng();
             commands.spawn((
