@@ -1,7 +1,10 @@
 use crate::{
     radians_math::{clockwise_diff, TWO_PI},
-    HALF_VIEW_ANGLE, RENDER_WIDTH, VIEW_ANGLE,
+    HALF_VIEW_ANGLE, RENDER_HEIGHT, RENDER_WIDTH, VIEW_ANGLE,
 };
+
+// TODO parameterize for experimentation (feel)
+const EXP_DISTANCE_Y_DECAY: f32 = 1.0;
 
 /// A projector, stores some intermediate calculations
 /// for faster processing. Might become a renderer.
@@ -73,5 +76,17 @@ mod tests {
         );
 
         assert_eq!(p.screen_x_of_rad(-std::f32::consts::FRAC_PI_4), 0);
+
+        assert_eq!(
+            p.screen_x_of_rad(-std::f32::consts::FRAC_PI_8),
+            (RENDER_WIDTH / 4) as i32
+        );
+
+        // left wrap
+        let p = make_projector(0.0);
+        assert_eq!(
+            p.screen_x_of_rad(5.9), //7.0 / 4.0 * std::f32::consts::FRAC_PI_8),
+            (RENDER_WIDTH / 4) as i32
+        );
     }
 }

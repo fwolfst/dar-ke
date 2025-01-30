@@ -148,11 +148,7 @@ fn render_pebble(
         std::f32::consts::PI + dx.atan2(dy)
     };
 
-    let max_down = (RENDER_HEIGHT - horizon) as f32;
-
-    let k = 1.0; // decy
-    let dist = max_down * f32::exp(-k * db);
-
+    let dist = projector.dist_to_screen_y(db);
     let bx = projector.screen_x_of_rad(ab);
     //println!(
     //    "Pebble angle {} -> screen {}, player {}",
@@ -161,13 +157,13 @@ fn render_pebble(
 
     let pebbles_relative_color = true;
     if pebbles_relative_color {
-        let pxidx: usize = (bx as u32 + (horizon + dist.round() as u32) * frame.size().x) as usize;
+        let pxidx: usize = (bx as u32 + (horizon + dist as u32) * frame.size().x) as usize;
         if pxidx < frame.raw().len() {
             let c = frame.raw()[pxidx];
             // -> TODO contribute: Frame#get([bx as u32, horizon + dist.round() as u32]);
             frame
                 .set(
-                    [bx as u32, horizon + dist.round() as u32],
+                    [bx as u32, horizon + dist as u32],
                     c.as_color().lighter(0.01),
                 )
                 .ok();
@@ -175,7 +171,7 @@ fn render_pebble(
     } else {
         frame
             .set(
-                [bx as u32, horizon + dist.round() as u32], //c.as_color().lighter(0.02)).ok();
+                [bx as u32, horizon + dist as u32], //c.as_color().lighter(0.02)).ok();
                 [10, 10, 12],
             )
             .ok();
@@ -237,17 +233,15 @@ fn render_blob(
         std::f32::consts::PI + dx.atan2(dy)
     };
 
-    let max_down = (RENDER_HEIGHT - horizon) as f32;
-
-    // TODO move into projector
     let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
-    let k = 1.0; // decy
-    let dist = max_down * f32::exp(-k * db);
 
+    let dist = projector.dist_to_screen_y(db);
     let bx = projector.screen_x_of_rad(ab);
 
     // IDEA scale color (alpha) by distance?
-    frame.set([bx as u32, horizon + dist], blob.color).ok();
+    frame
+        .set([bx as u32, horizon + dist as u32], blob.color)
+        .ok();
 
     if db < 10.0 {
         // shape
