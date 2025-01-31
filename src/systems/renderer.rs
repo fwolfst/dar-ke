@@ -17,7 +17,6 @@ pub const HALF_VIEW_ANGLE: f32 = VIEW_ANGLE / 2.0;
 pub const HORIZON_WIDTH_IN_PIXEL: f32 =
     RENDER_WIDTH as f32 * 2.0 * std::f32::consts::PI / VIEW_ANGLE;
 
-const HORIZON_COL: [u8; 3] = [1, 2, 3];
 /// Put pixels in frame that represent the scenerie.
 /// Sky and ground are drawn before everything else
 pub fn render(
@@ -264,14 +263,6 @@ fn lintra(
     ((target_range.end() - target_range.start()) as f32 * ratio_in_orig).round() as i32
 }
 
-fn flintra(
-    value: i32,
-    original_range: std::ops::RangeInclusive<i32>,
-    target_range: std::ops::RangeInclusive<f32>,
-) {
-    // with clamping?
-}
-
 // Translates a value from one Range into the value of another range,
 // e.g. 3 (the middle of) in 2..=4 ->  13 in 11..15 (also the middle)
 // TODO how to get "Range<u8,u8>" type?
@@ -448,9 +439,8 @@ fn render_giant(projector: &Projector, frame: &mut Frame, giant: &Giant, positio
     }
 }
 
-fn render_tree(projector: &Projector, frame: &mut Frame, tree: &Tree, position: &AtHorizon) {
+fn render_tree(projector: &Projector, frame: &mut Frame, _tree: &Tree, position: &AtHorizon) {
     // render bmp to frame
-    TREE_BITMAP.len();
     let sx = projector.screen_x_of_rad(position.angle);
     for (y, row) in TREE_BITMAP.iter().enumerate() {
         let y_screen = projector.horizon as i32 + y as i32 - 24;
@@ -469,7 +459,7 @@ fn render_tree(projector: &Projector, frame: &mut Frame, tree: &Tree, position: 
     }
 }
 
-fn render_bird(projector: &Projector, frame: &mut Frame, bird: &Bird, position: &AtHorizon) {
+fn render_bird(_projector: &Projector, _frame: &mut Frame, _bird: &Bird, _position: &AtHorizon) {
     // render that thing. Animate it, too.
     // It strives to go somewhere
     // bird/animation map

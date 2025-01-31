@@ -29,7 +29,7 @@ pub fn rad_wrap(val: f32) -> f32 {
     if ((-std::f32::consts::PI)..=(std::f32::consts::PI)).contains(&val) {
         val
     } else {
-        val.rem_euclid(std::f32::consts::PI)
+        val.rem_euclid(PI)
     }
 }
 

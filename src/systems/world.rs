@@ -74,7 +74,7 @@ pub fn area_effects(
     let mut player = player.single_mut();
 
     //if !(-100.0..100.0).contains(&player.x) || !(-100.0..100.0).contains(&player.y) {
-    if !(-10.0..10.0).contains(&player.x) || !(-10.0..10.0).contains(&player.y) {
+    if !(-50.0..50.0).contains(&player.x) || !(-50.0..50.0).contains(&player.y) {
         player.height = 10 - (time.elapsed_seconds() * 3.0) as i32;
     }
 

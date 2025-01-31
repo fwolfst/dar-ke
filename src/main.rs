@@ -50,7 +50,6 @@ use crate::systems::world::*;
 // TODO It makes sense to play with these constants
 // and unconstantize them into the Params compoment
 // until settled.
-use crate::systems::renderer::HORIZON_WIDTH_IN_PIXEL;
 use crate::systems::renderer::RENDER_HEIGHT;
 use crate::systems::renderer::RENDER_WIDTH;
 
@@ -194,8 +193,6 @@ fn spawn_darke(mut commands: Commands) {
 }
 
 fn spawn_darke_sky(mut commands: Commands, player: Query<&Player>) {
-    const ˑ: bool = true;
-    const Ø: bool = false;
     let player = player.single();
     let dist = 20.0;
     for (y, row) in bitmaps::darke::DARKE.iter().enumerate() {

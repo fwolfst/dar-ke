@@ -1,11 +1,11 @@
 use crate::*;
 
 use crate::components::CreditRoll;
-use crate::components::Fading;
-use crate::components::Narrative;
+//use crate::components::Fading;
+//use crate::components::Narrative;
 
 pub fn run_credits(
-    mut commands: Commands,
+    mut _commands: Commands,
     mut credit_roll: Query<&mut CreditRoll>,
     mut player: Query<&mut Player>,
     time: Res<Time>,

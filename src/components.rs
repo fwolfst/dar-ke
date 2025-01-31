@@ -187,6 +187,7 @@ pub struct Colored(pub Color);
 #[derive(Component)]
 pub struct Fly;
 
+#[derive(Component)]
 pub struct Bird;
 
 #[derive(Component)]
