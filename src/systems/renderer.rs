@@ -39,10 +39,9 @@ pub fn render(
     let mut frame = pb.frame();
     // TODO sky_horizon_ratio now looks like view_angle (up or down)
     // TODO head and height should be proportional to resolution
-    let horizon = ((RENDER_HEIGHT as f32 * params.sky_horizon_ratio) as i32
-        + player.height as i32
-        + player.head as i32)
-        .clamp(0, RENDER_HEIGHT as i32) as u32;
+    let horizon =
+        ((RENDER_HEIGHT as f32 * params.sky_horizon_ratio) as i32 + player.height + player.head)
+            .clamp(0, RENDER_HEIGHT as i32) as u32;
     let projector = make_projector(player.direction, horizon);
 
     draw_sky(&projector, horizon as u8, &mut frame, &params, &sky_blender);
@@ -58,7 +57,7 @@ pub fn render(
 
     draw_horizon(horizon, &mut frame, &horizon_silhouette, left_px, &params);
 
-    draw_ground(horizon, &mut frame, &params);
+    draw_ground(horizon, &mut frame, false, &params);
 
     for (light, at_horizon) in &lights {
         let pos_of_obj_screen = projector.screen_x_of_rad(at_horizon.angle) as u32;
@@ -113,11 +112,7 @@ fn render_glitch_blob(
     let dx = player.x - blob.x;
     let dy = player.y - blob.y;
 
-    let ab = if dy == 0. {
-        0.0
-    } else {
-        (dx as f32 / dy as f32).atan()
-    };
+    let ab = if dy == 0. { 0.0 } else { (dx / dy).atan() };
 
     let bx = projector.screen_x_of_rad(ab);
 
@@ -197,8 +192,6 @@ fn render_fly(
     let dx = player.x - pos.x;
     let dy = player.y - pos.y;
 
-    // angle
-    //let ab = if dx == 0. { 0.0 } else { dy.atan2(dx) };
     // "North" clockwise
     let ab = if dx == 0. {
         0.0
@@ -206,17 +199,11 @@ fn render_fly(
         std::f32::consts::PI + dx.atan2(dy)
     };
 
-    let max_down = (RENDER_HEIGHT - horizon) as f32;
-
-    // TODO move into projector
-    let db = f32::sqrt(dx.powf(2.0) + dy.powf(2.0));
-    let k = 0.4; // decay
-    let dist = (max_down * f32::exp(-k * db)).round() as u32;
-
     let bx = projector.screen_x_of_rad(ab);
 
     if height.height <= horizon as f32 {
         // IDEA scale color (alpha) by distance?
+        // actually change "height" when approaching? ;)
         frame
             .set([bx as u32, horizon - height.height as u32], color.0)
             .ok();
@@ -261,15 +248,9 @@ fn render_blob(
     // (mix blob color in), we have interpolate() or blend()
     let c = blob.color.with_alpha(0.005); //Color::srgba_u8(*n);
                                           //let _ = frame.set([(bx + 1) as u32, horizon + dist.round() as u32], c);
-    let _ = frame.set(
-        [(bx - 1) as u32, horizon + dist.round() as u32 + 1 as u32],
-        c,
-    );
-    let _ = frame.set([bx as u32, horizon + dist.round() as u32 + 1 as u32], c);
-    let _ = frame.set(
-        [(bx + 1) as u32, horizon + dist.round() as u32 + 1 as u32],
-        c,
-    );
+    let _ = frame.set([(bx - 1) as u32, horizon + dist as u32 + 1 as u32], c);
+    let _ = frame.set([bx as u32, horizon + dist as u32 + 1 as u32], c);
+    let _ = frame.set([(bx + 1) as u32, horizon + dist as u32 + 1 as u32], c);
 }
 
 fn lintra(
@@ -378,7 +359,7 @@ fn draw_horizon(
 
     for x in 0..RENDER_WIDTH {
         let ix = (horizontal_pixel_offset + x) as usize % (silhouette.data.len());
-        let h = silhouette.data[ix as usize];
+        let h = silhouette.data[ix];
         for y in 1..h {
             if y <= horizon as u8 {
                 frame.set([x, horizon - y as u32], color).ok();
@@ -390,28 +371,19 @@ fn draw_horizon(
 fn draw_poles(projector: &Projector, horizon: u32, frame: &mut Frame) {
     // Draw poles
     // N = black, S = red, E = green, W = yellow
-    let north = projector.screen_x_of_rad(0.0);
-    dbg!(north);
-    if north >= 0 && north < RENDER_WIDTH as i32 {
-        frame.set([north as u32, horizon], Color::BLACK).ok();
-    }
-    let south = projector.screen_x_of_rad(std::f32::consts::PI);
-    if south >= 0 && south < RENDER_WIDTH as i32 {
-        frame
-            .set([south as u32, horizon], Color::srgb_u8(255, 0, 0))
-            .ok();
-    }
-    let east = projector.screen_x_of_rad(std::f32::consts::FRAC_PI_2);
-    if east >= 0 && east < RENDER_WIDTH as i32 {
-        frame
-            .set([east as u32, horizon], Color::srgb_u8(0, 255, 0))
-            .ok();
-    }
-    let west = projector.screen_x_of_rad(3.0 * std::f32::consts::FRAC_PI_2);
-    if west > 0 && west < RENDER_WIDTH as i32 {
-        frame
-            .set([west as u32, horizon], Color::srgb_u8(0, 255, 255))
-            .ok();
+    let north = (0.0, Color::BLACK);
+    let south = (std::f32::consts::PI, Color::srgb_u8(255, 0, 0));
+    let east = (std::f32::consts::FRAC_PI_2, Color::srgb_u8(0, 255, 0));
+    let west = (
+        std::f32::consts::FRAC_PI_2 * 3.0,
+        Color::srgb_u8(0, 255, 255),
+    );
+
+    for (angle, color) in [north, south, east, west] {
+        let screen_x = projector.screen_x_of_rad(angle);
+        if screen_x >= 0 && screen_x < RENDER_WIDTH as i32 {
+            frame.set([screen_x as u32, horizon + 10], color).ok();
+        }
     }
 }
 
