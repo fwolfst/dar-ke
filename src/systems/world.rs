@@ -1,4 +1,5 @@
 use components::AtHorizon;
+use components::Bird;
 use components::CameraShake;
 use components::CreditRoll;
 use components::Fading;
@@ -97,6 +98,34 @@ pub fn area_effects(
             commands.spawn((Tree, AtHorizon { angle: 1.2 }));
             commands.spawn((Tree, AtHorizon { angle: 0.8 }));
             commands.spawn((Tree, AtHorizon { angle: 5.1 }));
+            commands.spawn((
+                Bird {
+                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    frame: 1,
+                },
+                AtHorizon { angle: 0.8 },
+            ));
+            commands.spawn((
+                Bird {
+                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    frame: 1,
+                },
+                AtHorizon { angle: 5.1 },
+            ));
+            commands.spawn((
+                Bird {
+                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    frame: 1,
+                },
+                AtHorizon { angle: 0.9 },
+            ));
+            commands.spawn((
+                Bird {
+                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    frame: 1,
+                },
+                AtHorizon { angle: 5.0 },
+            ));
         }
     }
 }

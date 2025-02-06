@@ -188,7 +188,10 @@ pub struct Colored(pub Color);
 pub struct Fly;
 
 #[derive(Component)]
-pub struct Bird;
+pub struct Bird {
+    pub timer: Timer,
+    pub frame: i8,
+}
 
 #[derive(Component)]
 pub struct Tree;
