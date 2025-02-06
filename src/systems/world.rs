@@ -4,6 +4,7 @@ use components::CreditRoll;
 use components::Fading;
 use components::GlitchBlob;
 use components::Stage1Blob;
+use components::Tree;
 
 use crate::*;
 
@@ -88,6 +89,14 @@ pub fn area_effects(
             // brighten players light
             params.light_cone_off_y -= 20;
             params.sky_max_brightness = 50;
+
+            // stage2
+            params.sky_horizon_ratio = 1.0;
+            commands.spawn((Tree, AtHorizon { angle: 0.2 }));
+            commands.spawn((Tree, AtHorizon { angle: 2.2 }));
+            commands.spawn((Tree, AtHorizon { angle: 1.2 }));
+            commands.spawn((Tree, AtHorizon { angle: 0.8 }));
+            commands.spawn((Tree, AtHorizon { angle: 5.1 }));
         }
     }
 }

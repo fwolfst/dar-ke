@@ -439,21 +439,27 @@ fn render_giant(projector: &Projector, frame: &mut Frame, giant: &Giant, positio
     }
 }
 
+// TODO tree (and other sprite) rendering: the check for rendering is only made for the position,
+// should span the width of the whole sprite.
 fn render_tree(projector: &Projector, frame: &mut Frame, _tree: &Tree, position: &AtHorizon) {
     // render bmp to frame
-    let sx = projector.screen_x_of_rad(position.angle);
+    let (sx1, sx2) = projector.screen_x2_of_rad(position.angle);
     for (y, row) in TREE_BITMAP.iter().enumerate() {
         let y_screen = projector.horizon as i32 + y as i32 - 24;
         if y_screen > 0 {
             for (x, _col) in row.iter().enumerate().filter(|(_, v)| !**v) {
-                if sx >= x as i32 {
-                    frame
-                        .set(
-                            UVec2::new(x as u32 + sx as u32, y_screen as u32),
-                            Color::srgb_u8(15, 15, 15),
-                        )
-                        .ok();
-                }
+                frame
+                    .set(
+                        UVec2::new((x as i32 + sx2) as u32, y_screen as u32),
+                        Color::srgb_u8(15, 15, 15),
+                    )
+                    .ok();
+                frame
+                    .set(
+                        UVec2::new((x as i32 + sx1) as u32, y_screen as u32),
+                        Color::srgb_u8(15, 15, 15),
+                    )
+                    .ok();
             }
         }
     }

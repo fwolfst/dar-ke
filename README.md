@@ -146,6 +146,8 @@ Live-Parameterization (via egui) helps to flesh out some variants.
 
 HSL might be the better color space.
 
+Math is 20 years old.
+
 ### Rust
 
 - Test framework brings the basics, but I miss some convenience from rspec/minitest. Trying some other crates for a fine layer of sugar.
@@ -155,6 +157,7 @@ HSL might be the better color space.
 ### API/Bevy
 
 * There is bevy::Color::Mix and ColorCurve to interpolate between colors
+* SubStates might help to model levels/stages.
 
 ## Licence, Copyright
 
