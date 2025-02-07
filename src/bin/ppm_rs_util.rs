@@ -15,6 +15,8 @@ fn main() {
     // TODO find a better, emptylooking identifier
     println!("const ˑ: bool = true;");
     println!("const Ø: bool = false;");
+    println!();
+    println!("#[rustfmt::skip]");
     println!("const BITMAP: [[bool; {}]; {}] = [", img.width, img.height);
     for y in 0..img.height {
         print!("  [");
