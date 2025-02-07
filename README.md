@@ -59,14 +59,19 @@ You find yourself in a mysterious dark pretty void place and discover it togethe
 Player tries to orient and align herself and the entities in the world around herself, picking up clues and ultimatively finding an end (a beginning) to the story, after which a tiny animation and the credits are shown.
 Player sees the world through ego-perspective. Game can be played with one hand.
 
+#### The three stages
+
+
 ### MVP
 
-- [ ] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobbing)
-- [ ] Other entities exist (structures and individuals), some of which can move through the world on their own
+- [X] Player can move, upon which the horizon gives indication of movemnt (by objects and via head bobbing)
+- [X] Other entities exist (structures and individuals), some of which can move through the world on their own
+- [ ] There are three stages / riddles to progress through
 - [ ]  (Narrative) Text is shown
 - [ ] Text can show location based, too
 - [ ] There are at least two endings
 - [ ] An ending is an animation and the credits
+- [ ] A narrative guides through the whole experience
 
 ### Stretch goals
 
@@ -133,6 +138,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - Screenshakes
 - Things can glow and project light
 - Falling thins have afterglow/smoke
+- A thunder strucks at the middle every x seconds, destroying a part of the horizon.
 
 ## (Code) Design desicions
 
@@ -158,6 +164,7 @@ Math is 20 years old.
 
 * There is bevy::Color::Mix and ColorCurve to interpolate between colors
 * SubStates might help to model levels/stages.
+* You cannot have two queries for the same mutable component
 
 ## Licence, Copyright
 
