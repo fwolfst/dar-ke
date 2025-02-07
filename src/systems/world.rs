@@ -12,7 +12,7 @@ use crate::*;
 use std::f32::consts::PI;
 
 /// Animate the giant(s) walking, including the screen shake
-pub fn animate(
+pub fn animate_giants(
     mut giants: Query<(&mut Giant, &mut AtHorizon)>,
     time: Res<Time>,
     mut commands: Commands,
@@ -29,6 +29,24 @@ pub fn animate(
             }
         }
         pos.angle -= 0.015 * time.delta_seconds();
+    }
+}
+
+/// Bit of a copy of animate_giants, but cannot have
+/// two queries with similar/same mutable component.
+/// Could be refactored into one.
+pub fn animate_birds(
+    mut birds: Query<(&mut Bird, &mut AtHorizon)>,
+    time: Res<Time>,
+    mut commands: Commands,
+) {
+    for (mut bird, mut pos) in &mut birds {
+        bird.timer.tick(time.delta());
+        if bird.timer.finished() {
+            bird.frame = (bird.frame + 1).rem_euclid(4);
+            if bird.frame == 0 {}
+        }
+        pos.angle -= 0.02 * time.delta_seconds();
     }
 }
 
@@ -100,31 +118,31 @@ pub fn area_effects(
             commands.spawn((Tree, AtHorizon { angle: 5.1 }));
             commands.spawn((
                 Bird {
-                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    timer: Timer::new(Duration::from_secs_f32(1.0), TimerMode::Repeating),
                     frame: 1,
                 },
                 AtHorizon { angle: 0.8 },
             ));
             commands.spawn((
                 Bird {
-                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
-                    frame: 1,
+                    timer: Timer::new(Duration::from_secs_f32(0.5), TimerMode::Repeating),
+                    frame: 3,
                 },
                 AtHorizon { angle: 5.1 },
             ));
             commands.spawn((
                 Bird {
-                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
+                    timer: Timer::new(Duration::from_secs_f32(1.5), TimerMode::Repeating),
                     frame: 1,
                 },
                 AtHorizon { angle: 0.9 },
             ));
             commands.spawn((
                 Bird {
-                    timer: Timer::new(Duration::from_secs_f32(2.0), TimerMode::Once),
-                    frame: 1,
+                    timer: Timer::new(Duration::from_secs_f32(1.0), TimerMode::Repeating),
+                    frame: 2,
                 },
-                AtHorizon { angle: 5.0 },
+                AtHorizon { angle: 5.4 },
             ));
         }
     }

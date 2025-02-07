@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy_pixel_buffer::prelude::*;
-use bird::BIRD_BITMAP;
+use bird::*;
 use giant::GIANT_BITMAP;
 use tree::TREE_BITMAP;
 
@@ -466,17 +466,24 @@ fn render_tree(projector: &Projector, frame: &mut Frame, _tree: &Tree, position:
     }
 }
 
-fn render_bird(projector: &Projector, frame: &mut Frame, _bird: &Bird, position: &AtHorizon) {
+fn render_bird(projector: &Projector, frame: &mut Frame, bird: &Bird, position: &AtHorizon) {
     // render that thing. Animate it, too.
     // It strives to go somewhere
     // bird/animation map
     // distance x step
     // distance determines bitmap to render
+    let bitmap = match bird.frame {
+        1 => BIRD_BITMAP,
+        2 => BIRD_BITMAP2,
+        _ => BIRD_BITMAP3,
+    };
+
     let (sx1, sx2) = projector.screen_x2_of_rad(position.angle);
-    for (y, row) in BIRD_BITMAP.iter().enumerate() {
+
+    for (y, row) in bitmap.iter().enumerate() {
         let y_screen = projector.horizon as i32 + y as i32 - 30;
         if y_screen > 0 {
-            for (x, _col) in row.iter().enumerate().filter(|(_, v)| !**v) {
+            for (x, _col) in row.iter().enumerate().filter(|(_, v)| **v) {
                 frame
                     .set(
                         UVec2::new((x as i32 + sx2) as u32, y_screen as u32),
