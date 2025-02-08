@@ -61,6 +61,8 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 #### The three stages
 
+- Finding space itself
+- Finding trees, tree and fire
 
 ### MVP
 
@@ -84,8 +86,18 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - [ ] Rogue-aspect
 - [ ] Sound
 
+### Constraints I'd like to keep
+
+- No Z sorting
+- Playable with a single hand
+- No classical UI
+- No movement restriction via collision detection
+
 ## Derived ToDos
 
+- [ ] Head bobbing when looking up
+- [ ] Trees at position (vs at horizon)
+- [ ] Birds landing at tree
 - [X] Has Intro
   - [X] which blends over into gameplay
   - [ ] which triggers first narrative
@@ -114,6 +126,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 
 ### Other ToDos
 
+- [ ] Have a street
 - [ ] need to test/jump to stages, skip intro etcpp
 - [ ] a minimal init screen/objs (in game)
 - [ ] deterministic RNG with seed in params
@@ -123,6 +136,7 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - [ ] settle on separation between renderer and projector
 - [ ] projector tests
 - [ ] Use Vec2 more often
+- [ ] One prototype per feature?
 
 ## Game Ideas/Notes
 
