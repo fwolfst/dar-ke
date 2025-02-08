@@ -379,6 +379,71 @@ fn draw_poles(projector: &Projector, horizon: u32, frame: &mut Frame) {
     }
 }
 
+// When not a curve, its a triangle
+// How to draw the stripes in the middle?
+// saw function
+// ____--____--____--____
+// offset by distance to arbitray point
+// and squeezed by distance
+// ____--___--__--_-
+fn draw_ground_with_street(
+    horizon: u32,
+    frame: &mut Frame,
+    params: &Res<Params>,
+    dist_origin: f32,
+) {
+    let base_color = Color::srgb_u8(1, 2, 3);
+    let horizon_color = Color::srgb_u8(30, 32, 33);
+    let street_width = 48;
+
+    let mid_x = RENDER_WIDTH / 2;
+
+    for y in horizon..RENDER_HEIGHT {
+        let ratio = (y - horizon) as f32 / (RENDER_HEIGHT - horizon) as f32 + 0.2;
+
+        let color = base_color.mix(&horizon_color, ratio);
+
+        // Projector has distance scaling function
+        // could use the inverse
+
+        let left_off_street = mid_x - (street_width as f32 * ratio / 2.0) as u32;
+        let right_off_street = RENDER_WIDTH - left_off_street;
+
+        for x in 0..left_off_street {
+            // TODO mirror to right
+            // Can be IN STREET or OUT STREET
+            //        _
+            //       / \
+            //     /    \
+            let pixpos = UVec2::new(x, y);
+            frame.set(pixpos, color).ok();
+        }
+        for x in left_off_street..right_off_street {
+            let pixpos = UVec2::new(x, y);
+            frame.set(pixpos, color.lighter(0.01)).ok();
+        }
+
+        // todo integrate into loop once nice
+
+        // stripes: length 7
+        // gaps: length 13
+        if (dist_origin + y as f32).rem_euclid(20.0 * ratio) < 7.0 * ratio {
+            let pixpos = UVec2::new(
+                (left_off_street as f32 + 0.5 * (right_off_street - left_off_street) as f32) as u32,
+                y,
+            );
+            frame.set(pixpos, color.lighter(0.05)).ok();
+        }
+
+        for x in right_off_street..RENDER_WIDTH {
+            // TODO mirror from left
+            let pixpos = UVec2::new(x, y);
+            frame.set(pixpos, color).ok();
+        }
+    }
+}
+
+
 fn draw_ground(horizon: u32, frame: &mut Frame, bright_up: bool, params: &Res<Params>) {
     for y in horizon..RENDER_HEIGHT {
         let add = if bright_up {
