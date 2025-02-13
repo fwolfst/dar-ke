@@ -168,6 +168,8 @@ HSL might be the better color space.
 
 Math is 20 years old.
 
+I really like named parameters and default values (looking at you, Ruby). Alternative is to have complex editors, good mempry and documentation or "input" structs with defaults. Latest works best, but has a very boilerplaty feel to it, and needs three instead of two places of code to change if you want to introduce a new parameter with default. Also, you cannot easily match "named" params with default and without default.
+
 ### Rust
 
 - Test framework brings the basics, but I miss some convenience from rspec/minitest. Trying some other crates for a fine layer of sugar.

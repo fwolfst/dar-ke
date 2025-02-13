@@ -14,6 +14,7 @@ use bevy_egui::{
 };
 
 use bevy_pixel_buffer::prelude::*;
+use narration::*;
 use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
 use components::{Colored, Fading, Fly, Narrative, Positioned, Stage1Blob};
@@ -28,6 +29,7 @@ use systems::{camera_shake::*, run_credits::run_credits};
 
 mod bitmaps;
 mod components;
+mod narration;
 mod phrases;
 pub mod radians_math;
 mod systems;
