@@ -153,6 +153,8 @@ Player sees the world through ego-perspective. Game can be played with one hand.
 - Things can glow and project light
 - Falling thins have afterglow/smoke
 - A thunder strucks at the middle every x seconds, destroying a part of the horizon.
+- The narrative could stay. Like a chapter on top of a page
+- The narrative could "scroll out" (most recent on top of viewport, older onces above)
 
 ## (Code) Design desicions
 
@@ -181,6 +183,7 @@ I really like named parameters and default values (looking at you, Ruby). Altern
 * There is bevy::Color::Mix and ColorCurve to interpolate between colors
 * SubStates might help to model levels/stages.
 * You cannot have two queries for the same mutable component
+* Bevy plugins offer a way to organize code, but boundaries seem odd to me
 
 ## Licence, Copyright
 

@@ -40,6 +40,7 @@ pub fn spawn_narrative(commands: &mut Commands, narration: ShowNarrative) {
                     narration.text,
                     TextStyle {
                         color: narration.color,
+                        font_size: 27.0,
                         ..bevy::prelude::default()
                     },
                 )],

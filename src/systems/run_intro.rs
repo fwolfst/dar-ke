@@ -26,7 +26,6 @@ pub fn run_intro(
     } else {
         // Alternatively: Move these to StateEnter
         player.y = 0.0;
-        next_state.set(GameState::Playing);
-        let color = Color::srgb_u8(150, 130, 110);
+        next_state.set(GameState::Tutorial);
     }
 }

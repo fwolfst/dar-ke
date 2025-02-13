@@ -19,6 +19,7 @@ use rand::{thread_rng, Rng}; // TODO should have one, with known seed.
 
 use components::{Colored, Fading, Fly, Narrative, Positioned, Stage1Blob};
 use components::{Giant, SkyBlender};
+use stages::*;
 use systems::{camera_shake::*, run_credits::run_credits};
 // not needed in src/main, but reincluded through it -> need to learn
 // and think of how to structure imports
@@ -32,6 +33,7 @@ mod components;
 mod narration;
 mod phrases;
 pub mod radians_math;
+mod stages;
 mod systems;
 
 use crate::components::Blob;
@@ -61,7 +63,12 @@ pub const PIXEL_SIZE: u32 = 13;
 enum GameState {
     #[default]
     Intro,
+    Tutorial,
     Playing,
+    // Stage1
+    // Stage2
+    // Decision
+    // Stage3
     Credits,
 }
 
@@ -97,7 +104,10 @@ fn main() {
     )
     .add_systems(
         FixedUpdate,
-        (process_input, area_effects).run_if(in_state(GameState::Playing)),
+        (
+            (process_input, area_effects).run_if(in_state(GameState::Playing)),
+            (tutorial::input).run_if(in_state(GameState::Tutorial)),
+        ),
     )
     .add_systems(
         Update,
@@ -117,6 +127,7 @@ fn main() {
         ),
     )
     .add_systems(OnEnter(GameState::Credits), spawn_darke_sky)
+    .add_systems(OnEnter(GameState::Tutorial), tutorial::init)
     .add_systems(OnEnter(GameState::Playing), init_stage1)
     .insert_state(GameState::Intro)
     .insert_resource(Params::default())
@@ -158,7 +169,7 @@ fn init_pebble_field(mut commands: Commands) {
     }
 }
 
-fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) {
+fn init_stage1(mut commands: Commands) {
     commands.spawn((
         Blob {
             x: 10.0,
@@ -167,39 +178,6 @@ fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) 
         },
         Stage1Blob,
     ));
-
-    for e in darkes.iter() {
-        commands.entity(e).insert(Fading {
-            timer: Timer::new(Duration::from_secs(4), TimerMode::Once),
-        });
-    }
-
-    let color = Color::srgb_u8(150, 130, 110);
-    // Once the key has been pressed, fading component will be added to the letter
-    spawn_narrative(
-        &mut commands,
-        ShowNarrative {
-            text: "S".into(),
-            color,
-            ..default()
-        },
-    );
-    spawn_narrative(
-        &mut commands,
-        ShowNarrative {
-            text: "A".into(),
-            position_from_center: Vec2::new(15.0, 0.0),
-            ..default()
-        },
-    );
-    spawn_narrative(
-        &mut commands,
-        ShowNarrative {
-            text: "D".into(),
-            position_from_center: Vec2::new(30.0, 0.0),
-            ..default()
-        },
-    );
 }
 
 #[allow(non_snake_case)]
