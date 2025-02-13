@@ -1,6 +1,5 @@
 use crate::*;
 
-use components::Fading;
 use components::Player;
 
 pub fn run_intro(
@@ -9,7 +8,6 @@ pub fn run_intro(
     time: Res<Time>,
     mut next_state: ResMut<NextState<GameState>>,
     mut params: ResMut<Params>,
-    mut commands: Commands,
 ) {
     // animation will take 6 seconds or so
     let mut player = player.single_mut();

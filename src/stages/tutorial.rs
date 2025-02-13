@@ -4,11 +4,13 @@ use bevy::app::AppExit;
 use bevy::color::Color;
 use bevy::input::ButtonInput;
 use bevy::math::Vec2;
-use bevy::prelude::{default, Commands, Entity, EventWriter, KeyCode, Query, Res, With};
+use bevy::prelude::{
+    default, Commands, Entity, EventWriter, KeyCode, NextState, Query, Res, ResMut, With,
+};
 use bevy::time::{Timer, TimerMode};
 
 use crate::components::{self, Fading, GlitchBlob, Narrative, Player};
-use crate::narration::*;
+use crate::{narration::*, GameState};
 
 pub fn init(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) {
     for e in darkes.iter() {
@@ -53,6 +55,7 @@ pub fn input(
     narratives: Query<(Entity, &components::Name, &Narrative, Option<&Fading>)>,
     mut commands: Commands,
     mut exit: EventWriter<AppExit>,
+    mut next_state: ResMut<NextState<GameState>>,
 ) {
     const MOVE_SPEED: f32 = 0.05;
     const TURN_SPEED: f32 = 0.01;
@@ -60,6 +63,7 @@ pub fn input(
     let s_done = !narration_present("S".into(), &narratives);
     let a_done = !narration_present("A".into(), &narratives);
     let d_done = !narration_present("D".into(), &narratives);
+    let w_done = !narration_present("W".into(), &narratives);
 
     if keyboard_input.pressed(KeyCode::KeyS) {
         // TODO decide if we handle S even if already done
@@ -105,14 +109,6 @@ pub fn input(
 
         fade("D".into(), narratives, &mut commands);
 
-        spawn_narrative(
-            &mut commands,
-            ShowNarrative {
-                text: "W".into(),
-                ..default()
-            },
-        );
-
         // TODO or only spawn when D is gone?
     } else if keyboard_input.pressed(KeyCode::KeyW) {
         // 'D' not yet done
@@ -135,17 +131,21 @@ pub fn input(
         exit.send(AppExit::Success);
     }
 
-    //if s_done && a_done && d_done {
-    //    spawn_narrative(
-    //        &mut commands,
-    //        ShowNarrative {
-    //            text: "W".into(),
-    //            position_from_center: Vec2::new(45.0, 0.0),
-    //            ..default()
-    //        },
-    //    );
-    //}
-    // TODO Afterwards, done. Switch to next state and add narrative (for full input handling)
+    if s_done && a_done && d_done {
+        if w_done {
+            // TODO Afterwards, done. Switch to next state and add narrative (for full input handling)
+            next_state.set(GameState::Playing);
+        } else {
+            spawn_narrative(
+                &mut commands,
+                ShowNarrative {
+                    text: "W".into(),
+                    position_from_center: Vec2::new(45.0, 0.0),
+                    ..default()
+                },
+            );
+        }
+    }
 }
 
 pub fn narration_present(
@@ -171,5 +171,5 @@ pub fn fade(
 }
 
 pub fn end(mut _commands: Commands) {
-    //
+    // These are not the droids.
 }
