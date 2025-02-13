@@ -173,6 +173,33 @@ fn init_stage1(mut commands: Commands, darkes: Query<Entity, With<GlitchBlob>>) 
             timer: Timer::new(Duration::from_secs(4), TimerMode::Once),
         });
     }
+
+    let color = Color::srgb_u8(150, 130, 110);
+    // Once the key has been pressed, fading component will be added to the letter
+    spawn_narrative(
+        &mut commands,
+        ShowNarrative {
+            text: "S".into(),
+            color,
+            ..default()
+        },
+    );
+    spawn_narrative(
+        &mut commands,
+        ShowNarrative {
+            text: "A".into(),
+            position_from_center: Vec2::new(15.0, 0.0),
+            ..default()
+        },
+    );
+    spawn_narrative(
+        &mut commands,
+        ShowNarrative {
+            text: "D".into(),
+            position_from_center: Vec2::new(30.0, 0.0),
+            ..default()
+        },
+    );
 }
 
 #[allow(non_snake_case)]

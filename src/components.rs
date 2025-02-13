@@ -40,6 +40,9 @@ impl Default for Params {
     }
 }
 
+#[derive(Component, PartialEq)]
+pub struct Name(pub String);
+
 #[derive(Component)]
 pub struct Player {
     pub x: f32,         // pos x

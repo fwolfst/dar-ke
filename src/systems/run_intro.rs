@@ -28,22 +28,5 @@ pub fn run_intro(
         player.y = 0.0;
         next_state.set(GameState::Playing);
         let color = Color::srgb_u8(150, 130, 110);
-        commands.spawn((
-            components::Narrative,
-            Text2dBundle {
-                text: Text {
-                    sections: vec![TextSection::new(
-                        "S A D W",
-                        TextStyle { color, ..default() },
-                    )],
-                    ..Default::default()
-                },
-                transform: Transform::from_translation(Vec3::new(0.0, 330.0, 0.0)),
-                ..default()
-            },
-            Fading {
-                timer: Timer::new(Duration::from_secs(4), TimerMode::Once),
-            },
-        ));
     }
 }
