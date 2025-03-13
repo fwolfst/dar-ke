@@ -10,6 +10,9 @@ An experimental game written in (order to learn) [Rust](rust-lang.org) with the 
 
 > You must wander
 
+> [!IMPORTANT]
+> Hence moved on to GitLab and macroquad, see [darke-mq](https://gitlab.com/fwolfst/darke-mq)
+
 ## Tooling
 
 Create inline bitmaps like so:
